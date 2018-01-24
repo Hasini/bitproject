@@ -4,20 +4,10 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 	<title>User Type</title>
 	<script type="text/javascript" src="js/jquery-3.3.1.js"></script>
+	<script type="text/javascript" src="js/commonFunctions.js"></script>
 	
 	
-	<script type="text/javascript">
-		function validate() {
-			alert ("aasa")
-			var code = document.getElementById("code").value;
-			var descr = document.getElementById("descr").value;
-			
-			if(code=="" || code==null,descr == ""|| descr == null){
-				alert("Values are Empty");
-				return false;
-			}
-		}
-	</script>
+	
 	<script type="text/javascript">
 	$ (document).ready (function(){
 		$('#submit').click(function() {
