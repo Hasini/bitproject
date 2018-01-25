@@ -6,15 +6,13 @@
 	<script type="text/javascript" src="js/jquery-3.3.1.js"></script>
 	<script type="text/javascript" src="js/commonFunctions.js"></script>
 	
-	
-	
 	<script type="text/javascript">
-	$ (document).ready (function(){
+	$(document).ready(function() {
 		$('#submit').click(function() {
 			var code = document.getElementById("code").value;
 			var descr = document.getElementById("descr").value;
 			
-			$.ajax (function(){
+			$.ajax ({
 				type : "post",
 				url : "usertype",
 				datatype :{
@@ -22,11 +20,13 @@
 					code : code,
 					descr : descr,
 				},
-				success : function(data) {
-					alert(data);
+				success : function(datatype) {
+					alert ("hiii");
+					alert(datatype);
 				}
 			});
 		});
+		
 	});
 	</script>
 	
