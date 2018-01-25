@@ -4,6 +4,8 @@
 	<title>Branch Details</title>
 	<script type="text/javascript" src="js/jquery-3.3.1.js"></script>
 	<script type="text/javascript" src="js/commonFunctions.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/common.css">
+	<link rel="icon" href="images/favicon-facebook_400x400.png">
 	
 	<!-- <script type="text/javascript">
 		function validate() {
@@ -40,6 +42,7 @@
 	
 </head>
 <body>
+<div id="main">
 	<form action="branchDetails" method="get" onsubmit="validate();">
 		<h2>Branch Details</h2>
 		Branch Code : <input type="text" name="code" id="code"> <font color="red">*</font><br>
@@ -47,6 +50,6 @@
 		
 		<input type="submit" name="submit" value="Submit" id="submit">
 	</form>
-	
+</div>	
 </body>
 </html>
