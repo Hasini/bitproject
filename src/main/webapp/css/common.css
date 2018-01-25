@@ -1,0 +1,9 @@
+.link {
+	display: block;
+	width: 128px;
+   	height: 40px;
+   	background-color: blue;
+   	font-family: sans-serif;
+   	font-size: medium;
+   	color: white;
+}
