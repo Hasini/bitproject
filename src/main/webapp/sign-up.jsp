@@ -6,18 +6,16 @@
 		<link rel="icon" href="images/favicon-facebook_400x400.png">
 		
 		
-		<style>
-body {font-family: Arial;}
-* {box-sizing: border-box}
+<style>
 
-/* Full-width input fields */
-input[type=text], input[type=password] {
-    width: 100%;
-    padding: 15px;
-    margin: 5px 0 22px 0;
-    display: inline-block;
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
     border: none;
-    background: #f1f1f1;
+    cursor: pointer;
+    width: 50%;
 }
 
 input[type=text]:focus, input[type=password]:focus {
@@ -30,17 +28,6 @@ hr {
     margin-bottom: 25px;
 }
 
-/* Set a style for all buttons */
-button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    cursor: pointer;
-    width: 100%;
-    opacity: 0.9;
-}
 
 button:hover {
     opacity:1;
@@ -83,7 +70,7 @@ button:hover {
 
 <body>
 
-<form action="/action_page.php" style="border:1px solid #ccc">
+<form action="/signup" style="border:1px solid #ccc">
   <div class="container">
     <h1>Sign Up</h1>
     <p>Please fill in this form to create an account.</p>
@@ -105,7 +92,7 @@ button:hover {
     <p>By creating an account you agree to our <a href="#" style="color:dodgerblue">Terms & Privacy</a>.</p>
 
     <div class="clearfix">
-      <button type="button" class="cancelbtn">Cancel</button>
+      <button type="button" class="cancelbtn" onclick="window.location.href='index.html'">Cancel</button>
       <button type="submit" class="signupbtn">Sign Up</button>
     </div>
   </div>

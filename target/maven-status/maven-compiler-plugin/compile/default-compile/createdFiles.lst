@@ -1,0 +1,6 @@
+pro\bit\bitproject\action\UserTypeController.class
+pro\bit\bitproject\common\ConnectionUtil.class
+pro\bit\bitproject\common\MySqlConnector.class
+pro\bit\bitproject\domain\UserType.class
+pro\bit\bitproject\dao\UserTypeDAO.class
+pro\bit\bitproject\daoImpl\UserTypeDAOImpl.class

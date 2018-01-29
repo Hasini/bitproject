@@ -1,26 +1,47 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="ISO-8859-1">
-<title>Home Page</title>
-</head>
+	<head>
+		<title>Home Page</title>
+		<link rel="stylesheet" type="text/css" href="css/common.css">
+		<link rel="icon" href="images/favicon-facebook_400x400.png">
+		
+		<style type="text/css">
+			span {
+				border-radius: 25px;
+    			background-color:aqua;
+    			background-position: left top;
+    			background-repeat: repeat;
+    			padding: 20px; 
+    			width: 200px;
+    			height: 150px; 
+			}
+			
+		</style>
+	</head>
 <body>
-<h2>Welcome to JSL </h2>
 
-<h3>Admin Module</h3>
-<a href="user-type.jsp">User Type</a><br>
-<a href="branch-details.jsp">Branch Details</a><br>
-<a href="expense-type.jsp">Expense Type</a><br>
-<a href="customer-registration.jsp">Customer Registration</a><br>
 
-<h3>User Module</h3>
+<div id="main">
+	<div>
+	<h2>Welcome to JSL</h2>
+	</div>
+	<div id="left" style="float: left">
+		
+	</div>
+	
+	<div id="right" style="float: right">
+		<span id="login"><a href="log-in.jsp">Login</a></span>
+		<span id="signup"><a href="sign-up.jsp">Sign-Up</a></span>
+	</div>
+</div>
 
-<a href="log-in.jsp">Login</a><br>
-<a href="sign-up.jsp">Sign-Up</a><br>
 
-<h3>Finance Module</h3>
-<a href="income.jsp">Income</a><br>
-<a href="expences.jsp">Expences</a>
+
+
+
+
+
+
 
 </body>
 </html>

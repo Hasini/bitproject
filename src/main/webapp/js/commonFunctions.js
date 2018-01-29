@@ -1,6 +1,5 @@
 
 		function validate() {
-			alert ("aasa")
 			var code = document.getElementById("code").value;
 			var descr = document.getElementById("descr").value;
 			
@@ -9,3 +8,9 @@
 				return false;
 			}
 		}
+		
+		function clearinputs() {
+			alert("hhhhhhhhh");
+			document.getElementById("code").value = " ";
+			document.getElementById("descr").value = " ";
+		} 

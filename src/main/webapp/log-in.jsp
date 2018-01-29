@@ -6,8 +6,12 @@
 		<link rel="icon" href="images/favicon-facebook_400x400.png">
 		
 		<style>
+
+/* body {font-family: Arial;}
+* {box-sizing: border-box}
+
 form {
-    border: 3px solid #f1f1f1;
+	border: 3px solid #f1f1f1;
 }
 
 input[type=text], input[type=password] {
@@ -27,9 +31,12 @@ button {
     border: none;
     cursor: pointer;
     width: 50%;
-}
+} */
+
+
+
 #signup {
-    background-color: red;
+    background-color: blue;
     color: white;
     padding: 14px 20px;
     margin: 8px 0;
@@ -91,7 +98,7 @@ span.psw {
 		    <label>
 		      <input type="checkbox" checked="checked"> Remember me
 		    </label>
-		    <button type="submit" id="signup" onclick="window.location.href='sign-up.jsp'">Sign Up</button>
+		    <button type="submit" id="signup" value="signup" onclick="window.location.href='sign-up.jsp'">Sign Up</button>
 		    
 		  </div>
 		</form>

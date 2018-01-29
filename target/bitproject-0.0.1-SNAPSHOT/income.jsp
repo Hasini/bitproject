@@ -1,12 +1,22 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
-</head>
+	<head>
+		<title>Home Page</title>
+		<link rel="stylesheet" type="text/css" href="css/common.css">
+		<link rel="icon" href="images/favicon-facebook_400x400.png">
+	</head>
 <body>
+
+
+<div id="main">
+	<form action="income" method="get" onsubmit="validate();">
+		<h2>Income</h2>
+		
+		
+		<button type="submit" name="submit" value="Submit" id="submit">Submit</button>
+		<button type="button" name="clear" value="clear" id="clear">Clear</button>
+	</form>
+</div>
 
 </body>
 </html>

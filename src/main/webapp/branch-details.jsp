@@ -4,6 +4,7 @@
 	<title>Branch Details</title>
 	<script type="text/javascript" src="js/jquery-3.3.1.js"></script>
 	<script type="text/javascript" src="js/commonFunctions.js"></script>
+	
 	<link rel="stylesheet" type="text/css" href="css/common.css">
 	<link rel="icon" href="images/favicon-facebook_400x400.png">
 	
@@ -48,7 +49,7 @@
 		Branch Code : <input type="text" name="code" id="code"> <font color="red">*</font><br>
 		Branch Description : <input type="text" name="descr" id="descr"><font color="red">*</font><br>
 		
-		<input type="submit" name="submit" value="Submit" id="submit">
+		<button type="submit" name="submit" value="Submit" id="submit">Submit</button>
 	</form>
 </div>	
 </body>

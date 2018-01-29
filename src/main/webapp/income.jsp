@@ -9,9 +9,13 @@
 
 
 <div id="main">
-	<div>
-	<h2>Welcome to JSL </h2>
-	</div>
+	<form action="income" method="get" onsubmit="validate();">
+		<h2>Income</h2>
+		
+		
+		<button type="submit" name="submit" value="Submit" id="submit">Submit</button>
+		<button type="button" name="clear" value="clear" id="clear">Clear</button>
+	</form>
 </div>
 
 </body>

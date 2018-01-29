@@ -1,2 +1,6 @@
-D:\workspace\bitproject\src\main\java\pro\bit\bitproject\action\UserTypeController.java
-D:\workspace\bitproject\src\main\java\pro\bit\bitproject\domain\UserType.java
+C:\Users\JIT\git\bitproject\src\main\java\pro\bit\bitproject\daoImpl\UserTypeDAOImpl.java
+C:\Users\JIT\git\bitproject\src\main\java\pro\bit\bitproject\action\UserTypeController.java
+C:\Users\JIT\git\bitproject\src\main\java\pro\bit\bitproject\common\ConnectionUtil.java
+C:\Users\JIT\git\bitproject\src\main\java\pro\bit\bitproject\dao\UserTypeDAO.java
+C:\Users\JIT\git\bitproject\src\main\java\pro\bit\bitproject\domain\UserType.java
+C:\Users\JIT\git\bitproject\src\main\java\pro\bit\bitproject\common\MySqlConnector.java
