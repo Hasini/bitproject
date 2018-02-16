@@ -3,7 +3,11 @@
  */
 package pro.bit.bitproject.common;
 
-import com.mysql.jdbc.Connection;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+
 
 /**
  * @author hasini
@@ -12,7 +16,7 @@ import com.mysql.jdbc.Connection;
 public class ConnectionUtil {
 	private static final ThreadLocal<Connection> connectionPool = new ThreadLocal<Connection>();
     
-    static{
+	static{
     	int x=0;
     	while(x++<=MySqlConnector.INTERCONNECTION){
     		try {
@@ -60,5 +64,6 @@ public class ConnectionUtil {
 			connectionPool.set(null);			    		
     	}	
     }
+    	
 
 }

@@ -1,25 +1,43 @@
 package pro.bit.bitproject.domain;
 
 public class UserType {
-	private String userCode;
-	private String userDescr;
+	private int userTypeId;
+	private String userTypeCode;
+	private String userTypeDescr;
 	
 	public UserType() {
 		// TODO Auto-generated constructor stub
 	}
+
 	
-	public String getUserCode() {
-		return userCode;
+	public int getUserTypeId() {
+		return userTypeId;
 	}
-	public void setUserCode(String userCode) {
-		this.userCode = userCode;
+
+	public void setUserTypeId(int userTypeId) {
+		
+		this.userTypeId = userTypeId;
 	}
-	public String getUserDescr() {
-		return userDescr;
+
+	
+	public String getUserTypeCode() {
+		return userTypeCode;
 	}
-	public void setUserDescr(String userDescr) {
-		this.userDescr = userDescr;
+
+	public void setUserTypeCode(String userTypeCode) {
+		this.userTypeCode = userTypeCode;
 	}
+
+	
+	public String getUserTypeDescr() {
+		return userTypeDescr;
+	}
+
+	public void setUserTypeDescr(String userTypeDescr) {
+		this.userTypeDescr = userTypeDescr;
+	}
+	
+	
 	
 	
 	
