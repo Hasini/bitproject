@@ -28,15 +28,16 @@ public class UserTypeController extends HttpServlet {
 	}
 	
 	public UserTypeController create(HttpServletRequest request,HttpServletResponse response) {
+		
 		UserTypeDAOImpl us = new UserTypeDAOImpl();
+		UserType ut = new UserType();
+		
+		
 		String code = request.getParameter("code");
 		String descr = request.getParameter("descr");
 		
-		
-		UserType ut = new UserType();
 		for (int usertypeid= 100 ; usertypeid == 1000 ;usertypeid ++){
 			ut.setUserTypeId(usertypeid);
-			
 		}
 		ut.setUserTypeCode(code);
 		ut.setUserTypeDescr(descr);

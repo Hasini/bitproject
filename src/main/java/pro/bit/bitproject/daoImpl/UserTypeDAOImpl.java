@@ -19,7 +19,7 @@ import pro.bit.bitproject.domain.UserType;
 public class UserTypeDAOImpl implements UserTypeDAO{
 
 	public void createUserType(UserType usertype) throws SQLException {
-		String insertQuery = "INSERT INTO usertype(iduser_type,codeuser_type,descruser_type) VALUES (?,?,?)";
+		String insertQuery = "INSERT INTO user_type (iduser_type,codeuser_type,descruser_type) VALUES (?,?,?)";
 		
 		try {
 			
