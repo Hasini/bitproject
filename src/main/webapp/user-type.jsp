@@ -14,7 +14,6 @@
 	
 		$(document).ready(function() {
 			$("#submitbtn").click(function() {
-				alert("ajax test");
 				var code = document.getElementById("code").value;
 				var descr = document.getElementById("descr").value;
 				alert(code);
@@ -24,11 +23,11 @@
 					datatype :{
 						dispatch : "usertype",
 						code : code,
-						descr : descr,
+						descr : descr
+						alert(code);
 					},
 					success : function(datatype) {
-						alert ("hiii");
-						alert(datatype);
+						alert("Record Sucessfully Updated..!");
 					}
 				}); 
 			});
