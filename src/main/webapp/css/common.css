@@ -14,16 +14,6 @@ input[type=text], input[type=password] {
     box-sizing: border-box;
 }
 
-button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    cursor: pointer;
-    width: 50%;
-}
-
 #main {
 	width: 700px;
     border: 2% solid green;
@@ -31,6 +21,26 @@ button {
     margin: 2%;
     min-height: 100px;
     overflow: hidden;
+}
+
+ #Submit {
+    background-color: #0000ff;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 25%;
+}
+
+#cncl {
+    background-color: #FF0000;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 25%;
 }
 
 .link {

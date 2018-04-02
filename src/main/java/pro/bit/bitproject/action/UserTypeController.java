@@ -36,9 +36,9 @@ public class UserTypeController extends HttpServlet {
 		String code = request.getParameter("code");
 		String descr = request.getParameter("descr");
 		
-		for (int usertypeid= 100 ; usertypeid == 1000 ;usertypeid ++){
+		/*for (int usertypeid= 100 ; usertypeid == 1000 ;usertypeid ++){
 			ut.setUserTypeId(usertypeid);
-		}
+		}*/
 		ut.setUserTypeCode(code);
 		ut.setUserTypeDescr(descr);
 		
