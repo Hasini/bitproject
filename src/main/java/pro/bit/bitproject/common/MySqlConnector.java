@@ -25,8 +25,6 @@ public class MySqlConnector {
 		try {
 			Class.forName(DRIVER).newInstance();
 			con=(Connection) DriverManager.getConnection(URL+DBNAME, USERNAME, PASSWORD);
-			System.out.println("+++"+con);
-			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
