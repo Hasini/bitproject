@@ -3,6 +3,8 @@
  */
 package pro.bit.bitproject.domain;
 
+import java.time.LocalDateTime;
+
 /**
  * @author Hasini
  *
@@ -11,6 +13,7 @@ public class Branch {
 	private int branchId;
 	private String branchCode;
 	private String branchDescr;
+	private LocalDateTime createdTime;
 	
 	
 	public Branch() {
@@ -38,7 +41,13 @@ public class Branch {
 	public void setBranchDescr(String branchDescr) {
 		this.branchDescr = branchDescr;
 	}
-	
-	
 
+	
+	public LocalDateTime getCreatedTime() {
+		return createdTime;
+	}
+	public void setCreatedTime(LocalDateTime createddate) {
+		this.createdTime = createddate;
+	}
+	
 }
