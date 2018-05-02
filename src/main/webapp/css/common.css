@@ -23,7 +23,7 @@ input[type=text], input[type=password] {
     overflow: hidden;
 }
 
- #Submit {
+ .submit {
     background-color: #0000ff;
     color: white;
     padding: 14px 20px;
