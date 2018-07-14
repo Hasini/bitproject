@@ -7,8 +7,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
+
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import pro.bit.bitproject.common.ConnectionUtil;
 import pro.bit.bitproject.dao.BranchDAO;
@@ -37,32 +39,40 @@ public class BranchDAOImpl implements BranchDAO {
 
 	@Override
 	public Branch updateBranch(Branch branch) throws SQLException, Exception {
-		String updateQuery = "Update branch_det set (branch_descr , created_time) VALUES (?,?) where branch_code = ?";
+		//String updateQuery = ;
+		//String updateQuery = "update branch_det set (branch_code,branch_descr,created_time) VALUES (?,?,?) ";
+		PreparedStatement ps;
+		try {
+			ps = ConnectionUtil.openConnection().prepareStatement("update branch_det set branch_descr=?,created_time=? where branch_code=?");
+			
+			
+			ps.setString(1, branch.getBranchDescr());
+			ps.setTimestamp(2, Timestamp.valueOf(branch.getCreatedTime()));
+			ps.setString(3, branch.getBranchCode());
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			
+		}
+		
+		return null;
+	}
+
+	@Override
+	public Branch deleteBranch(String coded,String descrd) throws SQLException, Exception {
+		//String delQuery = "delete branch_det where branch_code = ?";
 		PreparedStatement ps;
 		
-		ps = ConnectionUtil.openConnection().prepareStatement(updateQuery);
-		ps.setString(2, branch.getBranchCode());
-		ps.setTimestamp(3, Timestamp.valueOf(branch.getCreatedTime()));
+		ps = ConnectionUtil.openConnection().prepareStatement("delete from branch_det where branch_code = ?");
+		ps.setString(1, coded);
 		ps.executeUpdate();
 		return null;
 	}
 
 	@Override
-	public Branch deleteBranch(String code) throws SQLException, Exception {
-		String delQuery = "delete * from branch_det where branch_code = ?";
-		PreparedStatement ps;
-		
-		ps = ConnectionUtil.openConnection().prepareStatement(delQuery);
-		ps.setString(2, code);
-		ps.executeUpdate();
-		return null;
-	}
-
-	@Override
-	public List<Object> viewBranchDetails() throws SQLException, Exception {
+	public JSONArray viewBranchDetails() throws SQLException, Exception {
 		ResultSet rs = null;
-        List<Object> list = new ArrayList<>();
-        
+		JSONArray jsonArray=new JSONArray();
 		String viewBranchDet = "select * from branch_det";
 		PreparedStatement ps;
 		
@@ -71,15 +81,15 @@ public class BranchDAOImpl implements BranchDAO {
 		
 		rs = ps.getResultSet();
 		
-		while (rs.next()){
-			list.add(rs.getInt(1));
-			list.add(rs.getString(2));
-			list.add(rs.getString(3));
-			
+		while (rs.next()){			
+			 JSONObject jsonObject=new JSONObject();
+			 jsonObject.put("code", rs.getString(2));
+			 jsonObject.put("desc", rs.getString(3));
+			 
+			 jsonArray.put(jsonObject);
 		}
 		rs.close();
-		
-		return list;
+		return jsonArray;
 	}
 
 }
