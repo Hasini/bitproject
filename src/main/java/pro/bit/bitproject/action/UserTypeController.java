@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import pro.bit.bitproject.daoImpl.UserTypeDAOImpl;
 import pro.bit.bitproject.domain.UserType;
 
@@ -23,8 +26,26 @@ public class UserTypeController extends HttpServlet {
         super();
     }
 
-	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		create(request, response);
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		JSONObject json = new JSONObject();
+		
+		
+		try {
+			//String codeut = request.getParameter("codeut");
+			create(request, response);
+			json.put("success", "User type");
+		} catch (JSONException e) {
+			try {
+				json.put("error", "User type");
+			} catch (JSONException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+		}
+		
+		response.setContentType("application/json");
+		response.getWriter().write(json.toString());
 	}
 	
 	public UserTypeController create(HttpServletRequest request,HttpServletResponse response) {
@@ -32,16 +53,14 @@ public class UserTypeController extends HttpServlet {
 		UserTypeDAOImpl us = new UserTypeDAOImpl();
 		UserType ut = new UserType();
 		
+		String codeut = request.getParameter("codeut");
+		String descrut = request.getParameter("descrut");
 		
-		String code = request.getParameter("code");
-		String descr = request.getParameter("descr");
 		
-		/*for (int usertypeid= 100 ; usertypeid == 1000 ;usertypeid ++){
-			ut.setUserTypeId(usertypeid);
-		}*/
-		ut.setUserTypeCode(code);
-		ut.setUserTypeDescr(descr);
+		ut.setUserTypeCode(codeut);
+		ut.setUserTypeDescr(descrut);
 		
+		System.out.println(ut+codeut+descrut);
 		try {
 			us.createUserType(ut);
 		} catch (SQLException e) {
