@@ -24,7 +24,7 @@ input[type=text], input[type=password] {
 }
 
  .submit {
-    background-color: #0000ff;
+    background-color: #000099;
     color: white;
     padding: 14px 20px;
     margin: 8px 0;
@@ -34,7 +34,7 @@ input[type=text], input[type=password] {
 }
 
 #cncl {
-    background-color: #FF0000;
+    background-color: #cc0000;
     color: white;
     padding: 14px 20px;
     margin: 8px 0;
@@ -54,5 +54,7 @@ input[type=text], input[type=password] {
    	text-decoration: none ;
 }
 
-
+#emptydiv{
+	height: 5cm;
+}
 
