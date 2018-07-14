@@ -13,7 +13,6 @@ public class UserType {
 	public int getUserTypeId() {
 		return userTypeId;
 	}
-
 	public void setUserTypeId(int userTypeId) {
 		
 		this.userTypeId = userTypeId;
@@ -23,7 +22,6 @@ public class UserType {
 	public String getUserTypeCode() {
 		return userTypeCode;
 	}
-
 	public void setUserTypeCode(String userTypeCode) {
 		this.userTypeCode = userTypeCode;
 	}
@@ -36,11 +34,4 @@ public class UserType {
 	public void setUserTypeDescr(String userTypeDescr) {
 		this.userTypeDescr = userTypeDescr;
 	}
-	
-	
-	
-	
-	
-	
-
 }

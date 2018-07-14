@@ -15,6 +15,8 @@ public class User {
 	private String password;
 	private int usertypeid;
 	private LocalDateTime createdtime;
+	private Character userstatus;
+	private LocalDateTime updatedtime;
 	
 	
 	public User() {
@@ -61,8 +63,21 @@ public class User {
 	public void setCreatedtime(LocalDateTime createdtime) {
 		this.createdtime = createdtime;
 	}
-	
-	
-	
 
+
+	public Character getUserstatus() {
+		return userstatus;
+	}
+	public void setUserstatus(Character userstatus) {
+		this.userstatus = userstatus;
+	}
+
+
+	public LocalDateTime getUpdatedtime() {
+		return updatedtime;
+	}
+	public void setUpdatedtime(LocalDateTime updatedtime) {
+		this.updatedtime = updatedtime;
+	}
+	
 }
