@@ -19,8 +19,9 @@
 		<a href="user-type.jsp" class="link">User Type</a><br>
 		<a href="branch-details.jsp" class="link">Branch Details</a><br>
 		<a href="expense-type.jsp" class="link">Expense Type</a><br>
-		<a href="income-type.jsp" class="link">Income Type</a><br>
+		<a href="incomeType.jsp" class="link">Income Type</a><br>
 		<a href="customer-registration.jsp" class="link">Customer Registration</a><br>
+		<a href="delete&updateUser.jsp" class="link">System User Maintain</a><br>
 		<a href="day-end.jsp" class="link">Day End</a><br>
 		
 		<h3>Finance Module</h3>
@@ -36,7 +37,7 @@
 	
 	<div id="right" style="float: right">
 		
-		<button type="submit" value="Sign Out" id="signout" onclick="window.location.href='log-in.jsp'">Sign Out</button>
+		<button type="submit" value="Sign Out" id="signout" onclick="window.location.href='login.jsp'">Sign Out</button>
 	</div>
 </div>
 

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 	<title>User Type</title>
 	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="js/jquery-1.11.1.min.js"></script>
 	<script src="js/commonFunctions.js"></script>
 	
@@ -14,77 +14,46 @@
 	
 		$(document).ready(function() {
 			$("#submitbtn").click(function() {
-				var code = document.getElementById("code").value;
-				var descr = document.getElementById("descr").value;
-				alert(code);
+				var codeut = document.getElementById("codeut").value;
+				var descrut = document.getElementById("descrut").value;
+				alert (codeut+descrut);
+				//"exam_reg?regNo="+name+"&methode="+"loadDep"
 				$.ajax ({
-					type : "post",
-					url : "usertype",
-					datatype :{
+					type : "GET",
+					url : "usertype?codeut="+codeut+"&descrut="+descrut,
+					/* datatype :{
 						dispatch : "usertype",
-						code : code,
-						descr : descr
-						alert(code);
-					},
-					success : function(datatype) {
-						alert("Record Sucessfully Updated..!");
+						codeut : codeut,
+						descrut : descrut
+					}, */
+					success : function(responseText) {
+						alert("suc fun");
+						if(responseText.success){
+							alert(responseText.success +" Successfully Created..!");
+							window.location.assign('/bitproject/main.jsp');
+						}else{
+							//alert(responseText.error);
+						}
+						
 					}
 				}); 
 			});
 	}); 
 	</script>
-	
 
-	
-	<style>
-/* 		body {font-family: Arial;}
-		* {box-sizing: border-box}
-
-		form {
-			border: 3px solid #f1f1f1;
-		}
-
-input[type=text], input[type=password] {
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-}
-
-button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    cursor: pointer;
-    width: 50%;
-} */
-	
-#clear {
-    background-color: red;
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    cursor: pointer;
-    width: 50%;
-}	
-	</style>
 	
 </head>
 <body>
 	<div id="main">
-		<form method="post" action="usertype">
+		
 			<h2>User Type</h2>
-			Code : <input type="text" name="code" id="code"> <font color="red">*</font><br>
-			Description : <input type="text" name="descr" id="descr"><font color="red">*</font><br>
+			Code : <input type="text" name="codeut" id="codeut"> <font color="red">*</font><br>
+			Description : <input type="text" name="descrut" id="descrut"><font color="red">*</font><br>
 			
-			<button type="submit" name="submit" value="Submit" id="submitbtn">Submit</button>
-			<button type="button" name="clear" value="clear" id="clear" onclick="clearinputs();">Reset</button>
-		</form>
+			
+			<button type="button" name="clear" value="clear" id="cncl" onclick="clearinputs();">Reset</button>
+			<button type="submit" name="submit" value="Submit" id="submitbtn" class="submit">Submit</button>
+	
 	</div>
 	
 	

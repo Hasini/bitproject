@@ -12,36 +12,10 @@
 	<link rel="stylesheet" type="text/css" href="css/common.css">
 	<link rel="icon" href="images/favicon-facebook_400x400.png">
 
-
-
+	
 
 <style>
 
-/* body {font-family: Arial;}
-* {box-sizing: border-box}
-
-form {
-	border: 3px solid #f1f1f1;
-}
-
-input[type=text], input[type=password] {
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-}
-
-button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    cursor: pointer;
-    width: 50%;
-} */
 #signup {
 	background-color: blue;
 	color: white;
@@ -87,13 +61,36 @@ span.psw {
 
 <script type="text/javascript">
 	
-	
 	$(document).ready(function(){
+		
+		 $(window).load(function(){
+			 var optionsAsString;
+			 	$.ajax({
+					type : 'post',
+					url : 'userservlet',
+					data : {
+						method : "view"
+					},
+					success : function(responseText) {
+						for(var i=0;i<responseText.usertypeobj.length;i++){
+							var idvalue = responseText.usertypeobj[i]["id"];
+							var usertypedescr = "<option value="+idvalue+">"+responseText.usertypeobj[i]["descr"]+"</option>";
+							$("#usertype").append (usertypedescr);
+						 }
+						
+					}   
+					
+				}); 
+		    });
+		
 		$("#submit").click(function(){
 			
 			var username=document.getElementById("uname").value;
 			var password=document.getElementById("psw").value;
 			var method;
+			var e = document.getElementById("usertype");
+			var userType = e.options[e.selectedIndex].value;
+			
 			
 			
 				$.ajax({
@@ -103,19 +100,24 @@ span.psw {
 						username : username,
 						password : password,
 						method : "login",
-						usertypeid : 1
+						usertypeid : userType
 					},
 					success: function (responseText) {
 						if (responseText.error){
 							alert(responseText.error);
 						}
 						else{
-							alert(responseText.success);	
+							alert(responseText.success);
+							window.location.assign('/bitproject/main.jsp');
 						}
 					}
 				});
 			
 		});
+		
+		
+		
+		
 	});
 
 </script>
@@ -143,9 +145,10 @@ span.psw {
 					<label><b>Password</b></label>
 					<input type="password" placeholder="Enter Password" name="psw" id="psw" required="required"> 
 					<label><b>User Type </b> </label>
-					<select id="usertype" name="usertype" onchange="">
-						<option value="0">Select</option>
-						<option value="1">Admin</option>
+					
+					<select id="usertype" name="usertype" >
+						<option>SELECT</option>
+						
 					</select>
 
 					<button type="submit" class ="submit" id="submit">Login</button>

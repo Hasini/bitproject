@@ -67,12 +67,34 @@ button:hover {
 	
 	
 	$(document).ready(function(){
+		
+		 $(window).load(function(){
+			 var optionsAsString;
+			 	$.ajax({
+					type : 'post',
+					url : 'userservlet',
+					data : {
+						method : "view"
+					},
+					success : function(responseText) {
+						for(var i=0;i<responseText.usertypeobj.length;i++){
+							var idvalue = responseText.usertypeobj[i]["id"];
+							var usertypedescr = "<option value="+idvalue+">"+responseText.usertypeobj[i]["descr"]+"</option>";
+							$("#usertype").append (usertypedescr);
+						 }
+						
+					}   
+					
+				}); 
+		    });
 		$("#submit").click(function(){
 			
 			var username=document.getElementById("email").value;
 			var password=document.getElementById("psw").value;
 			var repeatpassword=document.getElementById("pswr").value;
 			var method;
+			var e = document.getElementById("usertype");
+			var userType = e.options[e.selectedIndex].value;
 			
 			if (password != repeatpassword){
 				alert ("Password mismatched");
@@ -84,17 +106,24 @@ button:hover {
 						username : username,
 						password : password,
 						method : "signup",
-						usertypeid : 1
+						usertypeid : userType
 					},
 					success: function (responseText) {
-						if (responseText.error){
-							alert (responseText.error);
+						
+						if (responseText.successx){
+							alert (responseText.successx);
+							window.location.assign('/bitproject/main.jsp');
+							
 						}else {
-							alert (responseText.success);
+							alert (responseText.error);
+							
+						
 						}
 							
 					}
 				});
+				alert("Record Successfully Created..!");
+				window.location.assign('/bitproject/main.jsp');
 			}
 		});
 	});
@@ -123,7 +152,7 @@ button:hover {
     <label><b>User Type </b> </label>
 		<select id="usertype" name="usertype" onchange="">
 			<option value="0">Select</option>
-			<option value="1">Admin</option>
+			
 		</select>
     
     <label>
