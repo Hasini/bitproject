@@ -65,8 +65,11 @@ public class UserController extends HttpServlet {
 			break;
 		case "login" :
 			try {
-				loginuser (request,response,username,password,usertypeid);
-				json.put("success", "Log in successful");
+				String sts=loginuser (request,response,username,password,usertypeid);
+				if(sts.equalsIgnoreCase("true"))
+					json.put("success", "Log in successful");
+				else
+					json.put("error", "Login denied");
 			} catch (Exception e) {
 				e.printStackTrace();
 				
@@ -103,25 +106,27 @@ public class UserController extends HttpServlet {
 		response.getWriter().write(json.toString());
 	}
 
-	public void loginuser(HttpServletRequest request, HttpServletResponse response, String username, String password, int usertypeid) throws IOException {
+	public String loginuser(HttpServletRequest request, HttpServletResponse response, String username, String password, int usertypeid) throws IOException {
 		JSONObject json = new JSONObject();
 		UserDAOImpl userdaoimpl = new UserDAOImpl();
+		String sts=null;
 		//User user = new User();
 		try {
-			String sts = userdaoimpl.loginUser(username,password,usertypeid);
+			 sts = userdaoimpl.loginUser(username,password,usertypeid);
 			 
-			if (sts.equals("true") ){
-				json.put("success", "Log in successful");
-				System.out.println("trueee");
-			}else {
-				json.put("error", "Log in denied");
-			}
-			
+//			if (sts.equals("true") ){
+//				json.put("success", "Log in successful");
+//				System.out.println("trueee");
+//			}else {
+//				json.put("error", "Log in denied");
+//			}
+//			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		response.setContentType("application/json");
-		response.getWriter().write(json.toString());
+//		response.setContentType("application/json");
+//		response.getWriter().write(json.toString());
+		return sts;
 		
 	}
 

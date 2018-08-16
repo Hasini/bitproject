@@ -69,12 +69,11 @@
 	
 	
 	function loginFunction() {
-		alert("ss");
-	    var r = confirm("Password Changed..! Need to proceed");
+		var r = confirm("Password Changed..! Need to proceed");
 	    if (r == true) {
 	    	window.location.assign('/bitproject/delete&updateUser.jsp');
 	    } else {
-	    	window.location.assign('/bitproject/main.jsp');
+	    	window.location.assign('/bitproject/login.jsp');
 	    }
 	    
 	}

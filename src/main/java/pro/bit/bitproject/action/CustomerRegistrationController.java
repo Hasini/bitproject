@@ -10,10 +10,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import pro.bit.bitproject.daoImpl.CustomerRegistrationDAOImpl;
 import pro.bit.bitproject.domain.CustomerRegistration;
+
+
+
 
 /**
  * Servlet implementation class CustomerRegistrationController
@@ -36,7 +40,7 @@ public class CustomerRegistrationController extends HttpServlet {
 		String method = request.getParameter("method");
 		String nic = request.getParameter("nic");
 		
-		String flag = checkAvailability(nic);
+		//boolean flag = checkAvailability(nic);
 		
 		
 		switch (method) {
@@ -52,8 +56,24 @@ public class CustomerRegistrationController extends HttpServlet {
 			break;
 		case "createCus":
 			try {
-				createCustomer(request,response);
+				 if (checkAvailability(nic) == false){
+					 createCustomer(request,response);
+					 json.put("suc", "Record Successfully Completed..!");
+				 }else {
+					 json.put("error", "Nic Already Exist..!");
+				 }
 				
+				
+			} catch (Exception e) {
+				
+				e.printStackTrace();
+			}
+			break;
+		case "viewUsers":
+			try {
+				jsonArray = viewAllUsers();
+				json.put("userObj", jsonArray);
+				//System.out.println(jsonUser+"+++++++++++++++");
 			} catch (Exception e) {
 				
 				e.printStackTrace();
@@ -69,16 +89,24 @@ public class CustomerRegistrationController extends HttpServlet {
 		response.getWriter().write(json.toString());
 	}
 
-	private String checkAvailability(String nic) {
-		CustomerRegistrationDAOImpl cusDaoImpl = new CustomerRegistrationDAOImpl();
-		String sts = cusDaoImpl.checkNIC (nic);
+	
+
+	public boolean checkAvailability(String nic) {
+		CustomerRegistrationDAOImpl cusDaoImp= new CustomerRegistrationDAOImpl();
+		boolean sts = true;
+		try {
+			sts = cusDaoImp.checkNIC (nic);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return sts;
 	}
 
-	public void createCustomer(HttpServletRequest request, HttpServletResponse response) {
+	public void createCustomer(HttpServletRequest request, HttpServletResponse response) throws JSONException {
 		
 		CustomerRegistration customer = new CustomerRegistration();
 		CustomerRegistrationDAOImpl cusDaoImpl = new CustomerRegistrationDAOImpl();
+		JSONObject json = new JSONObject();
 		
 		int branchId = Integer.parseInt(request.getParameter("branch"));
 		 String cusfullname = request.getParameter("fname");
@@ -109,7 +137,7 @@ public class CustomerRegistrationController extends HttpServlet {
 		 String cusspemail = request.getParameter("semail");
 		 LocalDateTime createdtime = LocalDateTime.now();
 		 
-		 
+		
 		 customer.setBranchId(branchId);
 		 customer.setCusfullname(cusfullname);
 		 customer.setInitials(initials);
@@ -138,13 +166,19 @@ public class CustomerRegistrationController extends HttpServlet {
 		 customer.setCreatedtime(createdtime);
 		 customer.setStatus('A');
 		 
-		 if (checkAvailability(cusnic) != "A"){
+//		 if (checkAvailability(cusnic) == false){
 			 cusDaoImpl.createCus(customer); 
-		 }else {
-			 System.out.println("aa");
-		 }
+//		 }else {
+//			 json.put("error", "Nic Already Exist");
+//		 }
 		 
-		 
+//		 response.setContentType("application/json");
+//		try {
+//			response.getWriter().write(json.toString());
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		
 		
 	}
@@ -162,8 +196,16 @@ public class CustomerRegistrationController extends HttpServlet {
 	}
 	
 	
-
+public JSONArray viewAllUsers() {
+	JSONArray usersarr = new JSONArray();
+	CustomerRegistrationDAOImpl cusdaoimpl = new CustomerRegistrationDAOImpl();
+	try {
+		usersarr = cusdaoimpl.viewAllUsers();
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	return usersarr;
+	}
 	
-	
-
 }

@@ -105,4 +105,10 @@ public class IncomeTypeDAOImpl implements IncomeTypeDAO{
 		return null;
 	}
 
+	@Override
+	public void createET(String code, String descr, LocalDateTime createddate) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

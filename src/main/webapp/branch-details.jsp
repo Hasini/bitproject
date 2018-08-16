@@ -3,13 +3,13 @@
 
 <html>
 <head>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<script src="js/jquery-1.11.1.min.js"></script>
-	<script src="js/commonFunctions.js"></script>
+		<script src="js/jquery.min.js"></script>
+		<script src="js/jquery-1.11.1.min.js"></script>
+		<script src="js/commonFunctions.js"></script>
 		
 	<link rel="stylesheet" type="text/css" href="css/common.css">
-	<link rel="icon" href="images/favicon-facebook_400x400.png">.
-	
+	<link rel="icon" href="images/favicon-facebook_400x400.png">
+
 	<script>
 		$(document).ready(function(){
 			var checkboxVal;
@@ -19,8 +19,7 @@
 		    $("#updateDiv").hide();
 		    
 		    $("#create").click(function(){
-		    	$("p").hide();
-		        $("#createDiv").show();
+		    	$("#createDiv").show();
 		        $("#deleteDiv").hide();
 		        $("#updateDiv").hide();
 		        
@@ -51,8 +50,7 @@
 		    });
 		    
 		    $("#update").click(function(){
-		  		$("p").hide();
-		        $("#updateDiv").show();
+		  		$("#updateDiv").show();
 		        $("#createDiv").hide();
 		        $("#deleteDiv").hide();
 		        
@@ -82,8 +80,7 @@
 			});
 		    
 		     $("#update").click(function(){
-		    	$("p").hide();
-		        $("#updateDiv").show();
+		    	$("#updateDiv").show();
 		        $("#createDiv").hide();
 		        $("#deleteDiv").hide();
 		        
@@ -244,7 +241,7 @@
 		<input type ="radio" name ="update" id ="update" value ="update">Update
 		<input type ="radio" name ="delete" id ="delete" value ="delete">Delete
 	</div>
-</div>
+
 
 </fieldset>
 

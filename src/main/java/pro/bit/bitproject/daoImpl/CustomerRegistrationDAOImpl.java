@@ -102,19 +102,68 @@ public class CustomerRegistrationDAOImpl implements CustomerRegistrationDAO {
 		return null;
 	}
 
-	public String checkNIC(String nic) {
-		String availablenic = "select cus_nic from customer_details";
-		String sts = null;
+	public boolean checkNIC(String nic) throws Exception {
+		/*ResultSet rs = null;
+		PreparedStatement ps = null;
+		boolean sts = true;
+		//JSONArray jsonArray=new JSONArray();
+		String avnic = "select cus_nic from customer_details where cus_nic = ?";
+		ps.setString(1, nic);
 		
-		if (nic == availablenic){
-			sts = "A";
+		ps = ConnectionUtil.openConnection().prepareStatement(avnic);
+		ps.executeQuery();
+		
+		rs = ps.getResultSet();
+		
+		if (nic == rs.getString(1)){
+			sts = true;
 		}else {
-			sts = "NA";
+			sts = false;
 		}
 		return sts;
+		rs.close();*/
+		boolean sts = false;
+		PreparedStatement st = ConnectionUtil.openConnection().prepareStatement("select cus_nic from customer_details where cus_nic = ?");    
+		st.setString(1, nic);   
+		ResultSet rs = st.executeQuery();
+		
+		while (rs.next()){
+			if(rs.getString(1).equalsIgnoreCase(nic)){
+				sts = true;
+			}else {
+				sts = false;
+			}
+				
+		}
+		
+		return sts;
+	
+	}
+
+	public JSONArray viewAllUsers() throws SQLException, Exception{
+		ResultSet rs = null;
+		JSONArray jsonArray=new JSONArray();
+		String listusers = "select username,usertypeid from user";
+		PreparedStatement ps;
+		
+		ps = ConnectionUtil.openConnection().prepareStatement(listusers);
+		ps.executeQuery();
+		
+		rs = ps.getResultSet();
+		
+		while (rs.next()){			
+			 JSONObject jsonObject=new JSONObject();
+			 jsonObject.put("name", rs.getString(1));
+			 jsonObject.put("id", rs.getInt(2));
+			 
+			jsonArray.put(jsonObject);
+			
+			
+		}
+		rs.close();
+		return jsonArray;
 	}
 	
-
 }
 
 

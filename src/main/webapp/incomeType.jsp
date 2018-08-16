@@ -41,9 +41,14 @@
 	                	},
 
 	  					success: function (responseText) {
-	  						alert(responseText.success);
+	  						if(responseText.success){
+	  							alert(responseText.success);
+		  						window.location.assign('/bitproject/main.jsp');
+	  						}
+	  						
 	  						if (responseText.error )
 	  							alert(responseText.error);
+	  						}
 	        			}   
 						
 					});

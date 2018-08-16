@@ -32,7 +32,6 @@
 							code : document.getElementById("code").value,
 							descr : document.getElementById("descr").value,
 							checkboxVal : "create"
-							//alert(checkboxVal+"checkboxVal");
 						},
 						error: function (responseText) {
 							alert(responseText.error+"response");

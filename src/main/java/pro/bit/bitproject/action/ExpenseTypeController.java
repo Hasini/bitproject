@@ -100,18 +100,18 @@ public class ExpenseTypeController extends HttpServlet {
 	public ExpenseTypeController create(HttpServletRequest request, HttpServletResponse response) throws SQLException {
 		
 		ExpenseTypeDAOImpl itdaoimpl = new ExpenseTypeDAOImpl();
-		ExpenseType it = new ExpenseType();
+		ExpenseType et = new ExpenseType();
 		
 		String code = request.getParameter("code");
 		String descr= request.getParameter("descr");
 		LocalDateTime createddate =  LocalDateTime.now();
 		
-		it.setExpensetypecode(code);
-		it.setExpensetypeDescr(descr);
-		it.setCreatedtime(createddate);
+		et.setExpensetypecode(code);
+		et.setExpensetypeDescr(descr);
+		et.setCreatedtime(createddate);
 		
 		
-		itdaoimpl.createIT(code,descr,createddate);
+		itdaoimpl.createET(code,descr,createddate);
 		return null;
 		
 	}

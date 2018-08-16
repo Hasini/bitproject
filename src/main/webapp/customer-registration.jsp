@@ -14,63 +14,34 @@
 		
 		<script type="text/javascript">
 		
-		//function getMandotaryFields(mandotaryInputs){
-			
-// 			$.each($('.MyClass'),function() {
-// 				   if ($(this).val().length == 0) {
-// 				    alert('empty');
-// 				   }
-// 				});
-
-			/* var mandaFields = $('.mandotaryInputs').val;
-			var sts ;
-			
-			if(jQuery.trim(mandaFields).length > 0){
-				sts= "ok";
-			}else {
-				sts = "nok";
-			}
-			alert(sts);
-				return sts; */
-		//}
-		
-		//testt
-		
-		/* var x = document.querySelectorAll(".example");
-var i;
-for (i = 0; i < x.length; i++) {
-    x[i].style.backgroundColor = "red"; 
-}*/
-		
-		function getMandotaryFields(mandotaryInputs){
-			var mdfield = Array.prototype.slice.call(document.getElementsByClassName("mandotaryInputs").value,0);
-			
-			for (var i = 0; i < mdfield.length; i++) {
-				if(mdfield [i] != null)
-					{
-						alert ("mandotary fileds are not empty");
-					}else {
-						alert ("mandotary fileds are empty");
-					}
-			    
-			}
-			
+		function clearvalues(){
+			location.reload();
 		}
 		
 		function validateEmail($email) {
-			  var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
-			  return emailReg.test( $email );
+			  //var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+			  if ($email != undefined){
+				  var emailReg = /^[\w\-\.\+]+\@[a-zA-Z0-9\.\-]+\.[a-zA-z0-9]{2,}$/;
+				  return emailReg.test($email);
+			  }
 		}
 		
-		function textLength(value){
-			var maxLength = 10;
-			if(value.length > maxLength) {
-			   return false;
-			} else if (value.length < maxLength){
-				return false;
+		
+		function validatephn(value){
+			if (value!= undefined){
+				var phnno = /^[0-9 ()+-]{10,}$/;
+				return phnno.test(value);
 			}
-			   return true;
 		} 
+		
+		
+		function validatenic(nic){
+			if (nic!= undefined ){
+				var nics = /[0-9]{9}[V]$/;
+				return nics.test(nic);
+			}
+		}
+		
 		
 		$(document).ready(function(){
 			$(window).load(function(){
@@ -95,31 +66,36 @@ for (i = 0; i < x.length; i++) {
 			
 			$("#submitbtn").click(function() {
 				
-				getMandotaryFields(document.getElementsByClassName("mandotaryInputs").value);
+				
 				var nic = $('#o').val() +$('#t').val()+$('#th').val()+$('#fr').val()+$('#fi').val()+$('#si').val()+$('#se').val()+$('#eig').val()+$('#ni').val()+$('#v').val();
 				var snic = $('#os').val() +$('#ts').val()+$('#ths').val()+$('#frs').val()+$('#fis').val()+$('#sis').val()+$('#ses').val()+$('#eigs').val()+$('#nis').val()+$('#vs').val();
 				var cus_initials = $('#inioc').val() + ' ' + $('#initc').val()+ ' ' + $('#inithc').val();
 				var sp_initials = $('#iniosp').val() + ' ' + $('#initsp').val()+ ' ' +$('#inithsp').val();
 				var e = document.getElementById("branch");
 				var branch = e.options[e.selectedIndex].value;
+				alert(branch);
+				var shtel = document.getElementById("shtel").value;
+				var hmtel = document.getElementById("hmtel").value;
+				var mob = document.getElementById("mob").value;
+				var stel = document.getElementById("stel").value;
+				var smob = document.getElementById("smob").value;
+				var fname = document.getElementById("fname").value;
+				
+				
 				
 				if( !validateEmail(document.getElementById("emal").value)){ 
 					alert("Can not proceed ..invalid email");
-				}else if(!textLength(nic) || !textLength(snic)){
-					alert("Can not proceed ..invalid nic");
-// 				} else if (getMandotaryFields(document.getElementsByClassName("mandotaryInputs").value)== 'ok'){
-// 					alert("Please fill all mandotory fields..!");
-// 				} 
-					/* else if(document.getElementsByClassName("mandotaryInputs").value == '' || document.getElementsByClassName("mandotaryInputs").value == null ||){
-					alert("Can not proceed ..Please fill all mandory values");
-				} */
-				
-			   }
-			
-				else if (nic == snic){
+				}else if (!validatephn(shtel) || !validatephn(hmtel) || !validatephn(mob) || !validatephn(stel) || !validatephn(smob)){
+					alert("Can not proceed ..invalid phone number");
+				 } else if(!validatenic(nic) || !validatenic(snic)){
+					
+					alert("Can not proceed ..invalid nic"); 
+				} else if (nic == snic){
 					alert("Can not proceed ..Main NIC is equal to other");
-				}
-				else {
+				}else if (fname == null || fname == undefined || fname ===""){
+					$("#errormsg").html("Please fill mandotary values");
+					alert('s');
+				}else {
 					$.ajax({
 						type : 'GET',
 						url : 'CustomerRegistrationController',
@@ -151,14 +127,21 @@ for (i = 0; i < x.length; i++) {
 	 						 snic: snic,
 							semail : document.getElementById("semail").value
 						},
-						error: function (responseText) {
-							alert(responseText.error+"response");
+						error: function (responseText){
+							
+							alert("Some error occured..!");
 							
 		            	},
 						success: function (responseText) {
-								alert(responseText.success);
-								if (responseText.error )
-									alert(responseText.error);
+							//alert("Customer successfully created.!")
+							if (responseText.error){
+								alert(responseText.error);
+							}
+							if (responseText.suc){
+								alert(responseText.suc);
+								location.reload();
+							}
+								
 		    			}   
 						
 					});
@@ -210,8 +193,8 @@ for (i = 0; i < x.length; i++) {
 			<input type="text" class="minitext" id="th" style="width: 50px;"><input type="text" class="minitext" id="fr" style="width: 50px;"> 
 			<input type="text" class="minitext" id="fi" style="width: 50px;"> <input type="text" class="minitext" id="si" style="width: 50px;">  
 			<input type="text" class="minitext" id="se" style="width: 50px;"> <input type="text" class="minitext" id="eig" style="width: 50px;"> 
-			<input type="text" class="minitext" id="ni" style="width: 50px;"> <input type="text" class="minitext" id="v" value="V" style="width: 50px;"><br>
-			E-Mail : <nobr><input type="email" id="emal"><font style="color: red;">*</font></nobr>
+			<input type="text" class="minitext" id="ni" style="width: 50px;"> <input type="text" class="minitext" id="v" style="width: 50px;"><br>
+			E-Mail : <nobr><input type="email" id="emal"></nobr>
 			
 			<br>
 			Spouse / Shareholder (main) 
@@ -231,12 +214,12 @@ for (i = 0; i < x.length; i++) {
 			<input type="text" class="minitext" id="ths" style="width: 50px;"><input type="text" class="minitext" id="frs" style="width: 50px;"> 
 			<input type="text" class="minitext" id="fis" style="width: 50px;"> <input type="text" class="minitext" id="sis" style="width: 50px;">  
 			<input type="text" class="minitext" id="ses" style="width: 50px;"> <input type="text" class="minitext" id="eigs" style="width: 50px;"> 
-			<input type="text" class="minitext" id="nis" style="width: 50px;"> <input type="text" class="minitext" id="vs" value="V" style="width: 50px;">  
+			<input type="text" class="minitext" id="nis" style="width: 50px;"> <input type="text" class="minitext" id="vs" style="width: 50px;">  
 			<br>
-			E-Mail :<nobr> <input type="email" id="semail"><font style="color: red;">*</font></nobr>
+			E-Mail :<nobr> <input type="email" id="semail"></nobr>
 			<br/>
 			<button type="submit" class = "submit" id="submitbtn"> Submit</button>
-			<button type="reset" id="cncl">Reset</button>
+			<button type="reset" id="cncl" onclick="clearvalues();">Reset</button>
 			<br>
 			<div id="errormsg" style="color:red;"></div>
 		</fieldset>

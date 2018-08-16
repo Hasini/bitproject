@@ -17,5 +17,6 @@ public interface CustomerRegistrationDAO {
 	
 	public CustomerRegistration createCus(CustomerRegistration cus);
 	JSONArray viewBranches() throws SQLException, Exception;
-	public String checkNIC(String nic);
+	public boolean checkNIC(String nic) throws SQLException, Exception;
+	public JSONArray viewAllUsers()throws SQLException, Exception;
 }

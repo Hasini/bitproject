@@ -17,13 +17,12 @@ import pro.bit.bitproject.domain.IncomeType;
 public class ExpenseTypeDAOImpl implements IncomeTypeDAO {
 
 	@Override
-	public void createIT(String code, String descr, LocalDateTime createddate) {
-String insertQuery = "INSERT INTO expense_type (et_code,et_descr,et_createdtime) VALUES (?,?,?)";
+	public void createET(String code, String descr, LocalDateTime createddate) {
+		String insertQuery = "INSERT INTO expense_type (et_code,et_descr,et_createdtime) VALUES (?,?,?)";
 		
 		try {
 			
 			PreparedStatement ps = ConnectionUtil.openConnection().prepareStatement(insertQuery);
-			//ps.setString(1, String.valueOf(usertype.getUserTypeId()));
 			ps.setString(1, code);
 			ps.setString(2, descr);
 			ps.setTimestamp(3, Timestamp.valueOf(createddate));
@@ -32,12 +31,6 @@ String insertQuery = "INSERT INTO expense_type (et_code,et_descr,et_createdtime)
 			e.printStackTrace();
 		}
 
-	}
-
-	@Override
-	public IncomeType updateIT(IncomeType it) throws SQLException, Exception {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
@@ -96,6 +89,12 @@ String insertQuery = "INSERT INTO expense_type (et_code,et_descr,et_createdtime)
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
+		return null;
+	}
+
+	@Override
+	public IncomeType updateIT(IncomeType it) throws SQLException, Exception {
+		// TODO Auto-generated method stub
 		return null;
 	}
 

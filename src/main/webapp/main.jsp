@@ -22,7 +22,9 @@
 		<a href="incomeType.jsp" class="link">Income Type</a><br>
 		<a href="customer-registration.jsp" class="link">Customer Registration</a><br>
 		<a href="delete&updateUser.jsp" class="link">System User Maintain</a><br>
+		<a href="accessControl.jsp" class="link">Access Control</a><br>
 		<a href="day-end.jsp" class="link">Day End</a><br>
+		<a href="AllUsers.jsp" class="link">List All Users</a><br>
 		
 		<h3>Finance Module</h3>
 		<a href="income.jsp" class="link">Income</a><br>
