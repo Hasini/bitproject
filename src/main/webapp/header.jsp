@@ -1,47 +1,26 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Home Page</title>
-		<link rel="stylesheet" type="text/css" href="css/common.css">
-		<link rel="icon" href="images/favicon-facebook_400x400.png">
+	<article style="width:100%;height:15%;border-right: 20%;background-image: url(images/background.jpg);  background-repeat: no-repeat;
+     background-size: cover; border-left-width: 5%;border-right-width: 20%">
 		
-
-	</head>
-<body>
-
-
-<div id="main">
-	<div>
-	<h2>Welcome to JSL</h2>
-	</div>
-	<div id="left" style="float: left">
-		<h3>Admin Module</h3>
-		<a href="user-type.jsp" class="link">User Type</a><br>
-		<a href="branch-details.jsp" class="link">Branch Details</a><br>
-		<a href="expense-type.jsp" class="link">Expense Type</a><br>
-		<a href="incomeType.jsp" class="link">Income Type</a><br>
-		<a href="customer-registration.jsp" class="link">Customer Registration</a><br>
-		<a href="delete&updateUser.jsp" class="link">System User Maintain</a><br>
-		<a href="accessControl.jsp" class="link">Access Control</a><br>
-		<a href="day-end.jsp" class="link">Day End</a><br>
-		<a href="AllUsers.jsp" class="link">List All Users</a><br>
-		
-		<h3>Finance Module</h3>
-		<a href="income.jsp" class="link">Income</a><br>
-		<a href="expences.jsp" class="link">Expences</a>
-		
-		<h3>Lending Book</h3>
-		<a href="customer-lending-details.jsp" class="link">Lending Book</a><br>
-		<a href="lend-details-view.jsp" class="link">View</a>
-		
-		<h3>View</h3>
-	</div>
+		<header>
+			<p style="float: right; color:aqua;"><span id="datetime"></span></p>
+			<h1 style="font-family:Helvetica;font-size: 30px;color:aqua;" align="left"><b>Kasun Grinding Mills - Hambantota </b></h1>
+			<button type="submit" id="signup" value="signup" onclick="window.location.href='login.jsp'" style="background-color:aqua;height: 2%;width: 10%;color: blue;align:right ;float: right;">Log Out</button>
+			
+			<H2 style="float:left ;font-size: 10px;font-family:serif;">@C JSL - WE EASY YOUR TRANSACTIONS</H2>
+			<script>
+				var dt = new Date();
+				document.getElementById("datetime").innerHTML = dt.toLocaleString();
+			</script>
+		</header>
+	</article>
+	<body>
+	<!-- <div id="main" style="height: 600px;">
+		<footer style="height: 2%">@c. All Right Reserved. Janadara Stores Lanka </footer>
+	</div> -->
 	
-	<div id="right" style="float: right">
-		
-		<button type="submit" value="Sign Out" id="signout" onclick="window.location.href='login.jsp'">Sign Out</button>
-	</div>
-</div>
-
-</body>
+	
+	</body>
+	
 </html>

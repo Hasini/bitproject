@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@include file="header.jsp" %> 
 
 <html>
 <head>
-		<script src="js/jquery.min.js"></script>
-		<script src="js/jquery-1.11.1.min.js"></script>
-		<script src="js/commonFunctions.js"></script>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/jquery-1.11.1.min.js"></script>
+	<script src="js/commonFunctions.js"></script>
 		
 	<link rel="stylesheet" type="text/css" href="css/common.css">
 	<link rel="icon" href="images/favicon-facebook_400x400.png">

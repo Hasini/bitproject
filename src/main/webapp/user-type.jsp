@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<%@include file="header.jsp" %> 
 <html>
 <head>
 	<title>User Type</title>

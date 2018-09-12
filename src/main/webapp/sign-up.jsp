@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<%@include file="header.jsp" %> 
 <html>
 	<head>
 		<title>Home Page</title>
@@ -7,7 +8,7 @@
 		<script src="js/commonFunctions.js"></script>
 		
 		<link rel="stylesheet" type="text/css" href="css/common.css">
-		<link rel="icon" href="images/favicon-facebook_400x400.png">
+		<link rel="icon" href="images/favic.jpg">
 		
 <style>
 
@@ -112,18 +113,15 @@ button:hover {
 						
 						if (responseText.successx){
 							alert (responseText.successx);
-							window.location.assign('/bitproject/main.jsp');
-							
+							window.location.assign('/bitproject/login.jsp');
 						}else {
 							alert (responseText.error);
-							
-						
 						}
 							
 					}
 				});
-				alert("Record Successfully Created..!");
-				window.location.assign('/bitproject/main.jsp');
+				//alert("Record Successfully Created..!");
+				//window.location.assign('/bitproject/main.jsp');
 			}
 		});
 	});
@@ -152,12 +150,9 @@ button:hover {
     <label><b>User Type </b> </label>
 		<select id="usertype" name="usertype" onchange="">
 			<option value="0">Select</option>
-			
 		</select>
     
-    <label>
-      <input type="checkbox" checked="checked" style="margin-bottom:15px"> Remember me
-    </label>
+    
     
    <div class="clearfix">
       <button type="button" class="cancelbtn" onclick="window.location.href='index.html'">Cancel</button>

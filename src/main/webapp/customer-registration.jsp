@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<%@include file="header.jsp" %>
 <html>
 	<head>
 		<script src="js/jquery.min.js"></script>
@@ -73,7 +72,6 @@
 				var sp_initials = $('#iniosp').val() + ' ' + $('#initsp').val()+ ' ' +$('#inithsp').val();
 				var e = document.getElementById("branch");
 				var branch = e.options[e.selectedIndex].value;
-				alert(branch);
 				var shtel = document.getElementById("shtel").value;
 				var hmtel = document.getElementById("hmtel").value;
 				var mob = document.getElementById("mob").value;
@@ -128,7 +126,6 @@
 							semail : document.getElementById("semail").value
 						},
 						error: function (responseText){
-							
 							alert("Some error occured..!");
 							
 		            	},
@@ -156,14 +153,6 @@
 
 
 <div id="main">
-	<a href="login.jsp">
-		<button type="button" >HOME</button>
-	</a>
-	
-	<div>
-		<h2>Welcome to JSL </h2>
-	</div>
-	
 	<div>
 		<fieldset>
 		<legend>Customer Registration</legend>

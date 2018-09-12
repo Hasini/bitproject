@@ -1,16 +1,17 @@
 <!DOCTYPE html>
+<%@include file="header.jsp" %> 
 <html>
 <head>
 
 
 <title>Home Page</title>
 
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="js/jquery.min.js"></script>
 	<script src="js/jquery-1.11.1.min.js"></script>
 	<script src="js/commonFunctions.js"></script>
 	
 	<link rel="stylesheet" type="text/css" href="css/common.css">
-	<link rel="icon" href="images/favicon-facebook_400x400.png">
+	<link rel="icon" href="images/favic.jpg">
 
 	
 
@@ -36,17 +37,17 @@ button:hover {
 }
 
 img.avatar {
-	width: 40%;
+	width: 30%;
 	border-radius: 50%;
 }
 
 .container {
-	padding: 16px;
+	padding: 10px;
 }
 
 span.psw {
 	float: right;
-	padding-top: 16px;
+	padding-top: 20%;
 }
 
 #usertype{
@@ -56,7 +57,9 @@ span.psw {
     display: inline-block;
     border: 1px solid #ccc;
     box-sizing: border-box;
+    
 }
+
 </style>
 
 <script type="text/javascript">
@@ -103,12 +106,26 @@ span.psw {
 						usertypeid : userType
 					},
 					success: function (responseText) {
-						if (responseText.error){
-							alert(responseText.error);
-						}
-						else{
+						
+						
+						if (responseText.success){
 							alert(responseText.success);
-							window.location.assign('/bitproject/main.jsp');
+							if(responseText.usertype ==1){
+								window.location.assign('/bitproject/admin.jsp');
+							}
+							if(responseText.usertype ==2){
+								window.location.assign('/bitproject/dp.jsp');
+							}
+							if(responseText.usertype ==3){
+								window.location.assign('/bitproject/cashier.jsp');
+							}
+							if(responseText.usertype ==4){
+								window.location.assign('/bitproject/authorization.jsp');
+							}
+						}
+						else {
+							alert(responseText.error);
+							
 						}
 					}
 				});
@@ -125,17 +142,10 @@ span.psw {
 
 </head>
 
-<body >
-
-
+<body>
 	<div id="main" style="float:left">
 		<div>
-			<h2>Welcome to JSL</h2>
-		</div>
-
-		<div>
-			
-				<div class="imgcontainer">
+			<div class="imgcontainer">
 					<img src="images/login.jpg" alt="Avatar" class="avatar">
 				</div>
 
@@ -155,14 +165,12 @@ span.psw {
 					<label> <input type="checkbox" checked="checked">
 						Remember me
 					</label>
-					
-
 				</div>
 		</div>
 		
 	</div>
 	<div style="float: right">
-			<p>Register a new system user</p>
+			<p>Register New System User</p>
 			<button type="submit" id="signup" value="signup"
 						onclick="window.location.href='sign-up.jsp'">Register</button>
 	</div>

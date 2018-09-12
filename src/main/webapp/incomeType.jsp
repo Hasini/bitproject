@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@include file="header.jsp" %> 
 
 <html>
 <head>
@@ -33,7 +33,6 @@
 							code : document.getElementById("code").value,
 							descr : document.getElementById("descr").value,
 							checkboxVal : "create"
-							//alert(checkboxVal+"checkboxVal");
 						},
 						error: function (responseText) {
 							alert(responseText.error+"response");
@@ -49,7 +48,7 @@
 	  						if (responseText.error )
 	  							alert(responseText.error);
 	  						}
-	        			}   
+	        			   
 						
 					});
 				});    

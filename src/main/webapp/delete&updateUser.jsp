@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+<%@include file="header.jsp" %> 
 <html>
 	<head>
 		<title>Home Page</title>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-		<script src="js/jquery-1.11.1.min.js"></script>
-		<script src="js/commonFunctions.js"></script>
+		<script src="js/jquery.min.js"></script>
+	<script src="js/jquery-1.11.1.min.js"></script>
+	<script src="js/commonFunctions.js"></script>
 		
 		<link rel="stylesheet" type="text/css" href="css/common.css">
 		<link rel="icon" href="images/favicon-facebook_400x400.png">
@@ -102,6 +103,7 @@
 
 
 <body>
+<div id="main" style="float:left">
 <fieldset>
 	<legend>Recover Password</legend>
 	<div id ="forgetpassword">
@@ -123,6 +125,6 @@
 </fieldset>
 
   
-
+</div>
 </body>
 </html>
