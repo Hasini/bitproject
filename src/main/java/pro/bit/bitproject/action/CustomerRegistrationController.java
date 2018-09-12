@@ -58,7 +58,7 @@ public class CustomerRegistrationController extends HttpServlet {
 			try {
 				 if (checkAvailability(nic) == false){
 					 createCustomer(request,response);
-					 json.put("suc", "Record Successfully Completed..!");
+					 json.put("suc", "Record Successfully Created..!");
 				 }else {
 					 json.put("error", "Nic Already Exist..!");
 				 }

@@ -17,8 +17,6 @@ import org.json.JSONObject;
 import pro.bit.bitproject.daoImpl.UserDAOImpl;
 import pro.bit.bitproject.domain.User;
 
-
-
 @WebServlet("/userservlet")
 public class UserController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -66,9 +64,10 @@ public class UserController extends HttpServlet {
 		case "login" :
 			try {
 				String sts=loginuser (request,response,username,password,usertypeid);
-				if(sts.equalsIgnoreCase("true"))
+				if(sts.equalsIgnoreCase("true")){
+					json.put("usertype", usertypeid);
 					json.put("success", "Log in successful");
-				else
+				}else
 					json.put("error", "Login denied");
 			} catch (Exception e) {
 				e.printStackTrace();
