@@ -64,22 +64,20 @@
 			    });
 			
 			$("#submitbtn").click(function() {
-				
-				
 				var nic = $('#o').val() +$('#t').val()+$('#th').val()+$('#fr').val()+$('#fi').val()+$('#si').val()+$('#se').val()+$('#eig').val()+$('#ni').val()+$('#v').val();
 				var snic = $('#os').val() +$('#ts').val()+$('#ths').val()+$('#frs').val()+$('#fis').val()+$('#sis').val()+$('#ses').val()+$('#eigs').val()+$('#nis').val()+$('#vs').val();
 				var cus_initials = $('#inioc').val() + ' ' + $('#initc').val()+ ' ' + $('#inithc').val();
 				var sp_initials = $('#iniosp').val() + ' ' + $('#initsp').val()+ ' ' +$('#inithsp').val();
+				
 				var e = document.getElementById("branch");
 				var branch = e.options[e.selectedIndex].value;
+				
 				var shtel = document.getElementById("shtel").value;
 				var hmtel = document.getElementById("hmtel").value;
 				var mob = document.getElementById("mob").value;
 				var stel = document.getElementById("stel").value;
 				var smob = document.getElementById("smob").value;
 				var fname = document.getElementById("fname").value;
-				
-				
 				
 				if( !validateEmail(document.getElementById("emal").value)){ 
 					alert("Can not proceed ..invalid email");
@@ -147,6 +145,11 @@
 		});
 		</script>
 		
+		<style type="text/css">
+		
+		
+		</style>
+		
 		
 	</head>
 <body>
@@ -162,10 +165,11 @@
 			</select>
 			
 			<br><br>
-			First Name : <nobr><input type="text" id="fname" class="mandotaryInputs" ><font style="color: red;">*</font></nobr><br>
-			Initials : <input type="text" class="minitext" style="width: 60px;" id="inioc"> <input type="text" class="minitext" style="width: 60px;" id="initc">
-			 <input type="text" class="minitext" style="width: 60px;" id="inithc"><br>
+			Initials : <input type="text" class="minitext" style="width: 60px;" id="inioc"> 
+			<input type="text" class="minitext" style="width: 60px;" id="initc"><input type="text" class="minitext" style="width: 60px;" id="inithc"><br>
 			Name Denoted by Initials : <input type="text" class="middletext" id="cus_othername"><br>
+			First Name : <nobr><input type="text" id="fname" class="mandotaryInputs" ><font style="color: red;">*</font></nobr><br>
+			
 			Shop Address :<br>
 			Address Line 1:<nobr><input type="text" id="shad1"><font style="color: red;">*</font></nobr>
 			Address Line 2:<nobr><input type="text" id="shad2"><font style="color: red;">*</font></nobr>
@@ -188,8 +192,8 @@
 			<br>
 			Spouse / Shareholder (main) 
 			
-			First Name : <nobr><input type="text" id="sfname"><font style="color: red;">*</font></nobr>
-			Initials : <input type="text" class="minitext" style="width: 60px;" id="iniosp"> <input type="text" class="minitext"style="width: 60px;" id="initsp"> 
+			First Name : <nobr><input type="text" id="sfname"><font style="color: red;">*</font></nobr></BR>
+			Initials : <input type="text" class="minitext" style="width: 60px;" id="iniosp"> <input type="text" class="minitext"style="width: 60px;" id="initsp"> </BR>
 			<input type="text" class="minitext" style="width: 60px;" id="inithsp"><br>
 			Name Denoted by Initials : <input type="text" class="middletext" id="sp_othername"><br><br>
 			

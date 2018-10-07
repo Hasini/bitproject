@@ -12,13 +12,18 @@
 
 	<script>
 		$(document).ready(function(){
-			var checkboxVal;
+			$(window).load(function(){
+				var checkboxVal;
+				
+				$("#createDiv").hide();
+			    $("#deleteDiv").hide();
+			    $("#updateDiv").hide();
+				
+			});
 			
-			$("#createDiv").hide();
-		    $("#deleteDiv").hide();
-		    $("#updateDiv").hide();
 		    
 		    $("#create").click(function(){
+		    	$("p").hide();
 		    	$("#createDiv").show();
 		        $("#deleteDiv").hide();
 		        $("#updateDiv").hide();
@@ -32,10 +37,6 @@
 							descr : document.getElementById("descr").value,
 							checkboxVal : "create"
 						},
-						error: function (responseText) {
-							alert(responseText.error+"response");
-							
-	                	},
 						success: function (responseText) {
 	  						if (responseText.success){
 	  							alert(responseText.success+" Branch Successfully Created...!");
@@ -50,6 +51,7 @@
 		    });
 		    
 		    $("#update").click(function(){
+		    	$("p").hide();
 		  		$("#updateDiv").show();
 		        $("#createDiv").hide();
 		        $("#deleteDiv").hide();
@@ -77,9 +79,30 @@
 					    }
 					});
 				});
+		        
+		        $("#submitbtnu").click(function() {
+		        	$.ajax({
+						type : 'GET',
+						url : 'createaction',
+						data : {
+							codeu : document.getElementById("codeu").value,
+							descru : document.getElementById("descru").value,
+							checkboxVal : "update" 
+						},
+						success : function(responseText) {
+							if (responseText.success){
+								alert(responseText.success+" Branch Description Successfully Updated..!");
+								window.location.assign('/bitproject/main.jsp');
+							}else {
+								alert(responseText.error);
+							}
+							
+						}
+					});
+				});
 			});
 		    
-		     $("#update").click(function(){
+		    /* $("#update").click(function(){
 		    	$("#updateDiv").show();
 		        $("#createDiv").hide();
 		        $("#deleteDiv").hide();
@@ -104,9 +127,10 @@
 						}
 					});
 				});
-			}); 
+			}); */
 		    
 		    $("#delete").click(function(){
+		    	$("p").hide();
 		    	$("#deleteDiv").show();
 		    	$("#createDiv").hide();
 		    	$("#updateDiv").hide();
@@ -141,13 +165,14 @@
 	  display: inline-block;
 	  border-radius: 4px;
 	  float:right;
-	  background-color: #f4511e;
+	  background-color: silver#f4511e;
 	  border: none;
-	  color: #FFFFFF;
+	  color: #f4511e;
 	  text-align: center;
 	  font-size: 20px;
 	  padding: 15px;
 	  width: 250px;
+	  height:1%;
 	  transition: all 0.5s;
 	  cursor: pointer;
 	  margin: 5px;
@@ -210,7 +235,7 @@
 			
 			<table style="float: right;">
 				
-				<th style="background-color: #000099; color:#ffffff; width: 15%;">Code</th>
+				<th style="background-color: #000099; color:#ffffff; width: 5%;">Code</th>
 				<th style="background-color: #000099; color:#ffffff ;width: 15%;">Description</th>
 			</table>
 			<div id="tablediv" style="float: right;"></div>

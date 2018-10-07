@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -97,6 +98,14 @@ public class UserController extends HttpServlet {
 				e.printStackTrace();
 			}
 			break;
+		case "logout" :
+			try {
+				logout(request,response);
+				//json.put("success", "Session Expired..!");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			break;
 
 		default:
 			break;
@@ -105,26 +114,33 @@ public class UserController extends HttpServlet {
 		response.getWriter().write(json.toString());
 	}
 
+	private void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		request.getSession().invalidate();
+        try {
+			response.sendRedirect(request.getContextPath() + "/header.jsp");
+			return;
+		} catch (IOException e) {
+			response.sendError(400,"Session Expired");
+			e.printStackTrace();
+		}
+		
+	}
+
 	public String loginuser(HttpServletRequest request, HttpServletResponse response, String username, String password, int usertypeid) throws IOException {
-		JSONObject json = new JSONObject();
+		HttpSession httpSession = request.getSession();
 		UserDAOImpl userdaoimpl = new UserDAOImpl();
 		String sts=null;
-		//User user = new User();
+		
 		try {
 			 sts = userdaoimpl.loginUser(username,password,usertypeid);
+			 System.out.println("ll"+username);
+			 httpSession.setAttribute("username", username);
+			 httpSession.setAttribute("password", password);
 			 
-//			if (sts.equals("true") ){
-//				json.put("success", "Log in successful");
-//				System.out.println("trueee");
-//			}else {
-//				json.put("error", "Log in denied");
-//			}
-//			
+			 //httpSession.setMaxInactiveInterval(60);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-//		response.setContentType("application/json");
-//		response.getWriter().write(json.toString());
 		return sts;
 		
 	}
@@ -188,6 +204,4 @@ public class UserController extends HttpServlet {
 		}
 		
 	}
-	
-
 }

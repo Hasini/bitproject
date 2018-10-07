@@ -80,16 +80,17 @@ public class IncomeTypeDAOImpl implements IncomeTypeDAO{
 	public JSONArray viewIT() throws SQLException, Exception {
 		ResultSet rs = null;
 		JSONArray jsonArray=new JSONArray();
-		String viewBranchDet = "select * from income_type";
+		String viewIncomeType = "select * from income_type";
 		PreparedStatement ps;
 		
-		ps = ConnectionUtil.openConnection().prepareStatement(viewBranchDet);
+		ps = ConnectionUtil.openConnection().prepareStatement(viewIncomeType);
 		ps.executeQuery();
 		
 		rs = ps.getResultSet();
 		
 		while (rs.next()){			
 			 JSONObject jsonObject=new JSONObject();
+			 jsonObject.put("id", rs.getInt(1));
 			 jsonObject.put("code", rs.getString(2));
 			 jsonObject.put("desc", rs.getString(3));
 			 

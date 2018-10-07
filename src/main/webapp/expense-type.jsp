@@ -40,8 +40,10 @@
 
 	  					success: function (responseText) {
 	  						alert(responseText.success);
+	  						window.location.assign('/bitproject/main.jsp');
 	  						if (responseText.error )
 	  							alert(responseText.error);
+	  						window.location.assign('/bitproject/main.jsp');
 	        			}   
 						
 					});
@@ -56,7 +58,7 @@
 		        $("#createDiv").hide();
 		        $("#deleteDiv").hide();
 		        
-		        $("#viewbtn").click(function() {
+		        $("#view").click(function() {
 		        	$.ajax({
 						type : 'GET',
 						url : 'expenseTypeController',
@@ -154,20 +156,61 @@
 
 		 });
 	</script>
+	
+	<style type="text/css">
+	<style type="text/css">
+	
+	#view {
+	  display: inline-block;
+	  border-radius: 4px;
+	  float:right;
+	  background-color: silver#f4511e;
+	  border: none;
+	  color: #f4511e;
+	  text-align: center;
+	  font-size: 20px;
+	  padding: 15px;
+	  width: 250px;
+	  height:1%;
+	  transition: all 0.5s;
+	  cursor: pointer;
+	  margin: 5px;
+	}
+
+	#view span {
+	  cursor: pointer;
+	  display: inline-block;
+	  position: relative;
+	  transition: 0.5s;
+	}
+
+	#view span:after {
+	  content: '\00bb';
+	  position: absolute;
+	  opacity: 0;
+	  top: 0;
+	  right: -20px;
+	  transition: 0.5s;
+	}
+
+	#view:hover span {
+	  padding-right: 25px;
+	}
+	</style>
 </head>
 <body>
 
 
 <fieldset>
-	<legend>expense Type</legend>
+	<legend>Expense Type</legend>
 
 
 <div id="main">
 	<div id = "createDiv">
 		
-			<h2>Create expense Type</h2>
-			expense Type Code : <input type="text" name="code" id="code"> <font color="red">*</font><br>
-			expense Type Description : <input type="text" name="descr" id="descr"><font color="red">*</font><br>
+			<h2>Create Expense Type</h2>
+			Expense Type Code : <input type="text" name="code" id="code"> <font color="red">*</font><br>
+			Expense Type Description : <input type="text" name="descr" id="descr"><font color="red">*</font><br>
 			
 			<button type="submit" name="submitbtn" value="submitbtn" id="submitbtn" class="submit">Submit</button>
 			<button type="button" name="cancel" id="cncl">Cancel</button>
@@ -176,7 +219,7 @@
 	<div id="updateDiv">
 			<h2>Update expense Type</h2>
 			<div>
-			<button type ="button" id = "viewbtn">View </button>
+			<button type ="button" id="view">View </button>
 			
 			</div>
 			<table style="float: right;" >

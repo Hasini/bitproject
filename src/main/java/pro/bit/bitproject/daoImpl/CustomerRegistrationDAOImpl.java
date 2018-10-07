@@ -40,12 +40,7 @@ public class CustomerRegistrationDAOImpl implements CustomerRegistrationDAO {
 			 jsonObject.put("id", rs.getString(1));
 			 jsonObject.put("branch_descr", rs.getString(3));
 			 
-			 
-			 System.out.println("id"+rs.getString(1));
-			 System.out.println("branch_descr"+rs.getString(3));
 			 jsonArray.put(jsonObject);
-			
-			
 		}
 		rs.close();
 		return jsonArray;
@@ -164,6 +159,78 @@ public class CustomerRegistrationDAOImpl implements CustomerRegistrationDAO {
 		return jsonArray;
 	}
 	
+	public JSONArray viewAllCus() throws SQLException, Exception{
+		ResultSet rs = null;
+		JSONArray jsonArray=new JSONArray();
+		String listusers = "select customer_id,cus_fullname,cus_nic from customer_details";
+		PreparedStatement ps;
+		
+		ps = ConnectionUtil.openConnection().prepareStatement(listusers);
+		ps.executeQuery();
+		
+		rs = ps.getResultSet();
+		
+		while (rs.next()){			
+			 JSONObject jsonObject=new JSONObject();
+			 jsonObject.put("customer_id", rs.getInt(1));
+			 jsonObject.put("cus_fullname", rs.getString(2));
+			 jsonObject.put("cus_nic", rs.getString(3));
+			 jsonArray.put(jsonObject);
+		}
+		rs.close();
+		return jsonArray;
+	}
+
+	public int getCusIdByNic(String nic) {
+		int cusId = 0;
+		try {
+			
+			PreparedStatement ps = ConnectionUtil.openConnection().prepareStatement("select customer_id from customer_details where cus_nic = ?");
+			ps.setString(1, nic);
+			ResultSet rs= ps.executeQuery();
+			while (rs.next()) {
+				cusId = rs.getInt(cusId);
+			}
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		}
+		
+		return cusId;
+	}
+
+	public String getCusSTSById(String custcashbookid) {
+		String status = "A";
+		try {
+			
+			PreparedStatement ps = ConnectionUtil.openConnection().prepareStatement("select status from customer_details where cus_nic = ?");
+			ps.setString(1, custcashbookid);
+			ResultSet rs= ps.executeQuery();
+			while (rs.next()) {
+				status = rs.getString(status);
+				System.out.println("status"+status);
+			}
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		}
+		return status;
+	}
+	
+	public void updateCusSts(CustomerRegistration cus) {
+		
+		try {
+			
+			PreparedStatement ps = ConnectionUtil.openConnection().prepareStatement("update customer_details set status = ? where customer_id = ?");
+			ps.setString(1,Character.toString(cus.getStatus()));
+			ps.setInt(2, cus.getCusId());
+			ps.executeUpdate();
+			
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		}
+	}
 }
 
 

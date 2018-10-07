@@ -25,8 +25,7 @@
 		        $("#updateDiv").hide();
 		        
 		        $("#submitbtn").click(function() {
-		        	alert("createaction");
-					$.ajax({
+		        	$.ajax({
 						type : 'GET',
 						url : 'incomeTypeController',
 						data : {
@@ -208,7 +207,7 @@
 			
 			<table style="float: right;" >
 				
-				<th style="background-color: #000099; color:#ffffff; width: 15%;">Code</th>
+				<th style="background-color: #000099; color:#ffffff; width: 5%;">Code</th>
 				<th style="background-color: #000099; color:#ffffff ;width: 15%;">Description</th>
 			</table>
 			<div id="tablediv" style="float: right; height: 25%;">

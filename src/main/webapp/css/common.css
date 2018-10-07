@@ -26,7 +26,7 @@ input[type=text], input[type=password] {
 }
 
 #main {
-	width:600px;
+	width:800px;
     border-top:20%;
     padding-top:1%;
     margin-top:1%;
@@ -38,7 +38,7 @@ input[type=text], input[type=password] {
 }
 
  .submit {
-    background-color: #00a800;
+    background-color: #0000ff;
     color: white;
     padding: 14px 20px;
     margin: 8px 0;
@@ -72,3 +72,24 @@ input[type=text], input[type=password] {
 	height: 5cm;
 }
 
+legend {
+    display: block;
+    padding-left: 2px;
+    padding-right: 2px;
+    border: none;
+    color: blue;
+    font-size: x-large;
+    font-weight: bold;
+}
+
+input[type=text]{
+			width: 75%;
+			height :1em;
+    		padding: 12px 20px;
+    		margin: 8px 0;
+    		display: inline-block;
+    		border: 1px solid #ccc;
+    		box-sizing: border-box;
+    		background-color: #FFFFE0;
+
+		}

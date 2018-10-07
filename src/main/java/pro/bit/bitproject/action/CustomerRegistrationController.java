@@ -16,19 +16,10 @@ import org.json.JSONObject;
 import pro.bit.bitproject.daoImpl.CustomerRegistrationDAOImpl;
 import pro.bit.bitproject.domain.CustomerRegistration;
 
-
-
-
-/**
- * Servlet implementation class CustomerRegistrationController
- */
 @WebServlet("/CustomerRegistrationController")
 public class CustomerRegistrationController extends HttpServlet {
 	 static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
+     
     public CustomerRegistrationController() {
         super();
    }
@@ -40,15 +31,11 @@ public class CustomerRegistrationController extends HttpServlet {
 		String method = request.getParameter("method");
 		String nic = request.getParameter("nic");
 		
-		//boolean flag = checkAvailability(nic);
-		
-		
 		switch (method) {
 		case "view":
 			try {
 				jsonArray = viewBranches();
 				json.put("branchobj", jsonArray);
-				System.out.println(json+"+++++++++++++++");
 			} catch (Exception e) {
 				
 				e.printStackTrace();
@@ -62,10 +49,7 @@ public class CustomerRegistrationController extends HttpServlet {
 				 }else {
 					 json.put("error", "Nic Already Exist..!");
 				 }
-				
-				
 			} catch (Exception e) {
-				
 				e.printStackTrace();
 			}
 			break;
@@ -73,9 +57,16 @@ public class CustomerRegistrationController extends HttpServlet {
 			try {
 				jsonArray = viewAllUsers();
 				json.put("userObj", jsonArray);
-				//System.out.println(jsonUser+"+++++++++++++++");
 			} catch (Exception e) {
-				
+				e.printStackTrace();
+			}
+			break;
+			
+		case "viewallCus":
+			try {
+				jsonArray = viewAllCus();
+				json.put("cusObj", jsonArray);
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			break;
@@ -91,6 +82,30 @@ public class CustomerRegistrationController extends HttpServlet {
 
 	
 
+	private JSONArray viewAllCus() {
+		JSONArray cusarr = new JSONArray();
+		CustomerRegistrationDAOImpl cusdaoimpl = new CustomerRegistrationDAOImpl();
+		
+		try {
+			cusarr = cusdaoimpl.viewAllCus();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return cusarr;
+	}
+	
+	public JSONArray viewAllUsers() {
+		JSONArray usersarr = new JSONArray();
+		CustomerRegistrationDAOImpl cusdaoimpl = new CustomerRegistrationDAOImpl();
+		try {
+			usersarr = cusdaoimpl.viewAllUsers();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return usersarr;
+	}
+
 	public boolean checkAvailability(String nic) {
 		CustomerRegistrationDAOImpl cusDaoImp= new CustomerRegistrationDAOImpl();
 		boolean sts = true;
@@ -105,10 +120,11 @@ public class CustomerRegistrationController extends HttpServlet {
 	public void createCustomer(HttpServletRequest request, HttpServletResponse response) throws JSONException {
 		
 		CustomerRegistration customer = new CustomerRegistration();
+		CashBookController cbc = new CashBookController();
 		CustomerRegistrationDAOImpl cusDaoImpl = new CustomerRegistrationDAOImpl();
-		JSONObject json = new JSONObject();
 		
-		int branchId = Integer.parseInt(request.getParameter("branch"));
+		
+		 int branchId = Integer.parseInt(request.getParameter("branch"));
 		 String cusfullname = request.getParameter("fname");
 		 String initials = request.getParameter("cus_initials");
 		 String initialsextraction = request.getParameter("cus_othername");
@@ -164,23 +180,17 @@ public class CustomerRegistrationController extends HttpServlet {
 		 customer.setCusspnic(cusspnic);
 		 customer.setCusspemail(cusspemail);
 		 customer.setCreatedtime(createdtime);
-		 customer.setStatus('A');
 		 
-//		 if (checkAvailability(cusnic) == false){
-			 cusDaoImpl.createCus(customer); 
-//		 }else {
-//			 json.put("error", "Nic Already Exist");
-//		 }
-		 
-//		 response.setContentType("application/json");
-//		try {
-//			response.getWriter().write(json.toString());
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		
-		
+		 int cusId = getCusIdByNic(cusnic);
+		 if (cbc.getcurrentarr(cusId)>100000){
+			 System.out.println(cbc.getcurrentarr(cusId)+ "asdasd");
+			 customer.setStatus('B');
+			 System.out.println("status");
+		 }else {
+			 customer.setStatus('A');
+		 }
+		 cusDaoImpl.createCus(customer); 
+
 	}
 
 	public JSONArray viewBranches() {
@@ -189,23 +199,14 @@ public class CustomerRegistrationController extends HttpServlet {
 		try {
 			brancharr = cusdaoimpl.viewBranches();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return brancharr;
 	}
 	
-	
-public JSONArray viewAllUsers() {
-	JSONArray usersarr = new JSONArray();
-	CustomerRegistrationDAOImpl cusdaoimpl = new CustomerRegistrationDAOImpl();
-	try {
-		usersarr = cusdaoimpl.viewAllUsers();
-	} catch (Exception e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
+	public int getCusIdByNic(String nic){
+		CustomerRegistrationDAOImpl cusdaoimpl = new CustomerRegistrationDAOImpl();
+		return cusdaoimpl.getCusIdByNic(nic); 
+		
 	}
-	return usersarr;
-	}
-	
 }

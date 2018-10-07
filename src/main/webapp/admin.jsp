@@ -30,12 +30,6 @@
 		
 	</div>
 	
-	
-	
-	<div id="right" style="float: right">
-		
-		<button type="submit" value="Sign Out" id="signout" onclick="window.location.href='login.jsp'">Sign Out</button>
-	</div>
 </div>
 
 </body>

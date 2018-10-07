@@ -4,9 +4,9 @@
      background-size: cover; border-left-width: 5%;border-right-width: 20%">
 		
 		<header>
-			<p style="float: right; color:aqua;"><span id="datetime"></span></p>
-			<h1 style="font-family:Helvetica;font-size: 30px;color:aqua;" align="left"><b>Kasun Grinding Mills - Hambantota </b></h1>
-			<button type="submit" id="signup" value="signup" onclick="window.location.href='login.jsp'" style="background-color:aqua;height: 2%;width: 10%;color: blue;align:right ;float: right;">Log Out</button>
+			<p style="float: right; color:#FFFFE0;"><span id="datetime"></span></p>
+			<h1 style="font-family:Helvetica;font-size: 30px;color:#FFFFE0;" align="left"><b>Kasun Grinding Mills - Hambantota </b></h1>
+			<button type="submit" id="sas" value="signup" style="background-color:#0000ff;height: 2%;width: 10%;color: white;align:right ;float: right;">Log Out</button>
 			
 			<H2 style="float:left ;font-size: 10px;font-family:serif;">@C JSL - WE EASY YOUR TRANSACTIONS</H2>
 			<script>
@@ -14,12 +14,30 @@
 				document.getElementById("datetime").innerHTML = dt.toLocaleString();
 			</script>
 		</header>
+		<script src="js/jquery.min.js"></script>
+		<script src="js/jquery-1.11.1.min.js"></script>
+		<script src="js/commonFunctions.js"></script>
 	</article>
-	<body>
-	<!-- <div id="main" style="height: 600px;">
-		<footer style="height: 2%">@c. All Right Reserved. Janadara Stores Lanka </footer>
-	</div> -->
 	
+	<body>
+		<script type="text/javascript">
+			$(document).ready(function(){
+				$("#sas").click(function(){
+					$.ajax({
+							type : 'post',
+							url : 'userservlet',
+							data : {
+								method : "logout",
+								
+							},
+							success: function (responseText) {
+								window.location.href='main.jsp';
+							}
+						});
+					
+				});
+			});
+		</script>
 	
 	</body>
 	
