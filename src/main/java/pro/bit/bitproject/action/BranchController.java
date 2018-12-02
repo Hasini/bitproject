@@ -20,8 +20,6 @@ import org.json.JSONObject;
 import pro.bit.bitproject.daoImpl.BranchDAOImpl;
 import pro.bit.bitproject.domain.Branch;
 
-
-
 /**
  * @author Hasini
  *

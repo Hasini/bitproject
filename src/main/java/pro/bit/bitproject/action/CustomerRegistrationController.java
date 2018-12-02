@@ -16,6 +16,8 @@ import org.json.JSONObject;
 import pro.bit.bitproject.daoImpl.CustomerRegistrationDAOImpl;
 import pro.bit.bitproject.domain.CustomerRegistration;
 
+
+
 @WebServlet("/CustomerRegistrationController")
 public class CustomerRegistrationController extends HttpServlet {
 	 static final long serialVersionUID = 1L;
@@ -120,7 +122,7 @@ public class CustomerRegistrationController extends HttpServlet {
 	public void createCustomer(HttpServletRequest request, HttpServletResponse response) throws JSONException {
 		
 		CustomerRegistration customer = new CustomerRegistration();
-		CashBookController cbc = new CashBookController();
+		
 		CustomerRegistrationDAOImpl cusDaoImpl = new CustomerRegistrationDAOImpl();
 		
 		
@@ -180,15 +182,9 @@ public class CustomerRegistrationController extends HttpServlet {
 		 customer.setCusspnic(cusspnic);
 		 customer.setCusspemail(cusspemail);
 		 customer.setCreatedtime(createdtime);
-		 
+		 customer.setStatus('A');
 		 int cusId = getCusIdByNic(cusnic);
-		 if (cbc.getcurrentarr(cusId)>100000){
-			 System.out.println(cbc.getcurrentarr(cusId)+ "asdasd");
-			 customer.setStatus('B');
-			 System.out.println("status");
-		 }else {
-			 customer.setStatus('A');
-		 }
+		
 		 cusDaoImpl.createCus(customer); 
 
 	}
