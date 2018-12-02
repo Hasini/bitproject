@@ -1,5 +1,6 @@
 package pro.bit.bitproject.domain;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class DailyIncome {
@@ -8,11 +9,12 @@ public class DailyIncome {
 	private double amount;
     private int submittedUserid;
     private int enteredUserid;
-    private LocalDateTime createdTime;
-    private String remark;
+    private LocalDateTime entered_time;
     private int incomeType;
-    private int billCode;
-    
+    private String billCode;
+    private LocalDate submitted_date;
+    private LocalDate bill_date;
+    private int customer_id;
     
     
 	public DailyIncome() {
@@ -48,20 +50,38 @@ public class DailyIncome {
 		this.enteredUserid = enteredUserid;
 	}
 	
-	public LocalDateTime getCreatedTime() {
-		return createdTime;
+	public LocalDateTime getEntered_time() {
+		return entered_time;
 	}
-	public void setCreatedTime(LocalDateTime createdTime) {
-		this.createdTime = createdTime;
+
+	public void setEntered_time(LocalDateTime entered_time) {
+		this.entered_time = entered_time;
 	}
-	
-	public String getRemark() {
-		return remark;
+
+	public LocalDate getSubmitted_date() {
+		return submitted_date;
 	}
-	public void setRemark(String remark) {
-		this.remark = remark;
+
+	public void setSubmitted_date(LocalDate submitted_date) {
+		this.submitted_date = submitted_date;
 	}
-	
+
+	public LocalDate getBill_date() {
+		return bill_date;
+	}
+
+	public void setBill_date(LocalDate bill_date) {
+		this.bill_date = bill_date;
+	}
+
+	public int getCustomer_id() {
+		return customer_id;
+	}
+
+	public void setCustomer_id(int customer_id) {
+		this.customer_id = customer_id;
+	}
+
 	public int getIncomeType() {
 		return incomeType;
 	}
@@ -69,10 +89,10 @@ public class DailyIncome {
 		this.incomeType = incomeType;
 	}
 	
-	public int getBillCode() {
+	public String getBillCode() {
 		return billCode;
 	}
-	public void setBillCode(int billCode) {
+	public void setBillCode(String billCode) {
 		this.billCode = billCode;
 	}
     

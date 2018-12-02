@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 public class CustomerRegistration {
 	
-	private String cusId;
+	private int cusId;
 	private int branchId;
 	private String cusfullname;
 	private String initials;
@@ -41,10 +41,10 @@ public class CustomerRegistration {
 	public void setStatus(Character status) {
 		this.status = status;
 	}
-	public String getCusId() {
+	public int getCusId() {
 		return cusId;
 	}
-	public void setCusId(String cusId) {
+	public void setCusId(int cusId) {
 		this.cusId = cusId;
 	}
 	
