@@ -98,25 +98,7 @@ public class CustomerRegistrationDAOImpl implements CustomerRegistrationDAO {
 	}
 
 	public boolean checkNIC(String nic) throws Exception {
-		/*ResultSet rs = null;
-		PreparedStatement ps = null;
-		boolean sts = true;
-		//JSONArray jsonArray=new JSONArray();
-		String avnic = "select cus_nic from customer_details where cus_nic = ?";
-		ps.setString(1, nic);
 		
-		ps = ConnectionUtil.openConnection().prepareStatement(avnic);
-		ps.executeQuery();
-		
-		rs = ps.getResultSet();
-		
-		if (nic == rs.getString(1)){
-			sts = true;
-		}else {
-			sts = false;
-		}
-		return sts;
-		rs.close();*/
 		boolean sts = false;
 		PreparedStatement st = ConnectionUtil.openConnection().prepareStatement("select cus_nic from customer_details where cus_nic = ?");    
 		st.setString(1, nic);   
