@@ -266,9 +266,9 @@
 
 
 	<div id="btngroup">
-		<input type ="radio" name ="create" id ="create" value ="create">Create
-		<input type ="radio" name ="update" id ="update" value ="update">Update
-		<input type ="radio" name ="delete" id ="delete" value ="delete">Delete
+		<input type ="radio" name ="btng" id ="create" value ="create">Create
+		<input type ="radio" name ="btng" id ="update" value ="update">Update
+		<input type ="radio" name ="btng" id ="delete" value ="delete">Delete
 	</div>
 </div>
 

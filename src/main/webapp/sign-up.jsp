@@ -2,7 +2,7 @@
 <%@include file="header.jsp" %> 
 <html>
 	<head>
-		<title>Home Page</title>
+		<title>User Registration</title>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 		<script src="js/jquery-1.11.1.min.js"></script>
 		<script src="js/commonFunctions.js"></script>
@@ -134,25 +134,21 @@ button:hover {
 <body>
 
 
-  <div class="container">
+  <div class="main">
     <h1>Sign Up</h1>
     <hr>
 
-    <label><b>Email</b></label>
-    <input type="text" placeholder="Enter Email" name="email" id="email" required>
-
+    <label><b>Email</b></label><br>
+    <nobr><input type="text" placeholder="Enter Email" name="email" id="email" required><font style="color: red;">*</font></nobr><br>
     <label><b>Password</b></label>
-    <input type="password" placeholder="Enter Password" name="psw" id="psw"required>
-
-    <label><b>Repeat Password</b></label>
-    <input type="password" placeholder="Repeat Password" name="psw-repeat" id="pswr" required>
+    <nobr><input type="password" placeholder="Enter Password" name="psw" id="psw"required><font style="color: red;">*</font></nobr><br>
+	<label><b>Repeat Password</b></label>
+    <nobr><input type="password" placeholder="Repeat Password" name="psw-repeat" id="pswr" required><font style="color: red;">*</font></nobr><br>
     
     <label><b>User Type </b> </label>
-		<select id="usertype" name="usertype" onchange="">
+	<nobr>	<select id="usertype" name="usertype" onchange="">
 			<option value="0">Select</option>
-		</select>
-    
-    
+		</select><font style="color: red;">*</font></nobr>
     
    <div class="clearfix">
       <button type="button" class="cancelbtn" onclick="window.location.href='index.html'">Cancel</button>

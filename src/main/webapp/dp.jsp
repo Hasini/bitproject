@@ -23,7 +23,7 @@
 	
 	<div id="db" style="float: left">
 		<a href="customer-registration.jsp" class="link">Customer Registration</a><br>
-		<a href="cashBook.jsp" class="link">Cash Book</a><br>
+		<a href="cbnew.jsp" class="link">Cash Book</a><br>
 		<a href="lending_shedule.jsp" class="link">Lending Shedule</a><br>
 		<a href="lend-details-view.jsp" class="link">View</a>
 	</div>

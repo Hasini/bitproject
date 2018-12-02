@@ -40,6 +40,7 @@
 						success: function (responseText) {
 	  						if (responseText.success){
 	  							alert(responseText.success+" Branch Successfully Created...!");
+	  							window.location.assign('/bitproject/main.jsp');
 	  						}else {
 	  							alert(responseText.error);
 	  						}
@@ -229,7 +230,7 @@
 	<div id="updateDiv">
 		
 			<h2>Update Branch Details</h2>
-			<div style="float: left;">
+			<div style="float: left;" id="upmain">
 				<button type ="button" id = "view"><span>View Branch Details</span> </button>
 			</div>
 			
@@ -241,7 +242,7 @@
 			<div id="tablediv" style="float: right;"></div>
 			<div id = "emptydiv"></div>
 			
-			</div>
+			
 			<input type="text" name="code" id="codeu" placeholder="Branch Code"> <font color="red">*</font><br>
 			<input type="text" name="descr" id="descru" placeholder="Branch Description"><font color="red">*</font><br>
 			
@@ -262,9 +263,9 @@
 	</div>
 
 	<div id="btngroup">
-		<input type ="radio" name ="create" id ="create" value ="create">Create
-		<input type ="radio" name ="update" id ="update" value ="update">Update
-		<input type ="radio" name ="delete" id ="delete" value ="delete">Delete
+		<input type ="radio" name ="branchbtn" id ="create" value ="create" checked="checked">Create
+		<input type ="radio" name ="branchbtn" id ="update" value ="update">Update
+		<input type ="radio" name ="branchbtn" id ="delete" value ="delete">Delete
 	</div>
 
 

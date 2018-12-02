@@ -12,10 +12,7 @@
 		
 		<script type="text/javascript">
 		$(document).ready(function(){
-			alert("as");
-		
-		
-			 	$.ajax({
+			$.ajax({
 					type : 'post',
 					url : 'userservlet',
 					data : {
@@ -25,8 +22,6 @@
 						if (responseText.success){
 							alert(responseText.usertypeid);
 						}
-						
-						
 					}   
 			});
 	});
@@ -42,7 +37,7 @@
 	
 	<div id="cas" style="float: left">
 		<a href="income.jsp" class="link">Income</a><br>
-		<a href="expences.jsp" class="link">Expences</a><br>
+		<a href="expences.jsp" class="link">Expenses</a><br>
 		<a href="billInfo.jsp" class="link">Bill Info</a><br>
 	</div>
 	

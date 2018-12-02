@@ -143,7 +143,7 @@ span.psw {
 </head>
 
 <body>
-	<div id="main" style="float:left">
+	<div class="main" style="float:left">
 		<div>
 			<div class="imgcontainer">
 					<img src="images/login.jpg" alt="Avatar" class="avatar">

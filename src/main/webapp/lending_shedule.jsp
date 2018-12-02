@@ -2,7 +2,7 @@
 <%@include file="header.jsp" %> 
 <html>
 <head>
-<title>Bill Info</title>
+<title>Lending Schedule</title>
 
 <script src="js/jquery.min.js"></script>
 <script src="js/jquery-1.11.1.min.js"></script>
@@ -11,7 +11,7 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 <link rel="stylesheet" type="text/css" href="css/common.css">
-<link rel="icon" href="images/favic.jpg">
+<link rel="icon" href="/images/favic.jpg">
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <link rel="stylesheet" href="/resources/demos/style.css">
 
@@ -37,6 +37,7 @@
 		});
 		
 		$('#cshbid').change(function() {
+			alert ("loaaa");
 			var method;
 			var custcashbookid = $('#cshbid :selected').text();
 			$.ajax({
@@ -48,9 +49,15 @@
 				},
 				success: function (responseText) {
 					if (responseText.arr){
+						alert(responseText.arr);
 						document.getElementById("aramt").value=responseText.arr;
+						if(responseText.arr<=50000)
+							alert ("Arrears amount should be greater than 50000LKR.");
+							document.getElementById("aramt").value = " ";
+							$("cshbid").focus();
 					}else {
 						alert("No arrears for the customer..")
+						//window.location.assign('/bitproject/cbnew.jsp');
 						//alert (responseText.error);
 					}
 				}
@@ -87,14 +94,16 @@
 					custcashbookid : custcashbookid
 				},
 				success: function (responseText) {
+					
 					if(responseText.msg1){
+						
 						alert(responseText.msg1);
 					}else if (responseText.msg){
 						alert (responseText.msg);
 					}else {
-						alert("as");
+						
 					}
-					window.location.assign('/bitproject/dp.jsp');
+					
 				}
 			});
 		});
