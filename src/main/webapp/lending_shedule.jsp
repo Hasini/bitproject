@@ -50,7 +50,7 @@
 				success: function (responseText) {
 					if (responseText.arr){
 						alert(responseText.arr);
-						document.getElementById("aramt").value=responseText.arr;
+						document.getElementById("aramtXXXX").value=responseText.arr;
 						if(responseText.arr<=50000)
 							alert ("Arrears amount should be greater than 50000LKR.");
 							document.getElementById("aramt").value = " ";
@@ -67,7 +67,7 @@
 		});
 		
 		$("#mode").bind("change", function(e) {
-	        var arr = parseFloat($("#aramt").val()) || 0;
+	        var arr = parseFloat($("#aramtXXXX").val()) || 0;
 	        var m = document.getElementById("mode");
 			var mode =m.options[m.selectedIndex].value || 0;
 
@@ -95,9 +95,10 @@
 				},
 				success: function (responseText) {
 					
-					if(responseText.msg1){
-						
-						alert(responseText.msg1);
+					if(responseText.xx){
+						alert("asasasasdaddedddddddddddddx");
+						alert(responseText.xx);
+						window.location.assign('/bitproject/cbnew.jsp');
 					}else if (responseText.msg){
 						alert (responseText.msg);
 					}else {
@@ -146,7 +147,7 @@ label{
 				<option value="0">Select</option>
 			</select>
 			
-			<nobr><label><b>Total Arrears Amount :</b> </label><input type="text" name="aramt" id="aramt">
+			<nobr><label><b>Total Arrears Amount :</b> </label><input type="text" name="aramt" id="aramtXXXX">
 			<font color="red">*</font></nobr>
 			<nobr><label><b>Number of installments:</b> </label> 
 			<select id="mode" name="mode" class="dropdownfields">

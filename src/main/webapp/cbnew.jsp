@@ -97,6 +97,7 @@
 					
 					var inspay = document.getElementById("inspay").value;
 					var noofins = document.getElementById("noofins").value;
+					var installmentamt = document.getElementById("mp").value;
 						$.ajax({
 								type : 'GET',
 								url : 'CashBkController',
@@ -113,7 +114,10 @@
 										//inst rinpa nd
 										var sucmsg = $('#msg'); 
 										sucmsg.show().html(responseText.success);
-										
+										document.getElementById("inst").value=responseText.re;
+										document.getElementById("nd").value=responseText.nd;
+										//todo
+										document.getElementById("rinpa").value = 0;
 									}else {
 										alert (responseText.error);
 									}
@@ -181,17 +185,24 @@
 			body{
   				font-family:sans-serif;
 			}
-		#wrapper{
+			text{
+				width: 600px;
+			}
+			label{
+				width: 200px;
+			}
+			
+			#wrapper{
   			
-  			display: inline-block;
-  			padding:20px;
-  
-		}
-		#btngroup{
-			border: 1px solid #888;
-  			display: inline-block;
-  			padding:20px;
-		}
+  				display: inline-block;
+  				padding:20px;
+  			}
+  			
+			#btngroup{
+				border: 1px solid #888;
+  				display: inline-block;
+  				padding:20px;
+			}
 		
 		a.button {
     		-webkit-appearance: button;
@@ -220,14 +231,12 @@
 			<select id="customer" name="customer" class="dropdownfields">
 				<option value="0">Select</option>
 			</select>
-			
-			<nobr><label><b>Customer Current Installment Payment Amount:</b> </label><input type="text" name="mp" id="mp" disabled>
+			<br><br><br>
+			<nobr><label><b>Customer Current Installment:</b> <br>
+			</label><input type="text" name="mp" id="mp" disabled>
+			<font color="red">*</font></nobr></br>
+			<nobr><label><b>Customer Current Arrears Amount:</b><br> </label><input type="text" name="ar" id="ar" disabled>
 			<font color="red">*</font></nobr>
-			<nobr><label><b>Customer Current Arrears Amount:</b> </label><input type="text" name="ar" id="ar" disabled>
-			<font color="red">*</font></nobr>
-			
-		
-			
 	</div>
 	
 	<div style="height: 10px;"></div>
@@ -235,18 +244,18 @@
 	<fieldset>
 		<legend>Installment Payment</legend>
 		
-			<nobr><label><b>Today Installment Payment Amount:</b> </label><input type="text" name="inspay" id="inspay">
+			<nobr><label><b>Today Installment Payment Amount:</b> <br></label><input type="text" name="inspay" id="inspay">
 			<font color="red">*</font></nobr><br>
-			<nobr><label><b>No of installments:</b> </label><input type="text" name="noofins" id="noofins">
+			<nobr><label><b>No of installments:</b> <br></label><input type="text" name="noofins" id="noofins">
 			<font color="red">*</font></nobr><br>
 			<br><br>
 			<button type="button" name="inspaybtn" value="inspaybtn" id="inspaybtn" class="submit">Submit</button>
-			<button type="button" name="clear" value="clear" id="cncl" onclick="clearinputs();">Reset</button>
-			<nobr><label><b>Number of Remaining Installments:</b> </label><input type="text" name="inst" id="inst" >
+			<button type="button" name="clear" value="clear" id="cncl" onclick="clearinputs();">Reset</button><br><br>
+			<nobr><label><b>Number of Remaining Installments:</b> <br></label><input type="text" name="inst" id="inst" >
 			</nobr><br>
-			<nobr><label><b>Remaining Installment Payment Amount:</b> </label><input type="text" name="rinpa" id="rinpa" >
+			<nobr><label><b>Remaining Installment Payment Amount:</b> <br></label><input type="text" name="rinpa" id="rinpa" >
 			</nobr><br>
-			<nobr><label><b>Next Due Date:</b> </label><input type="text" name="nd" id="nd" >
+			<nobr><label><b>Next Due Date:</b> <br></label><input type="text" name="nd" id="nd" >
 			</nobr><br>
 			
 			
@@ -273,7 +282,7 @@
 			<label><b>Extra payment:</b> </label><input type="text" name="epaid" id="epaid" disabled="disabled">
 			<br>
 			<div id="wrapper">
-  				<label>Do you want to schedule a installment scheme to arrears amount?</label>
+  				<label>Do you wish to schedule an installment plan to arrears amount?</label>
   				<a href="lending_shedule.jsp" class="button">Yes</a>
   				<a href="dp.jsp" class="button">No</a>
 			</div>
