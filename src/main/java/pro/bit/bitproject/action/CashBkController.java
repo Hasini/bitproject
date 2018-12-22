@@ -3,12 +3,14 @@ package pro.bit.bitproject.action;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -21,7 +23,7 @@ import pro.bit.bitproject.domain.CashBook;
 @WebServlet("/CashBkController")
 public class CashBkController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+    final static Logger logger = Logger.getLogger(CashBkController.class);
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -95,7 +97,7 @@ public class CashBkController extends HttpServlet {
 				}
 				
 			} else {
-				
+				/////to do save data to tot_arrears
 				int noofins =0;
 				int remainmode = 0;
 				if (request.getParameter("inspay") != null){
@@ -105,13 +107,15 @@ public class CashBkController extends HttpServlet {
 					noofins= Integer.parseInt(request.getParameter("noofins"));
 			 	}
 				createCB (branchId,customerId,billAmount,paidAmount,paiddate,type,userid,custcashbookid,0.00,response);
-				//todoooooooooooooooooooooooooo
+				
 				remainmode = getmode(custcashbookid)-noofins;
+				//todoooooooooooooooooooooooooo
+				//remainPay = 
 				try {
 					updateInsPay(custcashbookid,noofins);
 					json.put("re", remainmode);
 					json.put("nd", nextdue);
-					json.put("success", "Installment payment successfuly paid..!");
+					json.put("success", "Installment successfuly paid..!");
 					
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -167,6 +171,7 @@ public class CashBkController extends HttpServlet {
 		dao.saveArrearsAmt(custcashbookid,paiddate,todayarr);
 	}
 
+	/*Save data to tot_arrears table*/
 	private void saveArrearsAmttogetTot (int customerId, double todayarr, LocalDateTime paiddate){
 		CashBookDaoImpl dao = new CashBookDaoImpl();
 		String custcashbookid = getNic(customerId);

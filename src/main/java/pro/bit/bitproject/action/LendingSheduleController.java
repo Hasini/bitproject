@@ -48,9 +48,11 @@ public class LendingSheduleController extends HttpServlet {
 			
 		case "sheduleLoan":
 			Boolean isSchedule=sheduleloan(request,response);
+			System.out.println(isSchedule+"isScheduleisScheduleisScheduleisScheduleisScheduleisScheduleisScheduleisScheduleisScheduleisScheduleisScheduleisSchedule");
 			if (isSchedule ==true){
 				try {
-					json.put("msg1", "Installement plan is added ..");
+					json.put("xx", "Installement plan is added ..");
+					
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
@@ -89,8 +91,8 @@ public class LendingSheduleController extends HttpServlet {
 		try {
 			arramount = gettotarr(custcashbookid);
 			modepayment = arramount/mode;
-			if (arramount>=50000){
-				//if (arramount>=50000 && getSheduledSts(custcashbookid)==false){
+			
+			if (arramount>=50000 && getSheduledSts(custcashbookid)==false){
 					ls.setCash_arrears_id(caid);
 					ls.setCreatedtime(createdtime);
 					ls.setMode(mode);
@@ -107,6 +109,7 @@ public class LendingSheduleController extends HttpServlet {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		System.out.println(isSchedule+"isScheduleisScheduleisScheduleisScheduleisSchedule");
 		return isSchedule;
 	}
 	
@@ -136,10 +139,16 @@ public class LendingSheduleController extends HttpServlet {
 	
 	private boolean getSheduledSts(String custcashbookid){
 		LendingSheuleDaoImpl lendDao = new LendingSheuleDaoImpl();
-		String sts= "NS";
-		sts=lendDao.getSheduledSts(custcashbookid);
+		String sts= null;
+		if (lendDao.getSheduledSts(custcashbookid) != null && !lendDao.getSheduledSts(custcashbookid).isEmpty()){
+			sts=lendDao.getSheduledSts(custcashbookid);
+		}else {
+			 sts = "NS";
+			
+		}
+		System.out.println(sts+"stsssssssssssssssssssssssssssssssssss");
 		boolean boosts;
-		boosts = sts .equals("S") ? true: false;
+		boosts = sts.equals("S") ? true: false;
 		System.out.println(boosts+"--");
 		return boosts;
 		
