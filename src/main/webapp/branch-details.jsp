@@ -215,7 +215,7 @@
 	<legend>Branch Details</legend>
 
 
-<div id="main">
+
 	<div id = "createDiv">
 		
 			<h2>Create Branch Details</h2>

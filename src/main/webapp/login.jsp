@@ -60,6 +60,8 @@ span.psw {
     
 }
 
+
+
 </style>
 
 <script type="text/javascript">
@@ -132,9 +134,6 @@ span.psw {
 			
 		});
 		
-		
-		
-		
 	});
 
 </script>
@@ -156,9 +155,8 @@ span.psw {
 					<input type="password" placeholder="Enter Password" name="psw" id="psw" required="required"> 
 					<label><b>User Type </b> </label>
 					
-					<select id="usertype" name="usertype" >
-						<option>SELECT</option>
-						
+					<select id="usertype" name="usertype" class="ut">
+						<option>SELECT</option>	
 					</select>
 
 					<button type="submit" class ="submit" id="submit">Login</button>

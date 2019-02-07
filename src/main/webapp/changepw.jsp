@@ -72,8 +72,8 @@
 <fieldset>
 	<legend>Recover Password</legend>
 	<div id ="forgetpassword">
-		<label> Username :</label> <input type="text" id="username" name="username"/>
-		<label> New Password :</label> <input type="text" id="password" name="password"/>
+		<label> Username :</label> <input type="text" id="username" name="username"/><br>
+		<label> New Password :</label> <input type="text" id="password" name="password"/><br>
 		<button class="button button4" type="submit" name="update" id="update">Change password</button>
 		
 	</div>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-
+<%@include file="header.jsp" %> 
 <html>
 <head>
 
@@ -11,7 +11,7 @@
 	<script src="js/commonFunctions.js"></script>
 	
 	<link rel="stylesheet" type="text/css" href="css/common.css">
-	<link rel="icon" href="images/home.jpg">
+	<link rel="icon" href="images/favic.jpg">
 
 	
 
@@ -52,6 +52,16 @@ span.psw {
 
 #usertype{
     width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    
+}
+
+.ut{
+    width: 00px;
     padding: 12px 20px;
     margin: 8px 0;
     display: inline-block;
@@ -143,7 +153,7 @@ span.psw {
 </head>
 
 <body>
-	<div id="main" style="float:left">
+	<div class="main" style="float:left">
 		<div>
 			<div class="imgcontainer">
 					<img src="images/login.jpg" alt="Avatar" class="avatar">
@@ -156,23 +166,30 @@ span.psw {
 					<input type="password" placeholder="Enter Password" name="psw" id="psw" required="required"> 
 					<label><b>User Type </b> </label>
 					
-					<select id="usertype" name="usertype" >
-						<option>SELECT</option>
-						
+					<select id="usertype" name="usertype" class="ut">
+						<option>SELECT</option>	
 					</select>
 
 					<button type="submit" class ="submit" id="submit">Login</button>
 					<label> <input type="checkbox" checked="checked">
 						Remember me
 					</label>
+					<div> <a href="changepw.jsp">Change Password</a><br></div>
 				</div>
 		</div>
-		<div> <a href="changepw.jsp">Change Password</a><br></div>
 		
 	</div>
-	<div style="float: right ;background-image: url(images/background.jpg);  background-repeat: no-repeat;" >
-			
+	<div style="float: right">
+			<p>Register New System User</p>
+			<button type="submit" id="signup" value="signup"
+						onclick="window.location.href='sign-up.jsp'">Register</button>
 	</div>
+	
 
 </body>
 </html>
+
+
+
+
+
