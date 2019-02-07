@@ -6,10 +6,15 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import pro.bit.bitproject.common.ConnectionUtil;
 import pro.bit.bitproject.dao.LendingDAO;
 import pro.bit.bitproject.domain.CashBook;
 import pro.bit.bitproject.domain.LendingShedule;
+
+
 
 public class LendingSheduleDAOImpl implements LendingDAO{
 
@@ -60,7 +65,8 @@ public class LendingSheduleDAOImpl implements LendingDAO{
 		int casharrid = 0;
 		try {
 			
-			PreparedStatement ps = ConnectionUtil.openConnection().prepareStatement("select ca_id from cash_arrears where custcashbookid = ?");
+			PreparedStatement ps = ConnectionUtil.openConnection().prepareStatement
+					("select ca_id from cash_arrears where custcashbookid = ?");
 			ps.setString(1, custcashbookid);
 			ResultSet rs= ps.executeQuery();
 			while (rs.next()) {
@@ -88,8 +94,36 @@ public class LendingSheduleDAOImpl implements LendingDAO{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return;
+		return ;
 		
 	}
-
+	
+	public JSONArray viewCustomerDetails(String cus_nic,String cus_home_tel) throws SQLException, Exception {
+		ResultSet rs = null;
+		JSONArray jsonArray=new JSONArray();
+		String viewCusDet = "select cd.cus_home_tel,cd.cus_nic,bd.branch_descr,cd.status ,ta.tot_arrears"+
+							"from customer_details cd left join branch_det bd on cd.branch_id = bd.branch_id left join tot_arrears ta"
+							+ "on cd.cus_nic= ta.cust_cash_booid"
+							+ "where cd.cus_nic= ? or cd.cus_home_tel=?";
+		PreparedStatement ps;
+		
+		ps = ConnectionUtil.openConnection().prepareStatement(viewCusDet);
+		ps.setString(1, cus_nic);
+		ps.setString(2, cus_home_tel);
+		ps.executeQuery();
+		
+		rs = ps.getResultSet();
+		
+		while (rs.next()){			
+			 JSONObject jsonObject=new JSONObject();
+			 jsonObject.put("cus_fullname", rs.getString(1));
+			 jsonObject.put("cus_nic", rs.getString(2));
+			 jsonObject.put("branch_descr", rs.getString(3));
+			 jsonObject.put("status", rs.getString(4));
+			 jsonObject.put("tot_arrears", rs.getString(5));
+			 jsonArray.put(jsonObject);
+		}
+		rs.close();
+		return jsonArray;
+	}
 }
