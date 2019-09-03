@@ -1,6 +1,6 @@
 package pro.bit.bitproject.domain;
 
-import java.time.LocalDate;
+
 import java.time.LocalDateTime;
 
 public class DailyExpense {
@@ -13,9 +13,9 @@ public class DailyExpense {
     private String remarks;
     private int expenseType;
     private String billCode;
-    private LocalDate submittedDate;
-    private LocalDate billDate;
-    private int customerId;
+    private String submittedDate;
+    private String billDate;
+    private int branchId;
     
     
 	public int getExpenseId() {
@@ -67,24 +67,26 @@ public class DailyExpense {
 	public void setBillCode(String billCode) {
 		this.billCode = billCode;
 	}
-	public LocalDate getSubmittedDate() {
+	public String getSubmittedDate() {
 		return submittedDate;
 	}
-	public void setSubmittedDate(LocalDate submittedDate) {
+	public void setSubmittedDate(String submittedDate) {
 		this.submittedDate = submittedDate;
 	}
-	public LocalDate getBillDate() {
+	public String getBillDate() {
 		return billDate;
 	}
-	public void setBillDate(LocalDate billDate) {
+	public void setBillDate(String billDate) {
 		this.billDate = billDate;
 	}
-	public int getCustomerId() {
-		return customerId;
+	
+	public int getBranchId() {
+		return branchId;
 	}
-	public void setCustomerId(int customerId) {
-		this.customerId = customerId;
+	public void setBranchId(int branchId) {
+		this.branchId = branchId;
 	}
+	
 	
 	
 	

@@ -26,25 +26,24 @@ public class IncomeTypeController extends HttpServlet {
         super();
     }
 
-    
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		JSONObject jsonobj = new JSONObject();
 		JSONArray jsonArray = new JSONArray();
 		String chkVal = request.getParameter("checkboxVal");
 		try {
-			
 			if (chkVal.equals("create")){
 				create(request, response);
 				jsonobj.put("success", "Record Successfully created..!");
-			}else if (chkVal .equals("view")){
-	    			jsonArray=view();    			
-	    			jsonobj.put("ListObject", jsonArray);
+			}else if (chkVal.equals("view")){
+	    		jsonArray=view();    			
+	    		jsonobj.put("ListObject", jsonArray);
 	    	}else if(chkVal.equals("update")){
     			update(request,response);
-    			jsonobj.put("success", request.getParameter("codeu"));
+    			jsonobj.put("success", "Record successfully updated..!");
+    			jsonobj.put("error", "Error occured while updating..!");
     		}else{
     			delete(request, response);
-    			jsonobj.put("success", request.getParameter("coded"));
+    			jsonobj.put("success", "Record is no more valid..!");
     		}
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
@@ -53,16 +52,13 @@ public class IncomeTypeController extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		response.setContentType("application/json");
 		response.getWriter().write(jsonobj.toString());
-		
 	}
-
-
-	public JSONArray view() throws SQLException, Exception {
+    
+    public JSONArray view() throws SQLException, Exception {
 		IncomeTypeDAOImpl itdaoImpl = new IncomeTypeDAOImpl();
 		JSONArray jsonArray=new JSONArray();
 		jsonArray=itdaoImpl.viewIT();
@@ -71,28 +67,26 @@ public class IncomeTypeController extends HttpServlet {
 
 
 	public void delete(HttpServletRequest request, HttpServletResponse response) throws SQLException, Exception {
-		
 		IncomeTypeDAOImpl itDAOImpl = new IncomeTypeDAOImpl();
-		String coded = request.getParameter("coded");
-		itDAOImpl.deleteIT(coded);
-		
-		
+		int incomeTypeId = Integer.parseInt(request.getParameter("incomeTypeId"));
+		itDAOImpl.deleteIT(incomeTypeId);
 	}
-
 
 	public void update(HttpServletRequest request, HttpServletResponse response) throws SQLException, Exception {
 		IncomeTypeDAOImpl itDAOImpl = new IncomeTypeDAOImpl();
 		IncomeType it = new IncomeType();
+		try {
+			int id = Integer.parseInt(request.getParameter("incomeTypeId"));
+			String descr = request.getParameter("descru");
+			LocalDateTime createddate =  LocalDateTime.now();
+			it.setIncomeTypeId(id);
+			it.setIncometypeDescr(descr);
+			it.setCreatedtime(createddate);
+			itDAOImpl.updateIT(it);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
-		String code = request.getParameter("codeu");
-		String descr = request.getParameter("descru");
-		LocalDateTime createddate =  LocalDateTime.now();
-		
-		it.setIncometypecode(code);
-		it.setIncometypeDescr(descr);
-		it.setCreatedtime(createddate);
-		
-		itDAOImpl.updateIT(it);
 		
 	}
 

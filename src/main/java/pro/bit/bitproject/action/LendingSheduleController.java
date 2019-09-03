@@ -15,8 +15,10 @@ import org.json.JSONObject;
 
 import pro.bit.bitproject.daoImpl.CashBookDaoImpl;
 import pro.bit.bitproject.daoImpl.CustomerRegistrationDAOImpl;
-import pro.bit.bitproject.daoImpl.LendingSheuleDaoImpl;
+import pro.bit.bitproject.daoImpl.LendingSheduleDAOImpl;
+import pro.bit.bitproject.daoImpl.PaymentResheduleDAOImpl;
 import pro.bit.bitproject.domain.LendingShedule;
+import pro.bit.bitproject.domain.PaymentReshedule;
 
 @WebServlet("/LendingSheduleController")
 public class LendingSheduleController extends HttpServlet {
@@ -38,8 +40,8 @@ public class LendingSheduleController extends HttpServlet {
 		case "viewDet":
 			try {
 				arr = gettotarr(custcashbookid);
-				System.out.println(arr+"arrears lend shedule");
 				json.put("arr", arr);
+				
 			} catch (JSONException | SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -47,23 +49,27 @@ public class LendingSheduleController extends HttpServlet {
 			break;
 			
 		case "sheduleLoan":
-			Boolean isSchedule=sheduleloan(request,response);
-			System.out.println(isSchedule+"isScheduleisScheduleisScheduleisScheduleisScheduleisScheduleisScheduleisScheduleisScheduleisScheduleisScheduleisSchedule");
-			if (isSchedule ==true){
-				try {
-					json.put("xx", "Installement plan is added ..");
-					
-				} catch (JSONException e) {
-					e.printStackTrace();
+			Boolean isSchedule;
+			try {
+				isSchedule = sheduleloan(request,response);
+				if (isSchedule == true){
+					try {
+						json.put("suc", "Installement plan is added ..");
+						
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+				}else{
+					try {
+						System.out.println("else sch jason");
+						json.put("msg", "Sorry..! Unable to add installment plan");
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
 				}
-			}
-			else{
-				try {
-					System.out.println("else sch jason");
-					json.put("msg", "Sorry..! You have added an installment plan alredy");
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
+			} catch (JSONException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
 			break;
 
@@ -74,10 +80,12 @@ public class LendingSheduleController extends HttpServlet {
 		response.getWriter().write(json.toString());
 	}
 
-	private boolean sheduleloan(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	private boolean sheduleloan(HttpServletRequest request, HttpServletResponse response) throws IOException, JSONException {
 		JSONObject js = new JSONObject();
 		LendingShedule ls = new LendingShedule();
-		LendingSheuleDaoImpl ldao = new LendingSheuleDaoImpl();
+		LendingSheduleDAOImpl ldao = new LendingSheduleDAOImpl();
+		PaymentResheduleDAOImpl reschedule = new PaymentResheduleDAOImpl();
+		
 		double arramount;
 		double modepayment =0.00;
 		boolean isSchedule=false;
@@ -87,12 +95,16 @@ public class LendingSheduleController extends HttpServlet {
 		LocalDateTime createdtime = LocalDateTime.now();
 		LocalDateTime updatedtime = LocalDateTime.now();
 		int caid = getcaid(custcashbookid);
+		String resheduleSTS = reschedule.getReSheduledSts(custcashbookid);
 		
 		try {
 			arramount = gettotarr(custcashbookid);
 			modepayment = arramount/mode;
 			
-			if (arramount>=50000 && getSheduledSts(custcashbookid)==false){
+			if (arramount>=50000 && getSheduledSts(custcashbookid)==false ){
+				if(("RS".equals(resheduleSTS))){
+					js.put("err", "Customer has already added a reshedulement");
+				}else {
 					ls.setCash_arrears_id(caid);
 					ls.setCreatedtime(createdtime);
 					ls.setMode(mode);
@@ -101,15 +113,18 @@ public class LendingSheduleController extends HttpServlet {
 					ls.setUpdatedtime(updatedtime);
 					ls.setStatus("S");
 					ldao.createls(ls);
+					ldao.updateCashBook(custcashbookid);
 					isSchedule=true;
+				}
 			}else{
-				System.out.println("elseeeeeeee sch");
+				
 			}
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		System.out.println(isSchedule+"isScheduleisScheduleisScheduleisScheduleisSchedule");
+		response.setContentType("application/json");
+		response.getWriter().write(js.toString());
 		return isSchedule;
 	}
 	
@@ -121,7 +136,7 @@ public class LendingSheduleController extends HttpServlet {
 	}
 	
 	private int getcaid(String custcashbookid){
-		LendingSheuleDaoImpl lendDao = new LendingSheuleDaoImpl();
+		LendingSheduleDAOImpl lendDao = new LendingSheduleDAOImpl();
 		int casid = 0;
 		try {
 			casid=lendDao.getcaid(custcashbookid);
@@ -138,21 +153,20 @@ public class LendingSheduleController extends HttpServlet {
 	}
 	
 	private boolean getSheduledSts(String custcashbookid){
-		LendingSheuleDaoImpl lendDao = new LendingSheuleDaoImpl();
+		LendingSheduleDAOImpl lendDao = new LendingSheduleDAOImpl();
+		PaymentResheduleDAOImpl reschDAO = new PaymentResheduleDAOImpl();
+		boolean boosts;
 		String sts= null;
+		
 		if (lendDao.getSheduledSts(custcashbookid) != null && !lendDao.getSheduledSts(custcashbookid).isEmpty()){
-			sts=lendDao.getSheduledSts(custcashbookid);
+			sts = lendDao.getSheduledSts(custcashbookid);
+		}else if (reschDAO.getReSheduledSts(custcashbookid)!= null && !reschDAO.getSheduledSts(custcashbookid).isEmpty()){
+			sts = reschDAO.getReSheduledSts(custcashbookid);
 		}else {
 			 sts = "NS";
-			
 		}
-		System.out.println(sts+"stsssssssssssssssssssssssssssssssssss");
-		boolean boosts;
-		boosts = sts.equals("S") ? true: false;
-		System.out.println(boosts+"--");
+		boosts = sts.equals("S") || sts.equals("RS")  ? true: false;
 		return boosts;
-		
-		
 	}
 
 }

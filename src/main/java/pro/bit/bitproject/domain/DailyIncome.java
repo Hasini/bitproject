@@ -12,9 +12,9 @@ public class DailyIncome {
     private LocalDateTime entered_time;
     private int incomeType;
     private String billCode;
-    private LocalDate submitted_date;
-    private LocalDate bill_date;
-    private int customer_id;
+    private String submitted_date;
+    private String bill_date;
+    private int branchId;
     
     
 	public DailyIncome() {
@@ -58,28 +58,20 @@ public class DailyIncome {
 		this.entered_time = entered_time;
 	}
 
-	public LocalDate getSubmitted_date() {
+	public String getSubmitted_date() {
 		return submitted_date;
 	}
 
-	public void setSubmitted_date(LocalDate submitted_date) {
+	public void setSubmitted_date(String submitted_date) {
 		this.submitted_date = submitted_date;
 	}
 
-	public LocalDate getBill_date() {
+	public String getBill_date() {
 		return bill_date;
 	}
 
-	public void setBill_date(LocalDate bill_date) {
+	public void setBill_date(String bill_date) {
 		this.bill_date = bill_date;
-	}
-
-	public int getCustomer_id() {
-		return customer_id;
-	}
-
-	public void setCustomer_id(int customer_id) {
-		this.customer_id = customer_id;
 	}
 
 	public int getIncomeType() {
@@ -94,6 +86,14 @@ public class DailyIncome {
 	}
 	public void setBillCode(String billCode) {
 		this.billCode = billCode;
+	}
+
+	public int getBranchId() {
+		return branchId;
+	}
+
+	public void setBranchId(int branchId) {
+		this.branchId = branchId;
 	}
     
     

@@ -1,6 +1,7 @@
 package pro.bit.bitproject.action;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 
 import javax.servlet.ServletException;
@@ -29,15 +30,38 @@ public class CustomerRegistrationController extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		JSONArray jsonArray = new JSONArray();
+		JSONArray cusJsonArray = new JSONArray();
 		JSONObject json = new JSONObject();
 		String method = request.getParameter("method");
 		String nic = request.getParameter("nic");
+		String reason = request.getParameter("reason");
+		String shoptel = request.getParameter("shoptel");
+		String hometel = request.getParameter("hometel");
+		String mobileno = request.getParameter("mobileno");
+		String spouseAdd1 = request.getParameter("spouseAdd1");
+		String spouseAdd2 = request.getParameter("spouseAdd2");
+		String spouseAdd3 = request.getParameter("spouseAdd3");
+		String spouseHomeTel = request.getParameter("spouseHomeTel");
+		String SpouseMobileNo = request.getParameter("SpouseMobileNo");
+		String branchId = request.getParameter("branch");
+		
 		
 		switch (method) {
 		case "view":
 			try {
 				jsonArray = viewBranches();
+				cusJsonArray = getCustomerbyBranch();
 				json.put("branchobj", jsonArray);
+				json.put("cusObj", cusJsonArray);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			break;
+		case "loadCustomersByNic":
+			String Selectednic = request.getParameter("cus_nic");
+			try {
+				jsonArray = loadCustomersByNic(Selectednic);
+				
 			} catch (Exception e) {
 				
 				e.printStackTrace();
@@ -72,6 +96,32 @@ public class CustomerRegistrationController extends HttpServlet {
 				e.printStackTrace();
 			}
 			break;
+		case "deleteCus":
+			try {
+				deleteCustomer(nic,"D",reason);
+				json.put("succ", "Customer is removed..!");
+			} catch (Exception e) {
+				try {
+					json.put("error", "An error occured");
+				} catch (JSONException e1) {
+					e1.printStackTrace();
+				}
+				e.printStackTrace();
+			}
+			break;
+		case "editCus":
+			try {
+				editCustomer(shoptel,hometel,mobileno,spouseAdd1,spouseAdd2,spouseAdd3,spouseHomeTel,SpouseMobileNo,nic,"E");
+				json.put("succ", "Customer is updated..!");
+			} catch (Exception e) {
+				try {
+					json.put("error", "An error occured");
+				} catch (JSONException e1) {
+					e1.printStackTrace();
+				}
+				e.printStackTrace();
+			}
+			break;
 			
 
 		default:
@@ -83,6 +133,24 @@ public class CustomerRegistrationController extends HttpServlet {
 	}
 
 	
+
+	private JSONArray loadCustomersByNic(String selectednic) throws SQLException, Exception {
+		JSONArray allDetailsArr = new JSONArray();
+		CustomerRegistrationDAOImpl cusdaoimpl = new CustomerRegistrationDAOImpl();
+		allDetailsArr = cusdaoimpl.loadCustomersByNic(selectednic);
+		return null;
+	}
+
+	private JSONArray getCustomerbyBranch() {
+  		JSONArray cusArr = new JSONArray();
+		CustomerRegistrationDAOImpl cusdaoimpl = new CustomerRegistrationDAOImpl();
+		try {
+			cusArr = cusdaoimpl.getCustomerbyBranch();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return cusArr;
+	}
 
 	private JSONArray viewAllCus() {
 		JSONArray cusarr = new JSONArray();
@@ -121,10 +189,8 @@ public class CustomerRegistrationController extends HttpServlet {
 
 	public void createCustomer(HttpServletRequest request, HttpServletResponse response) throws JSONException {
 		
-		CustomerRegistration customer = new CustomerRegistration();
-		
-		CustomerRegistrationDAOImpl cusDaoImpl = new CustomerRegistrationDAOImpl();
-		
+		 CustomerRegistration customer = new CustomerRegistration();
+		 CustomerRegistrationDAOImpl cusDaoImpl = new CustomerRegistrationDAOImpl();
 		
 		 int branchId = Integer.parseInt(request.getParameter("branch"));
 		 String cusfullname = request.getParameter("fname");
@@ -186,7 +252,6 @@ public class CustomerRegistrationController extends HttpServlet {
 		 int cusId = getCusIdByNic(cusnic);
 		
 		 cusDaoImpl.createCus(customer); 
-
 	}
 
 	public JSONArray viewBranches() {
@@ -203,6 +268,24 @@ public class CustomerRegistrationController extends HttpServlet {
 	public int getCusIdByNic(String nic){
 		CustomerRegistrationDAOImpl cusdaoimpl = new CustomerRegistrationDAOImpl();
 		return cusdaoimpl.getCusIdByNic(nic); 
-		
+	}
+	
+	private void deleteCustomer(String NIC,String sts,String reason){
+		CustomerRegistrationDAOImpl cusdaoimpl = new CustomerRegistrationDAOImpl();
+		try {
+			cusdaoimpl.deleteCustomer(NIC,sts,reason);
+		} catch (SQLException e) {
+			System.out.println(e+"sql exception");
+			e.printStackTrace();
+		} catch (Exception e) {
+			System.out.println(e+"exception");
+			e.printStackTrace();
+		}
+	}
+	
+	private void editCustomer(String shoptel,String hometel,String mobileno,String spouseAdd1,
+			String spouseAdd2,String spouseAdd3,String spouseHomeTel,String SpouseMobileNo,String NIC,String sts) throws SQLException, Exception{
+		CustomerRegistrationDAOImpl cusdaoimpl = new CustomerRegistrationDAOImpl();
+		cusdaoimpl.editCustomer(shoptel,hometel,mobileno,spouseAdd1,spouseAdd2,spouseAdd3,spouseHomeTel,SpouseMobileNo,NIC,sts);
 	}
 }

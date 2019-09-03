@@ -11,17 +11,6 @@
 		<link rel="icon" href="images/favic.jpg">
 		
 <style>
-
-button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    cursor: pointer;
-    width: 50%;
-}
-
 input[type=text]:focus, input[type=password]:focus {
     background-color: #ddd;
     outline: none;
@@ -37,15 +26,41 @@ button:hover {
     opacity:1;
 }
 
+#usertype{
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    
+}
+
 /* Extra styles for the cancel button */
-.cancelbtn {
-    padding: 14px 20px;
-    background-color: #f44336;
+#cancel {
+    color: black;
+	padding: 12px 20px;
+	margin: 8px 0;
+	border: 1px;
+	cursor: pointer;
+	width: 30%;
+    border-color:#20B2AA;
+    border-radius: 12px;
+}
+#reset{
+color: #DC143C;
+	padding: 12px 20px;
+	margin: 8px 0;
+	border: thin;
+	cursor: pointer;
+	width: 30%;
+    border-color:#DC143C;
+    border-radius: 12px;
 }
 
 /* Add padding to container elements */
 .container {
-    padding: 16px;
+    padding: 5px;
 }
 
 /* Clear floats */
@@ -54,21 +69,50 @@ button:hover {
     clear: both;
     display: table;
 }
-
-/* Change styles for cancel button and signup button on extra small screens */
-@media screen and (max-width: 300px) {
-    .cancelbtn, .signupbtn {
-       width: 100%;
-    }
+#signup{
+	background-color: #20B2AA;
+	color: white;
+	padding: 12px 20px;
+	margin: 8px 0;
+	border: none;
+	cursor: pointer;
+	width: 30%;
 }
+
+
+.main {
+	width:800px;
+    border-top:30%;
+    padding-top:5%;
+    margin-top:5%;
+    padding-left:35%;
+    border-left:10%;
+    min-height: 100px;
+    overflow: hidden;
+    border-style: hidden;
+}
+input[type=text], input[type=password] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 5px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+
 </style>
 
 
 <script type="text/javascript">
-	
-	
 	$(document).ready(function(){
-		
+		$('#cancel').click(function(){
+			window.location.assign('/bitproject/index.html');
+		});
+		$('#reset').click(function(){
+			$('input[type="text"]').val('');
+			$('input[type="password"]').val('');
+		});
 		 $(window).load(function(){
 			 var optionsAsString;
 			 	$.ajax({
@@ -83,58 +127,53 @@ button:hover {
 							var usertypedescr = "<option value="+idvalue+">"+responseText.usertypeobj[i]["descr"]+"</option>";
 							$("#usertype").append (usertypedescr);
 						 }
-						
 					}   
-					
 				}); 
-		    });
-		$("#submit").click(function(){
-			
-			var username=document.getElementById("email").value;
-			var password=document.getElementById("psw").value;
-			var repeatpassword=document.getElementById("pswr").value;
-			var method;
-			var e = document.getElementById("usertype");
-			var userType = e.options[e.selectedIndex].value;
-			
-			if (password != repeatpassword){
-				alert ("Password mismatched");
-			}else {
-				$.ajax({
-					type : 'post',
-					url : 'userservlet',
-					data : {
-						username : username,
-						password : password,
-						method : "signup",
-						usertypeid : userType
-					},
-					success: function (responseText) {
-						
-						if (responseText.successx){
-							alert (responseText.successx);
-							window.location.assign('/bitproject/login.jsp');
-						}else {
-							alert (responseText.error);
-						}
-							
+			 	
+			 	$("#signup").click(function(){
+					var username=document.getElementById("email").value;
+					var password=document.getElementById("psw").value;
+					var repeatpassword=document.getElementById("pswr").value;
+					var method;
+					var e = document.getElementById("usertype");
+					var userType = e.options[e.selectedIndex].value;
+					
+					if (password != repeatpassword){
+						alert ("Password mismatched");
+					} else if (username=="" || username == null || password == ""|| password == null || repeatpassword == ""|| repeatpassword == null || userType=="Select"){
+						alert("Please input values");
+						document.getElementById("username").focus();
+					} else {
+						$.ajax({
+							type : 'post',
+							url : 'userservlet',
+							data : {
+								username : username,
+								password : password,
+								method : "signup",
+								usertypeid : userType
+							},
+							success: function (responseText) {
+								$('input[type="text"]').val('');
+								if (responseText.signupSuc){
+									alert (responseText.signupSuc);
+									alert("User registered..!");
+									window.location.assign('/bitproject/login.jsp');
+								}else {
+									alert (responseText.error);
+									$('input[type="text"]').val('');
+								}
+									
+							}
+						});
 					}
 				});
-				//alert("Record Successfully Created..!");
-				//window.location.assign('/bitproject/main.jsp');
-			}
+		    });
 		});
-	});
 
 </script>
 	</head>
-<body>
-
-
-<body>
-
-
-  <div class="main">
+<body style="width: 80%; height: 70%; margin-left: 0.5%;"><div class="main">
     <h1>Sign Up</h1>
     <hr>
 
@@ -151,10 +190,12 @@ button:hover {
 		</select><font style="color: red;">*</font></nobr>
     
    <div class="clearfix">
-      <button type="button" class="cancelbtn" onclick="window.location.href='index.html'">Cancel</button>
-      <button type="submit" class="submit" id ="submit">Sign Up</button>
+   		<button type="submit" class="submit" id ="signup">Sign Up</button>
+      <button type="button" id="cancel" onclick="window.location.href='index.html'">Cancel</button>
+      <button type="button" id="reset">Reset</button>
+      
     </div>
   </div>
-
 </body>
 </html>
+<%@include file="footer.jsp" %> 

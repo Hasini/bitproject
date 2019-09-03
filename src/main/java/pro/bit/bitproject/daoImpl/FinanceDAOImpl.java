@@ -4,13 +4,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import pro.bit.bitproject.common.ConnectionUtil;
 import pro.bit.bitproject.dao.FinanceDAO;
-
 import pro.bit.bitproject.domain.DailyExpense;
 import pro.bit.bitproject.domain.DailyIncome;
 
@@ -19,7 +20,7 @@ public class FinanceDAOImpl implements FinanceDAO {
 
 	public void createDailyExpense(DailyExpense dex) {
 		String insertQuery = "INSERT INTO daily_expences(amount,submitted_User,entered_by,created_time,expense_type,bill_code,"
-				+ "submittedDate,billDate,customer_id) VALUES (?,?,?,?,?,?,?,?,?)";
+				+ "submittedDate,billDate,branch_id) VALUES (?,?,?,?,?,?,?,?,?)";
 		
 		try {
 			
@@ -32,22 +33,19 @@ public class FinanceDAOImpl implements FinanceDAO {
 			ps.setString(6, dex.getBillCode());
 			ps.setObject(7, dex.getSubmittedDate());
 			ps.setObject(8, dex.getBillDate());
-			ps.setInt(9, dex.getCustomerId());
+			ps.setInt(9, dex.getBranchId());
 			ps.executeUpdate();
-			System.out.println("asasa");
 		} catch (SQLException es) {
 			es.printStackTrace();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	
-		
 	}
 
 	public void createDailyIncome(DailyIncome dic) {
 		String insertQuery = "INSERT INTO dailyincome(amount,submitted_user,entered_user,income_type,bill_code,bill_date,entered_date,"
-				+ "submitted_date,customer_id) VALUES (?,?,?,?,?,?,?,?,?)";
+				+ "submitted_date,branch_id) VALUES (?,?,?,?,?,?,?,?,?)";
 		
 		try {
 			
@@ -60,7 +58,7 @@ public class FinanceDAOImpl implements FinanceDAO {
 			ps.setObject(6, dic.getBill_date());
 			ps.setTimestamp(7, Timestamp.valueOf(dic.getEntered_time()));
 			ps.setObject(8, dic.getSubmitted_date());
-			ps.setInt(9, dic.getCustomer_id());
+			ps.setInt(9, dic.getBranchId());
 			ps.executeUpdate();
 			
 		} catch (SQLException es) {
@@ -161,4 +159,33 @@ public class FinanceDAOImpl implements FinanceDAO {
 		}
 		return jsonArray;
 	}
+
+	public Double getTotalIncome(int branchId, LocalDateTime today) throws SQLException, Exception {
+		ResultSet rs = null;
+		Double totIncome = 0.00;
+		String qry = "select sum(amount) as income from dailyincome where branch_id = ? and bill_date = ?";
+		PreparedStatement ps = ConnectionUtil.openConnection().prepareStatement(qry);
+		ps.setInt(1, branchId);
+		ps.setTimestamp(2, Timestamp.valueOf(today));
+		rs = ps.executeQuery();
+		while (rs.next()) {
+			totIncome = rs.getDouble(1);
+		}
+		return totIncome;
+	}
+
+	public Double getTotalExpences(int branchId, LocalDateTime today) throws SQLException, Exception{
+		ResultSet rs = null;
+		Double totExpense = 0.00;
+		String qry = "select sum(amount) as expenses from daily_expences where branch_id = ? and billDate = ?";
+		PreparedStatement ps = ConnectionUtil.openConnection().prepareStatement(qry);
+		ps.setInt(1, branchId);
+		ps.setTimestamp(2, Timestamp.valueOf(today));
+		rs = ps.executeQuery();
+		while (rs.next()) {
+			totExpense = rs.getDouble(1);
+		}
+		return totExpense;
+	}
+
 }

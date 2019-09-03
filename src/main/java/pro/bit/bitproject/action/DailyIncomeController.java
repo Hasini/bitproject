@@ -1,7 +1,6 @@
 package pro.bit.bitproject.action;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -84,9 +83,9 @@ public class DailyIncomeController extends HttpServlet {
 		try {
 			double amount = 0.00;
 			amount = Double.parseDouble(request.getParameter("amount"));
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-			LocalDate billDate = LocalDate.parse(request.getParameter("billdate"), formatter);
-			LocalDate subdate = LocalDate.parse(request.getParameter("subdate"), formatter);
+			//DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+			String billDate = request.getParameter("billdate");
+			String subdate = request.getParameter("subdate");
 			
 			dinc.setAmount(amount);
 			dinc.setBillCode(request.getParameter("billcode"));
@@ -94,7 +93,7 @@ public class DailyIncomeController extends HttpServlet {
 			dinc.setBill_date(billDate);
 			dinc.setSubmitted_date(subdate);
 			dinc.setIncomeId(Integer.parseInt(request.getParameter("incometypeId")));
-			dinc.setCustomer_id(Integer.parseInt(request.getParameter("customer")));
+			dinc.setBranchId(Integer.parseInt(request.getParameter("branch")));
 			dinc.setEnteredUserid(1);
 			dinc.setEntered_time(LocalDateTime.now());
 		

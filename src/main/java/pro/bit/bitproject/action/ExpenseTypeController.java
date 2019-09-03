@@ -26,25 +26,24 @@ public class ExpenseTypeController extends HttpServlet {
         super();
     }
 
-    
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		JSONObject jsonobj = new JSONObject();
 		JSONArray jsonArray = new JSONArray();
 		String chkVal = request.getParameter("checkboxVal");
 		try {
-			
 			if (chkVal.equals("create")){
 				create(request, response);
 				jsonobj.put("success", "Record Successfully created..!");
 			}else if (chkVal .equals("view")){
-	    			jsonArray=view();    			
-	    			jsonobj.put("ListObject", jsonArray);
+	    		jsonArray=view();    			
+	    		jsonobj.put("ListObject", jsonArray);
 	    	}else if(chkVal.equals("update")){
     			update(request,response);
-    			jsonobj.put("success", request.getParameter("codeu"));
+    			jsonobj.put("success", "Record successfully Updated..!");
+    			jsonobj.put("error", "Error occured while updating the record");
     		}else{
     			delete(request, response);
-    			jsonobj.put("success", request.getParameter("coded"));
+    			jsonobj.put("success", "Record no more valid");
     		}
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
@@ -61,41 +60,34 @@ public class ExpenseTypeController extends HttpServlet {
 		
 	}
 
-
 	public JSONArray view() throws SQLException, Exception {
 		ExpenseTypeDAOImpl itdaoImpl = new ExpenseTypeDAOImpl();
 		JSONArray jsonArray=new JSONArray();
-		jsonArray=itdaoImpl.viewIT();
+		jsonArray=itdaoImpl.viewET();
 		return jsonArray;
 	}
-
-
+	
 	public void delete(HttpServletRequest request, HttpServletResponse response) throws SQLException, Exception {
-		
 		ExpenseTypeDAOImpl itDAOImpl = new ExpenseTypeDAOImpl();
-		String coded = request.getParameter("coded");
-		itDAOImpl.deleteIT(coded);
-		
-		
+		int expenseTypeId = Integer.parseInt(request.getParameter("expenseTypeId"));
+		itDAOImpl.deleteIT(expenseTypeId);
 	}
-
 
 	public void update(HttpServletRequest request, HttpServletResponse response) throws SQLException, Exception {
-		ExpenseTypeDAOImpl itDAOImpl = new ExpenseTypeDAOImpl();
-		ExpenseType et = new ExpenseType();
-		
-		String code = request.getParameter("codeu");
-		String descr = request.getParameter("descru");
-		LocalDateTime createddate =  LocalDateTime.now();
-		
-		et.setExpensetypecode(code);
-		et.setExpensetypeDescr(descr);
-		et.setCreatedtime(createddate);
-		
-		itDAOImpl.updateET(et);
-		
+		try{
+			ExpenseTypeDAOImpl itDAOImpl = new ExpenseTypeDAOImpl();
+			ExpenseType et = new ExpenseType();
+			int id = Integer.parseInt(request.getParameter("expenseTypeId"));
+			String descr = request.getParameter("descru");
+			LocalDateTime createddate =  LocalDateTime.now();
+			et.setExpenseTypeId(id);
+			et.setExpensetypeDescr(descr);
+			et.setCreatedtime(createddate);
+			itDAOImpl.updateET(et);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-
 
 	public ExpenseTypeController create(HttpServletRequest request, HttpServletResponse response) throws SQLException {
 		
@@ -109,10 +101,7 @@ public class ExpenseTypeController extends HttpServlet {
 		et.setExpensetypecode(code);
 		et.setExpensetypeDescr(descr);
 		et.setCreatedtime(createddate);
-		
-		
 		itdaoimpl.createET(code,descr,createddate);
 		return null;
-		
 	}
 }

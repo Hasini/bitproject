@@ -35,31 +35,26 @@ private static final long serialVersionUID = 1L;
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
     	JSONObject json = new JSONObject();
     	String chkVal = request.getParameter("checkboxVal");
-
     	JSONArray jsonArray=new JSONArray();
     	try {
     		if (chkVal.equals("create")){
     			createBranch(request, response);
     			json.put("success", request.getParameter("code"));
-    			
     		}else if (chkVal .equals("view")){
     			jsonArray=view();    			
     			json.put("branchListObject", jsonArray);
-    			
     		}else if(chkVal.equals("update")){
     			update(request,response);
-    			json.put("success", request.getParameter("codeu"));
+    			json.put("success", "Successfully Updated the branch code");
+    			json.put("error", "Error occured while updating..!");
     		}else{
     			delete(request, response);
-    			json.put("success", request.getParameter("coded"));
-    		}
-    	
-			
+    			json.put("success", "Record is no more valid..!");
+    		}	
 		} catch (Exception e) {
 			try {
-				json.put("error", "Error Occured..!");
+				json.put("error", "Error Occured while updating the record..!");
 			} catch (JSONException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 			e.printStackTrace();
@@ -69,8 +64,6 @@ private static final long serialVersionUID = 1L;
 		
     }
     
-    
-
 	public void createBranch(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
 		BranchDAOImpl bdaoimpl = new BranchDAOImpl();
@@ -86,36 +79,31 @@ private static final long serialVersionUID = 1L;
 		bdaoimpl.createBranch(branch);
 	}
 
-		
 	public void update(HttpServletRequest request, HttpServletResponse response) throws SQLException, Exception {
-			
-		BranchDAOImpl bdaoimpl = new BranchDAOImpl();
-		Branch branch = new Branch();
-		String code = request.getParameter("codeu");
-		String descr = request.getParameter("descru");
-		LocalDateTime createddate =  LocalDateTime.now();
-		
-		branch.setBranchCode(code);
-		branch.setBranchDescr(descr);
-		branch.setCreatedTime(createddate);
-		bdaoimpl.updateBranch(branch);
+		try {
+			BranchDAOImpl bdaoimpl = new BranchDAOImpl();
+			Branch branch = new Branch();
+			int id = Integer.parseInt(request.getParameter("id"));
+			String descr = request.getParameter("descru");
+			LocalDateTime updatedTime =  LocalDateTime.now();
+			branch.setBranchId(id);
+			branch.setBranchDescr(descr);
+			branch.setUpdatedDate(updatedTime);
+			bdaoimpl.updateBranch(branch);
+		} catch (Exception e){
+			e.printStackTrace();
+		}
 	}
-	
-	
 	public void delete(HttpServletRequest request, HttpServletResponse response) throws SQLException, Exception {
 		BranchDAOImpl bdaoimpl = new BranchDAOImpl();
-		String coded = request.getParameter("coded");
-		String descrd = request.getParameter("descrd");
-		bdaoimpl.deleteBranch(coded,descrd);
-		
+		int id = Integer.parseInt(request.getParameter("id"));
+		bdaoimpl.deleteBranch(id);
 	}
 	
 	public JSONArray view() throws SQLException, Exception {
 		BranchDAOImpl bdaoimpl = new BranchDAOImpl();
-		//List<String> branchlist = new ArrayList<>();
 		JSONArray jsonArray=new JSONArray();
 		jsonArray= bdaoimpl.viewBranchDetails();
-		
 		return jsonArray;
 	 }
 

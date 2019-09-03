@@ -15,47 +15,67 @@
 			$(window).load(function(){
 				var checkboxVal;
 				
+				$("#main").hide();
 				$("#createDiv").hide();
 			    $("#deleteDiv").hide();
 			    $("#updateDiv").hide();
-				
 			});
-			
-		    
-		    $("#create").click(function(){
-		    	$("p").hide();
+			$("#create").click(function(){
+				$("#main").show();
 		    	$("#createDiv").show();
 		        $("#deleteDiv").hide();
 		        $("#updateDiv").hide();
 		        
 		        $("#submitbtn").click(function() {
-		        	$.ajax({
-						type : 'GET',
-						url : 'createaction',
-						data : {
-							code : document.getElementById("code").value,
-							descr : document.getElementById("descr").value,
-							checkboxVal : "create"
-						},
-						success: function (responseText) {
-	  						if (responseText.success){
-	  							alert(responseText.success+" Branch Successfully Created...!");
-	  							window.location.assign('/bitproject/main.jsp');
-	  						}else {
-	  							alert(responseText.error);
-	  						}
-	  					}   
-						
-					});
+		        	var code = document.getElementById("code").value;
+		        	var descr = document.getElementById("descr").value;
+		        	if(code=="" || code == null || descr == ""|| descr == null){
+						alert("Values are Empty");
+						document.getElementById("code").focus();
+					} else {
+						$.ajax({
+							type : 'GET',
+							url : 'createaction',
+							data : {
+								code : document.getElementById("code").value,
+								descr : document.getElementById("descr").value,
+								checkboxVal : "create"
+							},
+							success: function (responseText) {
+		  						if (responseText.success){
+		  							alert(responseText.success+" Branch Successfully Created...!");
+		  							$('input[type="text"]').val('');
+		  							window.location.assign('/bitproject/admin.jsp');
+		  						}else {
+		  							alert(responseText.error);
+		  							$('input[type="text"]').val('');
+		  							window.location.assign('/bitproject/branch-details.jsp');
+		  						}
+		  					}   
+						});
+					}
 				});    
-		        
-		    });
+		   });
 		    
 		    $("#update").click(function(){
-		    	$("p").hide();
-		  		$("#updateDiv").show();
+		    	$("#main").show();
+		    	$("#updateDiv").show();
 		        $("#createDiv").hide();
 		        $("#deleteDiv").hide();
+		        $.ajax({
+					type : 'GET',
+					url : 'createaction',
+					data : {
+					checkboxVal : "view"
+					},
+					success : function(responseText) {
+						for(var i=0;i<responseText.branchListObject.length;i++){
+							var idvalue = responseText.branchListObject[i]["id"];
+							var branch = "<option value="+idvalue+">"+responseText.branchListObject[i]["code"]+"</option>";
+							$("#bcode").append (branch);
+						}
+				    }
+				});
 		        
 		        $("#view").click(function() {
 		        	$.ajax({
@@ -74,204 +94,144 @@
 					        	 	var tr="<tr width='30%'>";
 						            var td1="<td width='15%'>"+responseText.branchListObject[i]["code"]+"</td>";
 						            var td2="<td width='15%'>"+responseText.branchListObject[i]["desc"]+"</td></tr>";
-						            
-						           	$("#mytable").append(tr+td1+td2);
+						            $("#mytable").append(tr+td1+td2);
 					        }
 					    }
 					});
 				});
 		        
 		        $("#submitbtnu").click(function() {
-		        	$.ajax({
-						type : 'GET',
-						url : 'createaction',
-						data : {
-							codeu : document.getElementById("codeu").value,
-							descru : document.getElementById("descru").value,
-							checkboxVal : "update" 
-						},
-						success : function(responseText) {
-							if (responseText.success){
-								alert(responseText.success+" Branch Description Successfully Updated..!");
-								window.location.assign('/bitproject/main.jsp');
-							}else {
-								alert(responseText.error);
+		        	var e = document.getElementById("bcode");
+		        	var id = e.options[e.selectedIndex].value;
+		        	alert("id" + id);
+		        	var descru = document.getElementById("descru").value
+		        	if(descru == ""|| descru == null || id < 1){
+						alert("Values are Empty");
+						document.getElementById("descru").focus();
+					} else {
+						$.ajax({
+							type : 'GET',
+							url : 'createaction',
+							data : {
+								id : id,
+								descru : descru,
+								checkboxVal : "update" 
+							},
+							success : function(responseText) {
+								if (responseText.success){
+									alert("Branch Description Successfully Updated..!");
+									$('input[type="text"]').val('');
+		  							window.location.assign('/bitproject/main.jsp');
+								}else {
+									alert(responseText.error);
+									$('input[type="text"]').val('');
+									window.location.assign('/bitproject/branch-details.jsp');
+								}
 							}
-							
-						}
-					});
+						});
+					}
 				});
 			});
-		    
-		    /* $("#update").click(function(){
-		    	$("#updateDiv").show();
-		        $("#createDiv").hide();
-		        $("#deleteDiv").hide();
-		        
-		        $("#submitbtnu").click(function() {
-		        	$.ajax({
-						type : 'GET',
-						url : 'createaction',
-						data : {
-							codeu : document.getElementById("codeu").value,
-							descru : document.getElementById("descru").value,
-							checkboxVal : "update" 
-						},
-						success : function(responseText) {
-							if (responseText.success){
-								alert(responseText.success+" Branch Description Successfully Updated..!");
-								window.location.assign('/bitproject/main.jsp');
-							}else {
-								alert(responseText.error);
-							}
-							
-						}
-					});
-				});
-			}); */
-		    
-		    $("#delete").click(function(){
-		    	$("p").hide();
+		   $("#delete").click(function(){
+			   $("#main").show();
 		    	$("#deleteDiv").show();
 		    	$("#createDiv").hide();
 		    	$("#updateDiv").hide();
+		    	$.ajax({
+						type : 'GET',
+						url : 'createaction',
+						data : {
+						checkboxVal : "view"
+						},
+						success : function(responseText) {
+							for(var i=0;i<responseText.branchListObject.length;i++){
+								var idvalue = responseText.branchListObject[i]["id"];
+								var branch = "<option value="+idvalue+">"+responseText.branchListObject[i]["code"]+"</option>";
+								$("#DCode").append (branch);
+								
+							}
+					    }
+				});
 		    	
 		    	$("#submitbtnd").click(function(){
+		    		var e = document.getElementById("DCode");
+		        	var idBranch = e.options[e.selectedIndex].value;
 		    		$.ajax({
 						type : 'GET',
 						url : 'createaction',
 						data : {
-							coded : document.getElementById("coded").value,
-							descrd : document.getElementById("descrd").value,
+							id : idBranch,
 							checkboxVal : "delete" 
 						},
 						success : function(responseText) {
 							if (responseText.success){
 								alert(responseText.success+" Branch deleted successfully..!");
-								window.location.assign('/bitproject/main.jsp');
+								window.location.assign('/bitproject/admin.jsp');
 							}else {
 								alert(responseText.error);
+								window.location.assign('/bitproject/branch-details.jsp');
 							}
 						}
 					});
 				});
 		    	
 		    });
+		    $('#cncl').click(function(){
+				if(confirm("do you want to reset text fields?")){
+					$('input[type="text"]').val('');
+					
+				}					
+			});
 		 });
 	</script>
-	
-	<style type="text/css">
-	
-	#view {
-	  display: inline-block;
-	  border-radius: 4px;
-	  float:right;
-	  background-color: silver#f4511e;
-	  border: none;
-	  color: #f4511e;
-	  text-align: center;
-	  font-size: 20px;
-	  padding: 15px;
-	  width: 250px;
-	  height:1%;
-	  transition: all 0.5s;
-	  cursor: pointer;
-	  margin: 5px;
-	}
 
-	#view span {
-	  cursor: pointer;
-	  display: inline-block;
-	  position: relative;
-	  transition: 0.5s;
-	}
-
-	#view span:after {
-	  content: '\00bb';
-	  position: absolute;
-	  opacity: 0;
-	  top: 0;
-	  right: -20px;
-	  transition: 0.5s;
-	}
-
-	#view:hover span {
-	  padding-right: 25px;
-	}
-	
-	#view:hover span:after {
-	  opacity: 1;
-	  right: 0;
-	}
-
-	
-
-	</style>
 </head>
-<body>
-
-
-<fieldset>
+<body style="width: 80%; height: 70%; margin-left: 0.5%;">
+<div id= "main">
+<fieldset >
 	<legend>Branch Details</legend>
-
-
-
-	<div id = "createDiv">
+		<div id = "createDiv">
+			Branch Code : <br><input type="text" name="code" id="code"> <font color="red">*</font><br>
+			Branch Description : <br><input type="text" name="descr" id="descr"><font color="red">*</font><br>
+			<label>Branch Address : </label><input type="text" name="add" id="add" placeholder="Address"><font color="red">*</font><br>
+			<label>Branch Contact Number: </label><input type="text" name="contact" id="contact" placeholder="Contact Number"><font color="red">*</font><br>
 		
-			<h2>Create Branch Details</h2>
-			Branch Code : <input type="text" name="code" id="code"> <font color="red">*</font><br>
-			Branch Description : <input type="text" name="descr" id="descr"><font color="red">*</font><br>
-			
-			
-			<button type="button" name="cancel" id="cncl">Cancel</button>
 			<button type="submit" name="submitbtn" value="submitbtn" id="submitbtn" class="submit">Submit</button>
-	</div>
+			<button type="button" name="cancel" id="cncl">Reset</button>		
+		</div>
 	
 	<div id="updateDiv">
-		
-			<h2>Update Branch Details</h2>
-			<div style="float: left;" id="upmain">
-				<button type ="button" id = "view"><span>View Branch Details</span> </button>
-			</div>
-			
-			<table style="float: right;">
-				
-				<th style="background-color: #000099; color:#ffffff; width: 5%;">Code</th>
-				<th style="background-color: #000099; color:#ffffff ;width: 15%;">Description</th>
-			</table>
-			<div id="tablediv" style="float: right;"></div>
-			<div id = "emptydiv"></div>
-			
-			
-			<input type="text" name="code" id="codeu" placeholder="Branch Code"> <font color="red">*</font><br>
-			<input type="text" name="descr" id="descru" placeholder="Branch Description"><font color="red">*</font><br>
-			
-			<button type="button" name="cancel" value="Cancel" id="cncl">Cancel</button>
-			<button type="submit" name="submitbtnu" value="submitbtnu" id="submitbtnu" class ="submit">Update</button>
-			
+		<label>Branch Code : </label>
+		<select id="bcode" name="bcode" >
+			<option>select</option>
+		</select>
+		<br>
+		<label>Branch Name : </label><input type="text" name="descr" id="descru" placeholder="Branch Description"><font color="red">*</font><br>
+		<label>Branch Address : </label><input type="text" name="add" id="add" placeholder="Address"><font color="red">*</font><br>
+		<label>Branch Contact Number: </label><input type="text" name="contact" id="contact" placeholder="Contact Number"><font color="red">*</font><br>
+		<button type="submit" name="submitbtnu" value="submitbtnu" id="submitbtnu" class ="submit">Update</button>
+		<button type="button" name="cancel" value="Cancel" id="cncl">Reset</button>
+		<button type ="submit" class ="submit" id ="view">View</button>
+		<br>
+		<table style="float: right;">
+			<th style="background-color: #000099; color:#ffffff; width: 5%;">Code</th>
+			<th style="background-color: #000099; color:#ffffff ;width: 15%;">Description</th>
+		</table>
+		<div id="tablediv" style="float: right;"></div>
 	</div>
-	
 	<div id="deleteDiv">
-			<h2>Delete Branch Details</h2>
-			Branch Code : <input type="text" name="code" id="coded"> <font color="red">*</font><br>
-			Branch Description : <input type="text" name="descrd" id="descrd"><font color="red">*</font><br>
-			
-			<button type="button" name="cancel" id="cncl">Cancel</button>
-			<button type="submit" name="submitbtnd" value="submitbtnd" id="submitbtnd" class ="submit">Delete</button>
-			
+		<label>Branch Code : </label>
+		<select id="DCode" name="DCode" >
+			<option>select</option>
+		</select><font color="red">*</font>
+		<br>
 		
+		<button type="submit" name="submitbtnd" value="submitbtnd" id="submitbtnd" class ="submit">Delete</button>
+		<button type="button" name="cancel" id="cncl">Reset</button>
 	</div>
-
-	<div id="btngroup">
-		<input type ="radio" name ="branchbtn" id ="create" value ="create" checked="checked">Create
-		<input type ="radio" name ="branchbtn" id ="update" value ="update">Update
-		<input type ="radio" name ="branchbtn" id ="delete" value ="delete">Delete
-	</div>
-
-
 </fieldset>
-
-
-
+</div>
 </body>
 </html>
+<%@include file="btngrp.jsp" %>
+<%@include file="footer.jsp" %>

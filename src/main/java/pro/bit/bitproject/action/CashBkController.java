@@ -1,6 +1,7 @@
 package pro.bit.bitproject.action;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 
 
@@ -15,7 +16,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import pro.bit.bitproject.daoImpl.CashBookDaoImpl;
-import pro.bit.bitproject.daoImpl.LendingSheuleDaoImpl;
+import pro.bit.bitproject.daoImpl.CustomerRegistrationDAOImpl;
+import pro.bit.bitproject.daoImpl.LendingSheduleDAOImpl;
+import pro.bit.bitproject.daoImpl.PaymentResheduleDAOImpl;
 import pro.bit.bitproject.domain.CashBook;
 /**
  * Servlet implementation class CashBkController
@@ -35,7 +38,7 @@ public class CashBkController extends HttpServlet {
 		JSONObject json = new JSONObject();
 		double paidAmount = 0.00;
 		double billAmount = 0.00;
-		
+		String shedule_type = "NS";
 		int customerId = Integer.parseInt(request.getParameter("customer"));
 		String method = request.getParameter("method");
 		
@@ -56,8 +59,8 @@ public class CashBkController extends HttpServlet {
 			int branchId = Integer.parseInt(request.getParameter("branch"));
 			double availabletotarrearsforthecus=getcurrenttotarr(custcashbookid);
 			
+			//update cash book table,
 			if (type.equals("P")) {
-				System.out.println("asasas");
 				double todayarr = 0.00;
 			 	double extrayment = 0.00;
 			 	if (billAmount == 0.00){
@@ -73,17 +76,18 @@ public class CashBkController extends HttpServlet {
 			 	}
 			 	try {
 					boolean sts = checkAvalablityofArr(custcashbookid);
-					System.out.println(sts+"stsstsstsstsstssts");
 					if (sts == true){
 						updateArrearsAmttogetTot(customerId,availabletotarrearsforthecus,todayarr,extrayment,paiddate);
+						updateCustomer(customerId);
 					}else{
 						saveArrearsAmttogetTot(customerId,todayarr,paiddate);
+						updateCustomer(customerId);
 					}
 				}catch (Exception e1) {
 					e1.printStackTrace();
 				}
 				
-			 	createCB (branchId,customerId,billAmount,paidAmount,paiddate,type,userid,custcashbookid,extrayment,response);
+			 	createCB (branchId,customerId,billAmount,paidAmount,paiddate,type,userid,custcashbookid,extrayment,shedule_type,response);
 			 	savecurarr(customerId,todayarr,paiddate);
 				
 				try {
@@ -96,43 +100,51 @@ public class CashBkController extends HttpServlet {
 					e.printStackTrace();
 				}
 				
-			} else {
-				/////to do save data to tot_arrears
-				int noofins =0;
-				int remainmode = 0;
-				if (request.getParameter("inspay") != null){
-					paidAmount= Double.parseDouble(request.getParameter("inspay"));
-			 	}
-				if (request.getParameter("noofins") != null){
-					noofins= Integer.parseInt(request.getParameter("noofins"));
-			 	}
-				createCB (branchId,customerId,billAmount,paidAmount,paiddate,type,userid,custcashbookid,0.00,response);
-				
-				remainmode = getmode(custcashbookid)-noofins;
-				//todoooooooooooooooooooooooooo
-				//remainPay = 
+			} else if (type.equals("I")){
 				try {
+					
+					int noofins =0;
+					int remainmode = 0;
+					int paidmodescount = 0;
+					if (request.getParameter("inspay") != null){
+						paidAmount= Double.parseDouble(request.getParameter("inspay"));
+				 	}
+					if (request.getParameter("noofins") != null){
+						noofins = Integer.parseInt(request.getParameter("noofins"));
+						//noofins= getNoOfPaidInstallments(custcashbookid);
+						System.out.println("noofins"+noofins);
+				 	}
+					createCB (branchId,customerId,billAmount,paidAmount,paiddate,type,userid,custcashbookid,0.00,shedule_type,response);
+					updateArrearsAmttogetTot(customerId,availabletotarrearsforthecus,0.00,paidAmount ,paiddate);
 					updateInsPay(custcashbookid,noofins);
+					/*this assignments should happen after updating tables*/
+					double remainpay = getcurrenttotarr(custcashbookid);
+					paidmodescount = getNoOfPaidInstallments(custcashbookid);
+					System.out.println(paidmodescount + "paidmodescount");
+					remainmode = getmode(custcashbookid) - paidmodescount;
 					json.put("re", remainmode);
 					json.put("nd", nextdue);
-					json.put("success", "Installment successfuly paid..!");
+					json.put("remainpay", remainpay);
+					json.put("success", "Installment amount successfuly paid and arrears deducted ..!");
+					updateCustomer(customerId);
 					
-				} catch (Exception e) {
-					e.printStackTrace();
+				} catch (Exception e1) {
+					e1.printStackTrace();
 				}
 			}
 			
 		case "viewMP":
-			
-			Double mp = getModePayment(customerId);
-			Double totarr = getcurrentarr(customerId);
-			System.out.println(totarr+"tatatata");
+			Double mp;
 			try {
+				mp = getModePayment(customerId);
+				Double totarr = getcurrentarr(customerId);
 				json.put("mp", mp);
 				json.put("totarr", totarr);
-			} catch (JSONException e) {
-				e.printStackTrace();
+			} catch (SQLException | JSONException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
+			
 			break;
 			
 		default:
@@ -144,10 +156,17 @@ public class CashBkController extends HttpServlet {
 	
 	/* Update lend_shedule table with the payments*/
 	private int updateInsPay(String custcashbookid, int noofins) throws Exception {
-		LendingSheuleDaoImpl lendDao = new LendingSheuleDaoImpl();
+		LendingSheduleDAOImpl lendDao = new LendingSheduleDAOImpl();
+		double totArr = getcurrenttotarr(custcashbookid);
+		System.out.println(totArr+"total arrears from updating extra pay");
 		int paidterms = getpaidscount(custcashbookid);
 		int totnoofins = noofins+paidterms;
-		lendDao.updateInsPay(custcashbookid,totnoofins);
+		String sts = null ;
+		if (totArr == 0){
+			sts = "NS";
+		}else 
+			sts = "S";
+		lendDao.updateInsPay(custcashbookid,totnoofins,sts);
 		return totnoofins;
 	}
 
@@ -155,7 +174,7 @@ public class CashBkController extends HttpServlet {
 	 * if customer pays  multiple at once it is saved in table
 	 * */
 	private int getpaidscount(String custcashbookid) {
-		LendingSheuleDaoImpl lendDao = new LendingSheuleDaoImpl();
+		LendingSheduleDAOImpl lendDao = new LendingSheduleDAOImpl();
 		int paidcount = lendDao.getpaidscount(custcashbookid);
 		return paidcount;
 	}
@@ -195,9 +214,9 @@ public class CashBkController extends HttpServlet {
 		boolean sts = cashDao.checkAvalablityofArr(custcashbookid);
 		return sts;
 	}
-	/* all transactions are saved from this menthod
+	/* all transactions are saved from this method
 	 * */
-	public void createCB(int branchId,int customerId,double billAmount,double paidAmount,LocalDateTime paiddate,String type,int userid,String custcashbookid,Double extrayment,HttpServletResponse response) {
+	public void createCB(int branchId,int customerId,double billAmount,double paidAmount,LocalDateTime paiddate,String type,int userid,String custcashbookid,Double extrayment,String shedule_type, HttpServletResponse response) {
 		CashBook cb = new CashBook();
 		CashBookDaoImpl cbdao = new CashBookDaoImpl();
 	try{
@@ -210,6 +229,7 @@ public class CashBkController extends HttpServlet {
 		  cb.setPaytype(type);
 		  cb.setUser(userid);
 		  cb.setExtrapayment(extrayment);
+		  cb.setShedule_status(shedule_type);
 		  
 		  cbdao.createCasahbook(cb);  
 	  }catch(Exception e){
@@ -231,15 +251,38 @@ public class CashBkController extends HttpServlet {
 		return dao.getcurrentarr (custcashbookid);
 	}
 
-	public double getModePayment(int cusId) {
+	public double getModePayment(int cusId) throws SQLException {
 		CashBookDaoImpl cashdao = new CashBookDaoImpl();
+		PaymentResheduleDAOImpl reSchDao = new PaymentResheduleDAOImpl();
+		Double modePayment = 0.00;
 		String custcashbookid = getNic(cusId);
-		return cashdao.getmodepayment (custcashbookid);
+		if (cashdao.getSchType(custcashbookid) .equals ("RS")){
+			modePayment = reSchDao.getReschPaymentInstallment(custcashbookid);
+		}else {
+			modePayment = cashdao.getmodepayment (custcashbookid);
+		}
+		return modePayment;
 	}
 	
 	public int getmode(String custcashbookid){
 		CashBookDaoImpl cashdao = new CashBookDaoImpl();
 		return cashdao.getmode(custcashbookid);
+	}
+	
+	public String getSchType(String custcashbookid){
+		CashBookDaoImpl cashdao = new CashBookDaoImpl();
+		try {
+			return cashdao.getSchType(custcashbookid);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public int getNoOfPaidInstallments(String custcashbookid){
+		CashBookDaoImpl cashdao = new CashBookDaoImpl();
+		return cashdao.getNoOfPaidInstallments(custcashbookid);
 	}
 
 	public double calExtrapayment(int customerId, double billAmount,double paidAmount){
@@ -253,5 +296,17 @@ public class CashBkController extends HttpServlet {
 	 		extrapyment = 0.00;
 	 	}
 		return extrapyment;
+	}
+	
+	public void updateCustomer (int custId){
+		CustomerRegistrationDAOImpl cusDAO = new CustomerRegistrationDAOImpl();
+		double curArr =  getcurrentarr(custId);
+		String sts = null;
+		if (curArr > 100000){
+			sts ="B";
+		}else {
+			sts="A";
+		}
+		cusDAO.updateCustomer(custId,sts);
 	}
 }

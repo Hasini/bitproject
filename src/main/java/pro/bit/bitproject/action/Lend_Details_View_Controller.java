@@ -25,15 +25,18 @@ public class Lend_Details_View_Controller extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		JSONArray jsonArray = new JSONArray();
+		JSONArray cusJsonArr = new JSONArray();
 		JSONObject json = new JSONObject();
-		String cus_no=null;
-		String cus_nic=null;
 		
-		if(!(request.getParameter("cus_name") == null)){
-			cus_no = request.getParameter("cus_name");
-			jsonArray = getCusDet(cus_no,cus_nic);
+		String cusMobile=request.getParameter("cus_no");
+		String cus_nic=request.getParameter("cus_nic_txt");
+		
+		
+		if(!(cusMobile == null)){
+			cusMobile = request.getParameter("cus_no");
+			jsonArray = getLendDetailsByNo(cusMobile);
 			try {
 				json.put("cusObj", jsonArray);
 			} catch (JSONException e) {
@@ -42,15 +45,43 @@ public class Lend_Details_View_Controller extends HttpServlet {
 			}
 		}else
 		{
-			cus_nic = request.getParameter("cus_nic");
-			getCusDet(cus_no,cus_nic);
+			cus_nic = request.getParameter("cus_nic_txt");
+			cusJsonArr = getLendDetailsByNIC(cus_nic);
+			try {
+				json.put("cusObjWhenNIC", cusJsonArr);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		
 		response.setContentType("application/json");
 		response.getWriter().write(json.toString());
-		
 	}
 	
+	private JSONArray getLendDetailsByNIC(String cus_nic) {
+		JSONArray cusLendDetArrByNIC = new JSONArray();
+		LendingSheduleDAOImpl lendingSheduleDAOImpl = new LendingSheduleDAOImpl();
+		try {
+			cusLendDetArrByNIC = lendingSheduleDAOImpl.getLendDetailsByNIC(cus_nic);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return cusLendDetArrByNIC;
+		
+	}
+
+	private JSONArray getLendDetailsByNo(String cus_no) {
+		JSONArray cusLendDetArrByNo = new JSONArray();
+		LendingSheduleDAOImpl lendingSheduleDAOImpl = new LendingSheduleDAOImpl();
+		try {
+			cusLendDetArrByNo = lendingSheduleDAOImpl.getLendDetailsByNo(cus_no);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return cusLendDetArrByNo;
+	}
+
 	public JSONArray getCusDet(String cus_name,String cus_nic) {
 		JSONArray cusDetArr = new JSONArray();
 		LendingSheduleDAOImpl lendingSheduleDAOImpl = new LendingSheduleDAOImpl();

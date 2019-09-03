@@ -3,6 +3,7 @@
  */
 package pro.bit.bitproject.domain;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -14,6 +15,7 @@ public class Branch {
 	private String branchCode;
 	private String branchDescr;
 	private LocalDateTime createdTime;
+	private LocalDateTime updatedDate;		
 	
 	
 	public Branch() {
@@ -41,7 +43,6 @@ public class Branch {
 	public void setBranchDescr(String branchDescr) {
 		this.branchDescr = branchDescr;
 	}
-
 	
 	public LocalDateTime getCreatedTime() {
 		return createdTime;
@@ -49,5 +50,14 @@ public class Branch {
 	public void setCreatedTime(LocalDateTime createddate) {
 		this.createdTime = createddate;
 	}
+
+	public LocalDateTime getUpdatedDate() {
+		return updatedDate;
+	}
+	public void setUpdatedDate(LocalDateTime updatedDate) {
+		this.updatedDate = updatedDate;
+	}
+	
+	
 	
 }

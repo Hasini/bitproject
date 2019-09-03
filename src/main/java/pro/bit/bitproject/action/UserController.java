@@ -42,7 +42,6 @@ public class UserController extends HttpServlet {
 			usertypeid = Integer.parseInt(request.getParameter("usertypeid"));
 		}
 		
-		
 		switch (method) {
 		case "signup" :
 			LocalDateTime createddate =  LocalDateTime.now();
@@ -56,17 +55,17 @@ public class UserController extends HttpServlet {
 			try {
 				jsonArray = viewusertype();
 				json.put("usertypeobj", jsonArray);
-				System.out.println(json+"+++++++++++++++");
 			} catch (Exception e) {
-				
 				e.printStackTrace();
 			}
 			break;
 		case "login" :
 			try {
-				String sts=loginuser (request,response,username,password,usertypeid);
+				
+				String sts=loginuser (request,response,username,password);
+				String userType= viewusertype(username);
 				if(sts.equalsIgnoreCase("true")){
-					json.put("usertype", usertypeid);
+					json.put("userType", userType);
 					json.put("success", "Log in successful");
 				}else
 					json.put("error", "Login denied");
@@ -78,12 +77,18 @@ public class UserController extends HttpServlet {
 			
 		case "deleteUser" :
 			try {
-				deleteUser(username);
-				json.put("success", "User deleted..!");
+				
+				boolean sts = deleteUser(username);
+				if (sts){
+					json.put("success", "User Inactivated Permanently..!");
+				} else {
+					json.put("error", "User is already inactivated !");
+				}
+				
 			} catch (Exception e) {
 				e.printStackTrace();
 				try {
-					json.put("error", "Error Occured..!");
+					json.put("error", "User is inactivated..!");
 				} catch (JSONException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -92,10 +97,20 @@ public class UserController extends HttpServlet {
 			break;
 		case "passwordchange" :
 			try {
-				changepw (username,password);
-				json.put("success", "Password Changed..!");
+				boolean sts = changepw (username,password);
+				if (sts) {
+					json.put("success", "Password Changed..!");
+				} else {
+					json.put("error", "User is inactivated..!");
+				}
+				
 			} catch (Exception e) {
-				e.printStackTrace();
+				try {
+					json.put("error", "User is inactivated..!");
+				} catch (JSONException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 			break;
 		case "logout" :
@@ -126,14 +141,13 @@ public class UserController extends HttpServlet {
 		
 	}
 
-	public String loginuser(HttpServletRequest request, HttpServletResponse response, String username, String password, int usertypeid) throws IOException {
+	public String loginuser(HttpServletRequest request, HttpServletResponse response, String username, String password) throws IOException {
 		HttpSession httpSession = request.getSession();
 		UserDAOImpl userdaoimpl = new UserDAOImpl();
 		String sts=null;
 		
 		try {
-			 sts = userdaoimpl.loginUser(username,password,usertypeid);
-			 System.out.println("ll"+username);
+			 sts = userdaoimpl.loginUser(username,password);
 			 httpSession.setAttribute("username", username);
 			 httpSession.setAttribute("password", password);
 			 
@@ -142,66 +156,84 @@ public class UserController extends HttpServlet {
 			e.printStackTrace();
 		}
 		return sts;
-		
 	}
 
 	public void createUser(HttpServletResponse response, String username, String password, int usertypeid, LocalDateTime createddate) throws Exception {
 		JSONObject json = new JSONObject();
 		UserDAOImpl userdaoimpl = new UserDAOImpl();
 		User user = new User();
-		
-		
 		try {
 			user.setUsername(username);
 			user.setPassword(password);
 			user.setUsertypeid(usertypeid);
 			user.setCreatedtime(createddate);
-			user.setUserstatus('A');
-			
+			user.setUserstatus("A");
+			user.setUpdatedtime(createddate);
 			userdaoimpl.createUser(user);
-			json.put("successx", "Record successsfully created");
-			System.out.println("yeeeeeeeeeeeeeee" + json);
+			json.put("signupSuc", "Record successsfully created");
 		} catch (Exception e) {
 			json.put("error", "error occured while saving user");
-			System.out.println();
 		}
-		
 		response.setContentType("application/json");
 		response.getWriter().write(json.toString());
-		
 	}
 	
-	public JSONArray viewusertype() throws SQLException, Exception {
+	private JSONArray viewusertype() throws SQLException, Exception {
 		UserDAOImpl userdaoImpl = new UserDAOImpl();
 		JSONArray jsonArray=new JSONArray();
 		try {
 			jsonArray= userdaoImpl.viewusertype();
 		} catch (Exception e) {
-			System.out.println("eeee");
 			e.printStackTrace();
 		}
-		
 		return jsonArray;
 	}
 	
-	public void deleteUser(String username) {
-		UserDAOImpl userdaoimpl = new UserDAOImpl();
+	private String viewusertype(String userName) throws SQLException, Exception {
+		UserDAOImpl userdaoImpl = new UserDAOImpl();
+		String userType = null;
 		try {
-			userdaoimpl.deleteUser(username);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			 userType= userdaoImpl.viewusertype(userName);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return  userType;
 	}
 	
-	public void changepw(String username, String password) {
+	public boolean deleteUser(String username) throws Exception {
 		UserDAOImpl userdaoimpl = new UserDAOImpl();
+		boolean sts = true;
 		try {
-			userdaoimpl.changepassword(username,password);
+			if (!userdaoimpl.viewUserSts(username).equals("D")) {
+				userdaoimpl.deleteUser(username);
+			} else {
+				sts = false;
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return sts;
+	}
+	
+	public boolean changepw(String username, String password) {
+		UserDAOImpl userdaoimpl = new UserDAOImpl();
+		boolean sts = true;
+		try {
+			if (!userdaoimpl.viewUserSts(username).equals("D")) {
+				userdaoimpl.changepassword(username,password);
+			} else {
+				sts = false;
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return sts;
 		
 	}
 }

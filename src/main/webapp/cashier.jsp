@@ -27,21 +27,20 @@
 	});
 	</script>
 	</head>
-<body>
-
-
-<div id="main">
-	<div>
-	<h2>Cashier Module</h2>
-	</div>
+<body style="width: 80%; height: 70%; margin-left: 0.5%;">
+	<div id="main" style="width: 70%; height: 70%; margin-left: 10%">
+		<div>
+		<h2>Cashier Module</h2>
+		</div>
+		
+		<div id="cas" style="float: left">
+			<a href="income.jsp" class="link">Income</a><br>
+			<a href="expences.jsp" class="link">Expenses</a><br>
+			<!--<a href="billInfo.jsp" class="link">Bill Info</a><br>  -->
+		</div>
 	
-	<div id="cas" style="float: left">
-		<a href="income.jsp" class="link">Income</a><br>
-		<a href="expences.jsp" class="link">Expenses</a><br>
-		<a href="billInfo.jsp" class="link">Bill Info</a><br>
 	</div>
-	
-</div>
 
 </body>
+<footer style="width: 80%; height: 5%; border-right: 20%; background-image: url(images/background.jpg); color:white; margin-left: 10%">KGM</footer>
 </html>

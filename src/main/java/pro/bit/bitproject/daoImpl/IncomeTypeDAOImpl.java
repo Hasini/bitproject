@@ -25,11 +25,8 @@ public class IncomeTypeDAOImpl implements IncomeTypeDAO{
 
 	public void createIT(String code, String descr, LocalDateTime createddate) {
 		String insertQuery = "INSERT INTO income_type (it_code,it_descr,createddate) VALUES (?,?,?)";
-		
 		try {
-			
 			PreparedStatement ps = ConnectionUtil.openConnection().prepareStatement(insertQuery);
-			//ps.setString(1, String.valueOf(usertype.getUserTypeId()));
 			ps.setString(1, code);
 			ps.setString(2, descr);
 			ps.setTimestamp(3, Timestamp.valueOf(createddate));
@@ -37,7 +34,6 @@ public class IncomeTypeDAOImpl implements IncomeTypeDAO{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 	}
 
 	@Override
@@ -45,27 +41,24 @@ public class IncomeTypeDAOImpl implements IncomeTypeDAO{
 		PreparedStatement ps;
 		Character userstatus = 'U';
 		try {
-			ps = ConnectionUtil.openConnection().prepareStatement("update income_type set it_descr=?,it_status=?,it_updated_time=? where it_code=?");
-			
-			
+			ps = ConnectionUtil.openConnection().prepareStatement("update income_type set it_descr=?,it_status=?,it_updated_time=? where it_id=?");
 			ps.setString(1, it.getIncometypeDescr());
 			ps.setString(2, Character.toString(userstatus));
 			ps.setTimestamp(3,Timestamp.valueOf(LocalDateTime.now()));
-			ps.setString(4, it.getIncometypecode());
-			
+			ps.setInt(4, it.getIncomeTypeId());
 			ps.executeUpdate();
 		} catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 		return null;
 	}
 
 	@Override
-	public IncomeType deleteIT(String coded){
+	public IncomeType deleteIT(int incomeTypeId){
 		PreparedStatement ps;
 		try {
-			ps = ConnectionUtil.openConnection().prepareStatement("delete from income_type where it_code = ?");
-			ps.setString(1, coded);
+			ps = ConnectionUtil.openConnection().prepareStatement("delete from income_type where it_id = ?");
+			ps.setInt(1, incomeTypeId);
 			ps.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -82,18 +75,14 @@ public class IncomeTypeDAOImpl implements IncomeTypeDAO{
 		JSONArray jsonArray=new JSONArray();
 		String viewIncomeType = "select * from income_type";
 		PreparedStatement ps;
-		
 		ps = ConnectionUtil.openConnection().prepareStatement(viewIncomeType);
 		ps.executeQuery();
-		
 		rs = ps.getResultSet();
-		
 		while (rs.next()){			
 			 JSONObject jsonObject=new JSONObject();
 			 jsonObject.put("id", rs.getInt(1));
 			 jsonObject.put("code", rs.getString(2));
 			 jsonObject.put("desc", rs.getString(3));
-			 
 			 jsonArray.put(jsonObject);
 		}
 		rs.close();
@@ -110,6 +99,12 @@ public class IncomeTypeDAOImpl implements IncomeTypeDAO{
 	public void createET(String code, String descr, LocalDateTime createddate) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public JSONArray viewET() throws SQLException, Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

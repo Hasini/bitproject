@@ -11,18 +11,16 @@
 		
 		<script type="text/javascript">
 		
-		function clearvalues(){
+		/*function clearvalues(){
 			location.reload();
-		}
+		}*/
 		
 		function validateEmail($email) {
-			  //var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
 			  if ($email != undefined){
 				  var emailReg = /^[\w\-\.\+]+\@[a-zA-Z0-9\.\-]+\.[a-zA-z0-9]{2,}$/;
 				  return emailReg.test($email);
 			  }
 		}
-		
 		
 		function validatephn(value){
 			if (value!= undefined){
@@ -31,14 +29,12 @@
 			}
 		} 
 		
-		
 		function validatenic(nic){
 			if (nic!= undefined ){
 				var nics = /[0-9]{9}[V]$/;
 				return nics.test(nic);
 			}
 		}
-		
 		
 		$(document).ready(function(){
 			
@@ -68,15 +64,14 @@
 							var branch = "<option value="+idvalue+">"+responseText.branchobj[i]["branch_descr"]+"</option>";
 							$("#branch").append (branch);
 						 }
-						
 					}   
 				}); 
 			    
 			    $("#submitbtn").click(function() {
-					var nic = $('#o').val() +$('#t').val()+$('#th').val()+$('#fr').val()+$('#fi').val()+$('#si').val()+$('#se').val()+$('#eig').val()+$('#ni').val()+$('#v').val();
-					var snic = $('#os').val() +$('#ts').val()+$('#ths').val()+$('#frs').val()+$('#fis').val()+$('#sis').val()+$('#ses').val()+$('#eigs').val()+$('#nis').val()+$('#vs').val();
-					var cus_initials = $('#inioc').val() + ' ' + $('#initc').val()+ ' ' + $('#inithc').val();
-					var sp_initials = $('#iniosp').val() + ' ' + $('#initsp').val()+ ' ' +$('#inithsp').val();
+					var nic = document.getElementById("nic").value ;
+					var snic = document.getElementById("snic").value ;
+					var cus_initials = document.getElementById("inithc").value ;
+					var sp_initials = document.getElementById("spinithc").value ;
 					
 					var e = document.getElementById("branch");
 					var branch = e.options[e.selectedIndex].value;
@@ -99,7 +94,6 @@
 						alert("Can not proceed ..Main NIC is equal to other");
 					}else if (fname == null || fname == undefined || fname ===""){
 						$("#errormsg").html("Please fill mandotary values");
-						alert('s');
 					}else {
 						$.ajax({
 							type : 'GET',
@@ -133,20 +127,22 @@
 								semail : document.getElementById("semail").value
 							},
 							error: function (responseText){
-								alert("Some error occured..!");
+								alert("An error occured..!");
 								
 			            	},
 							success: function (responseText) {
-								//alert("Customer successfully created.!")
 								if (responseText.error){
 									alert(responseText.error);
+									$('input[type="text"]').val('');
 								}
 								if (responseText.suc){
 									alert(responseText.suc);
+									$('input[type="text"]').val('');
+									window.location.assign('/bitproject/login.jsp');
 									location.reload();
-								}
 									
-			    			}   
+								}
+							}   
 							
 						});
 					}
@@ -154,19 +150,177 @@
 			})
 			
 			$("#update").click(function(){
-				$("#createDiv").show();
+				$("#createDiv").hide();
 			    $("#deleteDiv").hide();
-			    $("#updateDiv").show();	
+			    $("#updateDiv").show();
+			    
+			    $.ajax({
+					type : 'GET',
+					url : 'CustomerRegistrationController',
+					data : {
+						method : "view"
+					},
+					success : function(responseText) {
+						for(var i=0;i<responseText.branchobj.length;i++){
+							var idvalue = responseText.branchobj[i]["id"];
+							var branch = "<option value="+idvalue+">"+responseText.branchobj[i]["branch_descr"]+"</option>";
+							$("#branchu").append (branch);
+						 }
+						
+						for(var i=0;i<responseText.cusObj.length;i++){
+							var idvalue = responseText.cusObj[i]["customer_id"];
+							var nic = "<option value="+idvalue+">"+responseText.cusObj[i]["cus_nic"]+"</option>";
+							$("#customers").append (nic);
+						 }
+						
+					}   
+				}); 
+			    
+			    function loadAllcustomers() {
+			    	  var cus_nic = document.getElementById("customers").value;
+			    	  
+			    	  $.ajax({
+							type : 'GET',
+							url : 'CustomerRegistrationController',
+							data : {
+								method : "loadCustomersByNic",
+								nic : cus_nic
+								
+							},
+							success : function(responseText) {
+								
+							}   
+					});
+			    	  
+			    }
+			    
+			    $("#upbtn").click(function() {
+					var e = document.getElementById("customers");
+					var nic = e.options[e.selectedIndex].value;
+					alert(nic);
+					var shoptel = document.getElementById("shtel").value; 
+					var hometel = document.getElementById("hmtel").value;
+					var mobileno = document.getElementById("mob").value;
+					var spouseAdd1 = document.getElementById("sad1").value;
+					var spouseAdd2 = document.getElementById("sad2").value;
+					var spouseAdd3 = document.getElementById("sad3").value;
+					var spouseHomeTel = document.getElementById("stel").value;
+					var spouseMobileNo = document.getElementById("smob").value;
+					
+					$.ajax({
+						type : 'GET',
+						url : 'CustomerRegistrationController',
+						data : {
+							method : "deleteCus",
+							nic : nic,
+							
+							
+						},
+						error: function (responseText){
+							alert("An error occured..!");
+							
+		            	},
+						success: function (responseText) {
+							if (responseText.error){
+								alert(responseText.error);
+								$('input[type="text"]').val('');
+							}
+							if (responseText.succ){
+								alert(responseText.suc);
+								window.location.assign('/bitproject/login.jsp');
+								$('input[type="text"]').val('');
+								location.reload();
+							}
+						}   
+						
+					});
+					
+				});
+			    
+			    
 				
 			});
+			
 			$("#delete").click(function(){
 				$("#createDiv").hide();
 			    $("#deleteDiv").show();
 			    $("#updateDiv").hide();
+			    
+			    $.ajax({
+					type : 'GET',
+					url : 'CustomerRegistrationController',
+					data : {
+						method : "view"
+					},
+					success : function(responseText) {
+						alert (responseText);
+						for(var i=0;i<responseText.cusObj.length;i++){
+							var idvalue = responseText.cusObj[i]["customer_id"];
+							var nic = "<option value="+idvalue+">"+responseText.cusObj[i]["cus_nic"]+"</option>";
+							$("#customers").append (nic);
+						 }
+						
+					}   
+				});
+			    
+			    $.ajax({
+					type : 'GET',
+					url : 'CustomerRegistrationController',
+					data : {
+						method : "viewallCus"
+					},
+					success : function(responseText) {
+						for (var i = 0; i < responseText.cusObj.length; i++) {
+							var cusId = responseText.cusObj[i]["customer_id"];
+							var customer = "<option value=" + cusId + ">" + responseText.cusObj[i]["cus_fullname"] + "</option>";
+							$("#customer").append(customer);
+						}
+					}
+				});
 				
 			});
-			
-			
+			$("#delbtn").click(function() {
+				var reason = document.getElementById("reason").value  ;
+				
+				var e = document.getElementById("customers");
+				var nic = e.options[e.selectedIndex].value;
+				
+				$.ajax({
+					type : 'GET',
+					url : 'CustomerRegistrationController',
+					data : {
+						method : "deleteCus",
+						nic : nic,
+						reason : reason
+						
+					},
+					error: function (responseText){
+						alert("An error occured..!");
+						
+	            	},
+					success: function (responseText) {
+						if (responseText.error){
+							alert(responseText.error);
+							$('input[type="text"]').val('');
+							window.location.assign('/bitproject/customer-registration.jsp');
+						}
+						if (responseText.succ){
+							alert(responseText.suc);
+							window.location.assign('/bitproject/dp.jsp');
+							$('input[type="text"]').val('');
+							location.reload();
+						}
+					}   
+					
+				});
+				
+			});
+			$('#cncl').click(function(){
+				if(confirm("do you want to reset text fields?")){
+					$('input[type="text"]').val('');
+					
+				}					
+			});
 		});
 		</script>
 		
@@ -177,9 +331,7 @@
 		
 		
 	</head>
-<body>
-
-
+<body style="width: 80%; height: 70%; margin-left: 0.5%;">
 <div id="main">
 	<div>
 		<fieldset>
@@ -188,14 +340,13 @@
 			Branch : <select id="branch" name="branch" >
 				<option>select</option>
 			</select>
-			
 			<br><br>
-			Initials :<br> <input type="text" class="minitext" style="width: 60px;" id="inioc"> 
-			<input type="text" class="minitext" style="width: 60px;" id="initc"><input type="text" class="minitext" style="width: 60px;" id="inithc"><br>
+			Initials :<br><input type="text" class="minitext" id="inithc"><br>
 			Name Denoted by Initials :<br> <input type="text" class="middletext" id="cus_othername"><br>
-			First Name : <br><nobr><input type="text" id="fname" class="mandotaryInputs" ><font style="color: red;">*</font></nobr><br>
-			
-			<b>Shop Address :</b>><br>
+			First Name : <br><nobr><input type="text" id="fname" class="mandotaryInputs" ><font style="color: red;">*</font>
+			</nobr><br><br>
+			<hr>
+			<b>Shop Details :</b><br><br><br>
 			Address Line 1:<br><nobr><input type="text" id="shad1"><font style="color: red;">*</font></nobr><br>
 			Address Line 2:<br><nobr><input type="text" id="shad2"><font style="color: red;">*</font></nobr><br>
 			Address Line 3:<br><nobr><input type="text" id="shad3"><font style="color: red;">*</font></nobr><br>
@@ -207,18 +358,14 @@
 			Home Tel : <br><nobr><input type="tel" id="hmtel"><font style="color: red;">*</font></nobr><br><br><br>
 			Mobile No : <br><nobr><input type="tel" id="mob"><font style="color: red;">*</font></nobr><br>
 			NIC Number :<br>
-			<input type="text" class="minitext" id="o" style="width: 50px;"> <input type="text" class="minitext" id="t" style="width: 50px;"> 
-			<input type="text" class="minitext" id="th" style="width: 50px;"><input type="text" class="minitext" id="fr" style="width: 50px;"> 
-			<input type="text" class="minitext" id="fi" style="width: 50px;"> <input type="text" class="minitext" id="si" style="width: 50px;">  
-			<input type="text" class="minitext" id="se" style="width: 50px;"> <input type="text" class="minitext" id="eig" style="width: 50px;"> 
-			<input type="text" class="minitext" id="ni" style="width: 50px;"> <input type="text" class="minitext" id="v" style="width: 50px;"><br>
-			E-Mail : <br><nobr><input type="email" id="emal"></nobr><br>
-			
-			Spouse / Shareholder (main) 
+			<input type="text" class="minitext" id="nic">  
+			<br>
+			E-Mail : <br><nobr><input type="email" id="emal"></nobr><br><br>
+			<hr>
+			<h4>Spouse / Shareholder (main) Details</h4>
 			
 			First Name : <br><nobr><input type="text" id="sfname"><font style="color: red;">*</font></nobr><br>
-			Initials : <br><input type="text" class="minitext" style="width: 60px;" id="iniosp"> <input type="text" class="minitext"style="width: 60px;" id="initsp"> </BR>
-			<input type="text" class="minitext" style="width: 60px;" id="inithsp"><br>
+			Initials : <br><input type="text" class="minitext" style="width: 60px;" id="spinithc"><br>
 			Name Denoted by Initials :<br> <input type="text" class="middletext" id="sp_othername"><br><br>
 			
 			Home Address :
@@ -227,112 +374,95 @@
 			Address Line 3:<br><nobr><input type="text" id="sad3"><font style="color: red;">*</font></nobr><br>
 			Home Tel : <br><nobr><input type="tel" id="stel"><font style="color: red;">*</font></nobr><br>
 			Mobile No : <br><nobr><input type="tel" id="smob"><font style="color: red;">*</font></nobr><br>
-			NIC Number :<br><input type="text" class="minitext" id="os" style="width: 50px;" maxlength="2"> <input type="text" class="minitext" id="ts" style="width: 50px;"> 
-			<input type="text" class="minitext" id="ths" style="width: 50px;"><input type="text" class="minitext" id="frs" style="width: 50px;"> 
-			<input type="text" class="minitext" id="fis" style="width: 50px;"> <input type="text" class="minitext" id="sis" style="width: 50px;">  
-			<input type="text" class="minitext" id="ses" style="width: 50px;"> <input type="text" class="minitext" id="eigs" style="width: 50px;"> 
-			<input type="text" class="minitext" id="nis" style="width: 50px;"> <input type="text" class="minitext" id="vs" style="width: 50px;">  
+			Spouse/Shareholder NIC Number :<br><input type="text" class="minitext" id="snic">  
 			<br>
 			E-Mail :<br><nobr> <input type="email" id="semail"></nobr>
 			<br/>
 			<button type="submit" class = "submit" id="submitbtn"> Submit</button>
-			<button type="submit" class = "submit" id="upbtn"> Update</button>
-			<button type="reset" id="cncl" onclick="clearvalues();">Reset</button>
+			<button type="button" id="cncl" onclick="clearvalues();">Reset</button>
 			<br>
 			<div id="errormsg" style="color:red;"></div>
 		</div>	
 		
 		<div id="updateDiv">
-			Branch : <select id="branch" name="branch" >
+			Branch : <select id="branchu" name="branchu" >
+				<option>select</option>
+			</select>
+			
+			Customer : <select id="customers" name="customers" onchange="loadAllcustomers()">
 				<option>select</option>
 			</select>
 			
 			<br><br>
-			Initials :<br> <input type="text" class="minitext" style="width: 60px;" id="inioc"> 
-			<input type="text" class="minitext" style="width: 60px;" id="initc"><input type="text" class="minitext" style="width: 60px;" id="inithc"><br>
-			Name Denoted by Initials :<br> <input type="text" class="middletext" id="cus_othername"><br>
-			First Name : <br><nobr><input type="text" id="fname" class="mandotaryInputs" ><font style="color: red;">*</font></nobr><br>
+			Initials :<br> <input type="text" class="minitext" style="width: 60px;" id="inioc" disabled="disabled"> 
+			<br>
+			Name Denoted by Initials :<br> <input type="text" class="middletext" id="cus_othername" disabled="disabled"><br>
+			First Name : <br><nobr><input type="text" id="fname" class="mandotaryInputs" disabled="disabled"><font style="color: red;">*</font></nobr><br>
 			
 			<b>Shop Address :</b>><br>
-			Address Line 1:<br><nobr><input type="text" id="shad1"><font style="color: red;">*</font></nobr><br>
-			Address Line 2:<br><nobr><input type="text" id="shad2"><font style="color: red;">*</font></nobr><br>
-			Address Line 3:<br><nobr><input type="text" id="shad3"><font style="color: red;">*</font></nobr><br>
+			Address Line 1:<br><nobr><input type="text" id="shad1" disabled="disabled"><font style="color: red;">*</font></nobr><br>
+			Address Line 2:<br><nobr><input type="text" id="shad2" disabled="disabled"><font style="color: red;">*</font></nobr><br>
+			Address Line 3:<br><nobr><input type="text" id="shad3" disabled="disabled"><font style="color: red;">*</font></nobr><br>
 			Home Address :<br>
-			Address Line 1:<br><nobr><input type="text" id="hmad1"><font style="color: red;">*</font></nobr><br>
-			Address Line 2:<br><nobr><input type="text" id="hmad2"><font style="color: red;">*</font></nobr><br>
-			Address Line 3:<br><nobr><input type="text" id="hmad3"><font style="color: red;">*</font></nobr><br><br>
+			Address Line 1:<br><nobr><input type="text" id="hmad1" disabled="disabled"><font style="color: red;">*</font></nobr><br>
+			Address Line 2:<br><nobr><input type="text" id="hmad2" disabled="disabled"><font style="color: red;">*</font></nobr><br>
+			Address Line 3:<br><nobr><input type="text" id="hmad3" disabled="disabled"><font style="color: red;">*</font></nobr><br><br>
 			Shop Tel : <br><nobr><input type="tel" id="shtel" class="mandotaryInputs" maxlength="10"><font style="color: red;">*</font></nobr><br>
 			Home Tel : <br><nobr><input type="tel" id="hmtel"><font style="color: red;">*</font></nobr><br><br><br>
 			Mobile No : <br><nobr><input type="tel" id="mob"><font style="color: red;">*</font></nobr><br>
 			NIC Number :<br>
-			<input type="text" class="minitext" id="o" style="width: 50px;"> <input type="text" class="minitext" id="t" style="width: 50px;"> 
-			<input type="text" class="minitext" id="th" style="width: 50px;"><input type="text" class="minitext" id="fr" style="width: 50px;"> 
-			<input type="text" class="minitext" id="fi" style="width: 50px;"> <input type="text" class="minitext" id="si" style="width: 50px;">  
-			<input type="text" class="minitext" id="se" style="width: 50px;"> <input type="text" class="minitext" id="eig" style="width: 50px;"> 
-			<input type="text" class="minitext" id="ni" style="width: 50px;"> <input type="text" class="minitext" id="v" style="width: 50px;"><br>
-			E-Mail : <br><nobr><input type="email" id="emal"></nobr><br>
+			<input type="text" class="minitext" id="o" style="width: 50px;"disabled="disabled" ><br>
+			E-Mail : <br><nobr><input type="email" id="emal" disabled="disabled"></nobr><br>
+			<hr>
+			<h4>Spouse / Shareholder (main)</h4> <br>
 			
-			Spouse / Shareholder (main) 
-			
-			First Name : <br><nobr><input type="text" id="sfname"><font style="color: red;">*</font></nobr><br>
-			Initials : <br><input type="text" class="minitext" style="width: 60px;" id="iniosp"> <input type="text" class="minitext"style="width: 60px;" id="initsp"> </BR>
-			<input type="text" class="minitext" style="width: 60px;" id="inithsp"><br>
-			Name Denoted by Initials :<br> <input type="text" class="middletext" id="sp_othername"><br><br>
+			First Name : <br><nobr><input type="text" id="sfname" disabled="disabled"><font style="color: red;">*</font></nobr><br>
+			Initials : <br><input type="text" class="minitext" style="width: 60px;" id="iniosp" disabled="disabled"> 
+			<br>
+			Name Denoted by Initials :<br> <input type="text" class="middletext" id="sp_othername" disabled="disabled"><br><br>
 			
 			Home Address :
-			Address Line 1:<br><nobr><input type="text" id="sad1"><font style="color: red;">*</font></nobr><br>
-			Address Line 2:<br><nobr><input type="text" id="sad2"><font style="color: red;">*</font></nobr><br>
-			Address Line 3:<br><nobr><input type="text" id="sad3"><font style="color: red;">*</font></nobr><br>
-			Home Tel : <br><nobr><input type="tel" id="stel"><font style="color: red;">*</font></nobr><br>
+			Address Line 1:<br><nobr><input type="text" id="sad1"><font style="color: red;" disabled="disabled">*</font></nobr><br>
+			Address Line 2:<br><nobr><input type="text" id="sad2"><font style="color: red;" disabled="disabled">*</font></nobr><br>
+			Address Line 3:<br><nobr><input type="text" id="sad3"><font style="color: red;" disabled="disabled">*</font></nobr><br>
+			Home Tel : <br><nobr><input type="tel" id="stel"><font style="color: red;" >*</font></nobr><br>
 			Mobile No : <br><nobr><input type="tel" id="smob"><font style="color: red;">*</font></nobr><br>
-			NIC Number :<br><input type="text" class="minitext" id="os" style="width: 50px;" maxlength="2"> <input type="text" class="minitext" id="ts" style="width: 50px;"> 
-			<input type="text" class="minitext" id="ths" style="width: 50px;"><input type="text" class="minitext" id="frs" style="width: 50px;"> 
-			<input type="text" class="minitext" id="fis" style="width: 50px;"> <input type="text" class="minitext" id="sis" style="width: 50px;">  
-			<input type="text" class="minitext" id="ses" style="width: 50px;"> <input type="text" class="minitext" id="eigs" style="width: 50px;"> 
-			<input type="text" class="minitext" id="nis" style="width: 50px;"> <input type="text" class="minitext" id="vs" style="width: 50px;">  
+			NIC Number :<br><input type="text" class="minitext" id="os" style="width: 50px;" maxlength="2" disabled="disabled">   
 			<br>
-			E-Mail :<br><nobr> <input type="email" id="semail"></nobr>
+			E-Mail :<br><nobr> <input type="email" id="semail" disabled="disabled"></nobr>
 			<br/>
 			
 			<button type="submit" class = "submit" id="upbtn"> Update</button>
-			<button type="reset" id="cncl" onclick="clearvalues();">Reset</button>
+			<button type="button" id="cncl" onclick="clearvalues();">Cancel</button>
 			<br>
 			<div id="errormsg" style="color:red;"></div>
 		</div>
 		
 		
 		<div id="deleteDiv">
-			Branch :<br> 
-			<select id="branch" name="branch" >
+			Customer NIC : <select id="customers" name="customers" onchange="loadAllcustomers()">
+				<option>select</option>
+			</select>
+			Customer Name: 
+			<select id="customer" name="customer" >
 				<option>select</option>
 			</select>
 			<br><br>
-			Customer :<br> 
-			<select id="cus" name="cus" >
-				<option>select</option>
-			</select>
-	
-	<br>
-	<br>
+			<label>Customer arrears <br></label><input type="text" name="ap" id="ap" disabled><br><br>
 			Reason:
 			<br><nobr><input type="text" id="reason"><font style="color: red;">*</font></nobr><br> 
 			
 			<button type="submit" class = "submit" id="delbtn"> Delete</button>
-			<button type="reset" id="cncl" onclick="clearvalues();">Reset</button>
+			<button type="button" id="cncl">Reset</button>
 			<br>
 			
 		</div>
-			<div id="btngroup">
-				<input type ="radio" name ="cusbtn" id ="create" value ="create" checked="checked">Create
-				<input type ="radio" name ="cusbtn" id ="update" value ="update">Update
-				<input type ="radio" name ="cusbtn" id ="delete" value ="delete">Delete
-			</div>
-	
-	
-		</fieldset>
+	</fieldset>
 	</div>
 </div>
 <body>
 
 </body>
 </html>
+<%@include file="btngrp.jsp" %>
+<%@include file="footer.jsp" %>

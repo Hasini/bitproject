@@ -10,10 +10,17 @@ import java.time.LocalDateTime;
  *
  */
 public class IncomeType {
+	private int incomeTypeId;
 	private String incometypecode;
 	private String incometypeDescr;
 	private LocalDateTime createdtime;
 	
+	public int getIncomeTypeId() {
+		return incomeTypeId;
+	}
+	public void setIncomeTypeId(int incomeTypeId) {
+		this.incomeTypeId = incomeTypeId;
+	}
 	
 	public String getIncometypecode() {
 		return incometypecode;

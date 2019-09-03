@@ -49,7 +49,7 @@
 	
 </head>
 <body>
-	<div id="main">
+	<div id="main" style="width: 70%; height: 70%; margin-left: 10%">
 		
 			<fieldset>
 			

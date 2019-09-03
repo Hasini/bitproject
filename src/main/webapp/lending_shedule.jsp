@@ -17,9 +17,15 @@
 
 
 <script type="text/javascript">
-
 	$(document).ready(function() {
 		$(window).load(function() {
+			$('#cncl').click(function(){
+				$('input[type="text"]').val('');
+			});
+			$('#back').click(function(){
+				window.location.assign('/bitproject/cbnew.jsp');
+				
+			});
 			$.ajax({
 				type : 'GET',
 				url : 'CustomerRegistrationController',
@@ -37,7 +43,6 @@
 		});
 		
 		$('#cshbid').change(function() {
-			alert ("loaaa");
 			var method;
 			var custcashbookid = $('#cshbid :selected').text();
 			$.ajax({
@@ -49,14 +54,13 @@
 				},
 				success: function (responseText) {
 					if (responseText.arr){
-						alert(responseText.arr);
 						document.getElementById("aramtXXXX").value=responseText.arr;
-						if(responseText.arr<=50000)
-							alert ("Arrears amount should be greater than 50000LKR.");
-							document.getElementById("aramt").value = " ";
-							$("cshbid").focus();
+						if(responseText.arr<50000)
+							
+							window.location.assign('/bitproject/cbnew.jsp');
+						alert ("Arrears amount should be greater than Rs.50000.");
 					}else {
-						alert("No arrears for the customer..")
+						alert("No arrears or already added ..!")
 						//window.location.assign('/bitproject/cbnew.jsp');
 						//alert (responseText.error);
 					}
@@ -85,28 +89,30 @@
 			var m = document.getElementById("mode");
 			var mode =m.options[m.selectedIndex].value;
 			
-			$.ajax({
-				type : 'POST',
-				url : 'LendingSheduleController',
-				data :{
-					method : "sheduleLoan",
-					mode:mode,
-					custcashbookid : custcashbookid
-				},
-				success: function (responseText) {
-					
-					if(responseText.xx){
-						alert("asasasasdaddedddddddddddddx");
-						alert(responseText.xx);
-						window.location.assign('/bitproject/cbnew.jsp');
-					}else if (responseText.msg){
-						alert (responseText.msg);
-					}else {
+				$.ajax({
+					type : 'POST',
+					url : 'LendingSheduleController',
+					data :{
+						method : "sheduleLoan",
+						mode:mode,
+						custcashbookid : custcashbookid
+					},
+					success: function (responseText) {
 						
+						if(responseText.suc){
+							alert(responseText.suc);
+							window.location.assign('/bitproject/login.jsp');
+						}else if (responseText.msg){
+							alert (responseText.msg);
+							window.location.assign('/bitproject/login.jsp');
+							//window.location.assign('/bitproject/cbnew.jsp');
+						}else {
+							
+						}
 					}
-					
-				}
-			});
+				});
+			
+			
 		});
 	});
 </script>
@@ -115,16 +121,22 @@
 
 <style type="text/css">
 
-.dropdownfields{
-	 width: 75%;
+text{
+	width: 75%;
     padding: 12px 20px;
     margin: 8px 0;
     display: inline-block;
     border: 1px solid #ccc;
     box-sizing: border-box;
 }
-
-
+.dropdownfields{
+	width: 75%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
 
 label{
 	width: 15%;
@@ -135,21 +147,21 @@ label{
 
 
 </head>
-<body>
+<body style="width: 80%; height: 70%; margin-left: 0.5%;">
 	<div id="main">
 		<form >
 			<fieldset>
-				<legend>Lend Shedule</legend>
+				<legend>Lend Pay Plan</legend>
 			
 			
-			<label><b>Cash Book Id:</b> </label> 
+			<label><b>Cash Book Id:</b> </label> <br>
 			<select id="cshbid" name="cshbid" class="dropdownfields">
 				<option value="0">Select</option>
 			</select>
-			
-			<nobr><label><b>Total Arrears Amount :</b> </label><input type="text" name="aramt" id="aramtXXXX">
-			<font color="red">*</font></nobr>
-			<nobr><label><b>Number of installments:</b> </label> 
+			<font color="red">*</font></nobr></br>
+			<nobr><label><b>Total Arrears Amount :</b> </label><br><input type="text" name="aramt" id="aramtXXXX">
+			<font color="red">*</font></nobr></br>
+			<nobr><label><b>Number of installments:</b> </label><br> 
 			<select id="mode" name="mode" class="dropdownfields">
 				<option value="0">Select</option>
 				<option value="1">01</option>
@@ -166,16 +178,16 @@ label{
 				<option value="12">12</option>
 			</select>
 			<font color="red">*</font></nobr></br>
-			<label><b>Installment :</b> </label><input type="text" name="mpay" id="mpay" disabled>
-			
-			
+			<label><b>New Installment :</b> </label></br><input type="text" name="mpay" id="mpay" disabled>
+			</br>
 			
 			<button type="submit" name="cbbtn" value="cbbtn" id="cbbtn" class="submit">Submit</button>
-			<button type="button" name="clear" value="clear" id="cncl" onclick="clearinputs();">Reset</button>
+			<button type="button" name="clear" value="clear" id="back">Back</button>
 			</fieldset>
 		</form>
 	</div>
 
 
 </body>
+<footer style="width: 80%; height: 5%; border-right: 20%; background-image: url(images/background.jpg); color:white; margin-left: 10%">KGM</footer>
 </html>

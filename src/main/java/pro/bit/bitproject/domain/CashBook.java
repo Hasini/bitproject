@@ -14,6 +14,7 @@ public class CashBook {
 	 private String paytype;
 	 private int user;
 	 private double extrapayment;
+	 private String shedule_status;
 	 
 	public int getCashbookId() {
 		return cashbookId;
@@ -85,5 +86,11 @@ public class CashBook {
 		this.extrapayment = extrapayment;
 	}
 	
+	public String getShedule_status() {
+		return shedule_status;
+	}
+	public void setShedule_status(String shedule_status) {
+		this.shedule_status = shedule_status;
+	}
 	
 }

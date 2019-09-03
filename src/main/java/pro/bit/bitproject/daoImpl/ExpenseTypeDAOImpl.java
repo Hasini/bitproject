@@ -19,9 +19,7 @@ public class ExpenseTypeDAOImpl implements IncomeTypeDAO {
 	@Override
 	public void createET(String code, String descr, LocalDateTime createddate) {
 		String insertQuery = "INSERT INTO expense_type (et_code,et_descr,et_createdtime) VALUES (?,?,?)";
-		
 		try {
-			
 			PreparedStatement ps = ConnectionUtil.openConnection().prepareStatement(insertQuery);
 			ps.setString(1, code);
 			ps.setString(2, descr);
@@ -30,27 +28,25 @@ public class ExpenseTypeDAOImpl implements IncomeTypeDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	@Override
-	public IncomeType deleteIT(String coded) throws SQLException, Exception {
+	public IncomeType deleteIT(int expenseTypeId) throws SQLException, Exception {
 		PreparedStatement ps;
 		try {
-			ps = ConnectionUtil.openConnection().prepareStatement("delete from expense_type where et_code = ?");
-			ps.setString(1, coded);
+			ps = ConnectionUtil.openConnection().prepareStatement("delete from expense_type where et_id = ?");
+			ps.setInt(1, expenseTypeId);
 			ps.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
 	}
 
 	@Override
-	public JSONArray viewIT() throws SQLException, Exception {
+	public JSONArray viewET() throws SQLException, Exception {
 		ResultSet rs = null;
 		JSONArray jsonArray=new JSONArray();
 		String viewDet = "select * from expense_type";
@@ -63,9 +59,9 @@ public class ExpenseTypeDAOImpl implements IncomeTypeDAO {
 		
 		while (rs.next()){			
 			 JSONObject jsonObject=new JSONObject();
+			 jsonObject.put("id", rs.getInt(1));
 			 jsonObject.put("code", rs.getString(2));
 			 jsonObject.put("desc", rs.getString(3));
-			 
 			 jsonArray.put(jsonObject);
 		}
 		rs.close();
@@ -77,23 +73,26 @@ public class ExpenseTypeDAOImpl implements IncomeTypeDAO {
 		PreparedStatement ps;
 		Character userstatus = 'U';
 		try {
-			ps = ConnectionUtil.openConnection().prepareStatement("update expense_type set et_descr=?,et_status=?,et_updated_time=? where et_code=?");
-			
-			
+			ps = ConnectionUtil.openConnection().prepareStatement("update expense_type set et_descr=?,et_status=?,et_updated_time=? where et_id=?");
 			ps.setString(1, et.getExpensetypeDescr());
 			ps.setString(2, Character.toString(userstatus));
 			ps.setTimestamp(3,Timestamp.valueOf(LocalDateTime.now()));
-			ps.setString(4, et.getExpensetypecode());
-			
+			ps.setInt(4, et.getExpenseTypeId());
 			ps.executeUpdate();
 		} catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 		return null;
 	}
 
 	@Override
 	public IncomeType updateIT(IncomeType it) throws SQLException, Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public JSONArray viewIT() throws SQLException, Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}

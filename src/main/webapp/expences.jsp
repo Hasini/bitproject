@@ -18,7 +18,14 @@
 <script type="text/javascript">
 
 	$(document).ready(function() {
-
+		$('#cncl').click(function(){
+			if(confirm("do you want to reset text fields?")){
+				$('input[type="text"]').val('');
+			}					
+		});
+		$('#back').click(function(){
+			window.location.assign('/bitproject/cashier.jsp');
+		});
 		$(window).load(function() {
 			$.ajax({
 				type : 'post',
@@ -33,7 +40,6 @@
 						$("#subusers").append(subusers);
 						
 					}
-
 				}
 			});
 		});
@@ -43,14 +49,14 @@
 				type : 'GET',
 				url : 'CustomerRegistrationController',
 				data : {
-					method : "viewallCus"
+					method : "view"
 				},
 				success : function(responseText) {
-					for (var i = 0; i < responseText.cusObj.length; i++) {
-						var cusId = responseText.cusObj[i]["customer_id"];
-						var customer = "<option value=" + cusId + ">" + responseText.cusObj[i]["cus_fullname"] + "</option>";
-						$("#customer").append(customer);
-					}
+					for(var i=0;i<responseText.branchobj.length;i++){
+						var idvalue = responseText.branchobj[i]["id"];
+						var branch = "<option value="+idvalue+">"+responseText.branchobj[i]["branch_descr"]+"</option>";
+						$("#branch").append (branch);
+					 }
 				}
 			});
 		});
@@ -75,16 +81,14 @@
 		
 		$("#sbillinfobtn").click(function() {
 			var method;
-			
-			
 			var ex = document.getElementById("expensetype");
 			var exid = ex.options[ex.selectedIndex].value;
 			
 			var usr = document.getElementById("subusers");
 			var usrid = usr.options[usr.selectedIndex].value;
 			
-			var cus = document.getElementById("customer");
-			var cusid = cus.options[cus.selectedIndex].value;
+			var br = document.getElementById("branch");
+			var branch = br.options[br.selectedIndex].value;
 			
 			$.ajax({
 				type : 'post',
@@ -97,7 +101,7 @@
 					billdate : document.getElementById("bdte").value,
 					subtime : document.getElementById("sdte").value,
 					expensetypeid :exid,
-					customer : cusid
+					branch : branch
 				},
 				success: function (responseText) {
 					
@@ -115,14 +119,21 @@
 
 <script>
   $( function() {
-    $( "#bdte" ).datepicker({
+    $( "#bdte").datepicker({
       showOn: "button",
       buttonImage: "images/calendar.png",
       buttonImageOnly: true,
-      buttonText: "Select date"
+      buttonText: "DP"
     });
+    $("#sdte").datepicker({
+        showOn: "button",
+        buttonImage: "images/calendar.png",
+        buttonImageOnly: true,
+        buttonText: "DP"
+      });
   } );
   </script>
+  
 		
 <style>
 
@@ -178,7 +189,8 @@ button:hover {
 </style>
 
 </head>
-<body>
+<body style="width: 80%; height: 70%; margin-left: 0.5%;">
+<div id="main">
 	<fieldset>
 		<legend>Expenses</legend>
 			
@@ -188,26 +200,27 @@ button:hover {
 				<option value="0">Select</option>
 			</select></nobr>
 			
-			<label><b>Customer/Shop :</b> </label> 
-			<select id="customer" name="customer" class="dropdownfields">
+			<label><b>Branch:</b> </label> 
+			<select id="branch" name="branch" class="dropdownfields">
 				<option value="0">Select</option>
 			</select>
 			<label><b>Submitted By :</b> </label> 
 			<select id="subusers" name="subusers" onchange="" class="dropdownfields">
 				<option value="0">Select</option>
 			</select>
+			</br></br>
+			<nobr><label><b> Bill Code	:</b> </label></br><input type="text" name="bcode" id="bcode">
+			<font color="red">*</font></nobr></br>
+			<nobr><label><b>Amount	:</b></label></br><input type="text" name="amt" id="amt" required><font color="red">*</font></nobr><br>
 			
-			<nobr><label><b> Bill Code	:</b> </label><input type="text" name="bcode" id="bcode">
-			<font color="red">*</font></nobr>
-			<nobr><label><b>Amount	:</b></label><input type="text" name="amt" id="amt" required><font color="red">*</font></nobr><br>
-			
-			<nobr><label><b> Bill Date  :  </b> </label><input type="text" name="bdte" id="bdte" required><font color="red">*</font></nobr><br>
-			<nobr><label><b> Submitted Time	:</b> </label><input type="text" name="sdte" id="sdte" required></nobr> <br>
-			<label><b>Bill Image	:</b> </label><input type="file" name="billimg" id="billimg" accept="image/*"><br>
+			<nobr><label><b> Bill Date  :  </b> </label></br><input type="text" name="bdte" id="bdte" required><font color="red">*</font></nobr><br>
+			<nobr><label><b> Submitted Date	:</b> </label></br><input type="text" name="sdte" id="sdte" required><font color="red">*</font></nobr><br>
+			<label><b>Bill Image	:</b> </label></br><input type="file" name="billimg" id="billimg" accept="image/*"><br>
 			<button type="submit" name="sbillinfobtn" value="sbillinfobtn" id="sbillinfobtn" class="submit">Submit</button>
-			<button type="button" name="clear" value="clear" id="cncl" onclick="clearinputs();">Reset</button>
+			<button type="button" name="clear" value="clear" id="cncl">Reset</button>
+			<button type="button" name="clear" value="clear" id="back">Back</button>
 		</fieldset>
-	
-
+</div>
 </body>
 </html>
+<%@include file="footer.jsp" %>

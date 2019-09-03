@@ -31,8 +31,7 @@ public class DailyExpensesController extends HttpServlet {
     public DailyExpensesController() {
         super();
     }
-
-    
+ 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		JSONArray jsonArray = new JSONArray();
 		JSONObject json = new JSONObject();
@@ -88,14 +87,16 @@ public class DailyExpensesController extends HttpServlet {
 		FinanceDAOImpl dexDao = new FinanceDAOImpl();
 		
 		/*****Date Convertion******/
-		String submittedtime = request.getParameter("subtime");
+		//DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
+		String submitteddate = request.getParameter("subtime");
 		String billdate = request.getParameter("billdate");
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-		LocalDate subdate = LocalDate.parse(submittedtime, formatter);
-		LocalDate bdate = LocalDate.parse(billdate, formatter);
+		
+		//LocalDate submitteddateF = LocalDate.parse(submitteddate, formatter);
+		//LocalDate billdateF = LocalDate.parse(billdate, formatter);
+		
 		
 		int expenseType=0;
-		int customerid=0;
+		int branchId=0;
 		String dexDaoCode = request.getParameter("billcode");
 		double dexDaoAmount = Double.parseDouble(request.getParameter("amount"));
 		int submittedUserId = Integer.parseInt(request.getParameter("submitteduser"));
@@ -104,24 +105,24 @@ public class DailyExpensesController extends HttpServlet {
 		if (request.getParameter("expensetypeid")!=null){
 			expenseType = Integer.parseInt(request.getParameter("expensetypeid"));
 		}
-		if (request.getParameter("customer")!=null){
-			customerid = Integer.parseInt(request.getParameter("customer"));
+		if (request.getParameter("branch")!=null){
+			branchId = Integer.parseInt(request.getParameter("branch"));
 		}
 	
 		try{
 			dex.setBillCode(dexDaoCode);
 			dex.setAmount(dexDaoAmount);
-			dex.setSubmittedDate(subdate);
+			dex.setSubmittedDate(submitteddate);
 			dex.setCreatedTime(enteredTime);
 			dex.setSubmittedUserid(submittedUserId);
-			dex.setBillDate(bdate);
+			dex.setBillDate(billdate);
 			
 			if (expenseType != 0){
 				dex.setExpenseType(expenseType);
 			}
 			
-			if (customerid != 0){
-				dex.setCustomerId(customerid);
+			if (branchId != 0){
+				dex.setBranchId(branchId);
 			}
 			dexDao.createDailyExpense(dex);
 		}catch(Exception e){
@@ -144,5 +145,4 @@ public class DailyExpensesController extends HttpServlet {
 		
 		return userjsonArr;
 	}
-
 }

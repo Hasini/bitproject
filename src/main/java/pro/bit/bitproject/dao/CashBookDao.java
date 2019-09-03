@@ -14,4 +14,6 @@ public interface CashBookDao {
 	public void updateArrearsAmttogetTot(String custcashbookid, LocalDateTime paiddate, double availabletotarrearsforthecus,double extrayment,double todayarr) throws Exception ;
 	public double getcurrenttotarr(String customer_cash_book_Id);
 	public int getmode(String custcashbookid);
+	public int getNoOfPaidInstallments(String custcashbookid);
+	public String getSchType(String custcashbookid) throws SQLException;
 }
