@@ -40,14 +40,21 @@ private static final long serialVersionUID = 1L;
     		if (chkVal.equals("create")){
     			createBranch(request, response);
     			json.put("success", request.getParameter("code"));
-    		}else if (chkVal .equals("view")){
+    		} else if (chkVal .equals ("view")){
     			jsonArray=view();    			
     			json.put("branchListObject", jsonArray);
-    		}else if(chkVal.equals("update")){
+    		}  else if (chkVal .equals ("viewWithCode")){
+    			int branchId = Integer.parseInt(request.getParameter("branchId"));
+    			jsonArray=viewBranchDetailsWithCode(branchId);    			
+    			json.put("branchListObject", jsonArray);
+    			/*//json.put("desc", jsonArray.getString(2));
+    			json.put("address", jsonArray.getString(4));
+    			json.put("contact", jsonArray.getString(5));*/
+    		} else if(chkVal.equals("update")){
     			update(request,response);
     			json.put("success", "Successfully Updated the branch code");
     			json.put("error", "Error occured while updating..!");
-    		}else{
+    		} else{
     			delete(request, response);
     			json.put("success", "Record is no more valid..!");
     		}	
@@ -71,11 +78,16 @@ private static final long serialVersionUID = 1L;
 		
 		String code = request.getParameter("code");
 		String descr = request.getParameter("descr");
+		String add = request.getParameter("add");
+		String contact = request.getParameter("contact");
 		LocalDateTime createddate =  LocalDateTime.now();
 		
 		branch.setBranchCode(code);
 		branch.setBranchDescr(descr);
+		branch.setAddress(add);
+		branch.setContact(contact);
 		branch.setCreatedTime(createddate);
+		
 		bdaoimpl.createBranch(branch);
 	}
 
@@ -106,5 +118,14 @@ private static final long serialVersionUID = 1L;
 		jsonArray= bdaoimpl.viewBranchDetails();
 		return jsonArray;
 	 }
+	
+	public JSONArray viewBranchDetailsWithCode(int branchId) throws SQLException, Exception {
+		BranchDAOImpl bdaoimpl = new BranchDAOImpl();
+		JSONArray jsonArray=new JSONArray();
+		jsonArray= bdaoimpl.viewBranchDetailsWithCode(branchId);
+		return jsonArray;
+	 }
+	
+	
 
 }
