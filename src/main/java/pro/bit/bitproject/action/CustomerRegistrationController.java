@@ -219,6 +219,7 @@ public class CustomerRegistrationController extends HttpServlet {
 		 String spcusmobile = request.getParameter("smob");
 		 String cusspnic = request.getParameter("snic");
 		 String cusspemail = request.getParameter("semail");
+		 int customerType = Integer.parseInt(request.getParameter("cusT"));
 		 LocalDateTime createdtime = LocalDateTime.now();
 		 
 		
@@ -250,11 +251,12 @@ public class CustomerRegistrationController extends HttpServlet {
 		 customer.setCreatedtime(createdtime);
 		 customer.setStatus('A');
 		 int cusId = getCusIdByNic(cusnic);
+		 customer.setCustomerType(customerType);
 		
 		 cusDaoImpl.createCus(customer); 
 	}
 
-	public JSONArray viewBranches() {
+	private JSONArray viewBranches() {
 		JSONArray brancharr = new JSONArray();
 		CustomerRegistrationDAOImpl cusdaoimpl = new CustomerRegistrationDAOImpl();
 		try {

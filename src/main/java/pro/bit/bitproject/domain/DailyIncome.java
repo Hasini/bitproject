@@ -17,6 +17,7 @@ public class DailyIncome {
     private int branchId;
     
     
+    
 	public DailyIncome() {
 		super();
 		// TODO Auto-generated constructor stub

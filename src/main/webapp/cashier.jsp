@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <%@include file="header.jsp" %> 
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%> 
 <html>
 	<head>
 		<title>Home Page</title>
@@ -29,10 +30,23 @@
 	</head>
 <body style="width: 80%; height: 70%; margin-left: 0.5%;">
 	<div id="main" style="width: 70%; height: 70%; margin-left: 10%">
+	<p style="color: white; background-color: green;float:inherit;font-size:large;font-size: 20px; border-left-width: 5%; border-right-width: 20% ; margin-left: 10%; margin-right: 10%;height: 15%">
+ 		<c:out value="${param.message}"/>
+ 	</p>
 		<div>
 		<h2>Cashier Module</h2>
 		</div>
-		
+		<!-- DIL -->
+		 <%
+      	if (session != null) {
+         if (session.getAttribute("user") != null) {
+            String name = (String) session.getAttribute("user");
+            out.print("Hello, " + name + "  Welcome to ur Profile");
+         } else {
+            response.sendRedirect("login.jsp");
+         }
+    	  }
+   		%> 
 		<div id="cas" style="float: left">
 			<a href="income.jsp" class="link">Income</a><br>
 			<a href="expences.jsp" class="link">Expenses</a><br>

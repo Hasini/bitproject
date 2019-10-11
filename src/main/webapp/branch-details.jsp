@@ -28,17 +28,21 @@
 		        
 		        $("#submitbtn").click(function() {
 		        	var code = document.getElementById("code").value;
-		        	var descr = document.getElementById("descr").value;
+		        	var descr = document.getElementById("descru").value;
+		        	var add = document.getElementById("add").value;
+		        	var contact = document.getElementById("contact").value;
 		        	if(code=="" || code == null || descr == ""|| descr == null){
-						alert("Values are Empty");
+						alert("Mandotory Values are Empty");
 						document.getElementById("code").focus();
 					} else {
 						$.ajax({
 							type : 'GET',
 							url : 'createaction',
 							data : {
-								code : document.getElementById("code").value,
-								descr : document.getElementById("descr").value,
+								code : code,
+								descr : descr,
+								add : add,
+								contact : contact,
 								checkboxVal : "create"
 							},
 							success: function (responseText) {
@@ -74,7 +78,31 @@
 							var branch = "<option value="+idvalue+">"+responseText.branchListObject[i]["code"]+"</option>";
 							$("#bcode").append (branch);
 						}
-				    }
+						
+					}
+				});
+		        $('#bcode').change(function() {
+		        	var method;
+					var bcode = document.getElementById("bcode");
+					var branchId = bcode.options[bcode.selectedIndex].value;
+					
+					$.ajax({
+						type : 'GET',
+						url : 'createaction',
+						data :{
+							checkboxVal : "viewWithCode",
+							branchId : branchId
+						},
+						success: function (responseText) {
+							var a = responseText.branchListObject[i]["desc"];
+							alert("a"+a);
+							document.getElementById("descru").value="a";
+							document.getElementById("descru").value=responseText.branchListObject[i]["desc"];
+							document.getElementById("add").value=responseText.branchListObject[i]["address"];
+							document.getElementById("contact").value=responseText.branchListObject[i]["contact"];
+							
+						}
+					});
 				});
 		        
 		        $("#view").click(function() {
@@ -192,9 +220,9 @@
 	<legend>Branch Details</legend>
 		<div id = "createDiv">
 			Branch Code : <br><input type="text" name="code" id="code"> <font color="red">*</font><br>
-			Branch Description : <br><input type="text" name="descr" id="descr"><font color="red">*</font><br>
-			<label>Branch Address : </label><input type="text" name="add" id="add" placeholder="Address"><font color="red">*</font><br>
-			<label>Branch Contact Number: </label><input type="text" name="contact" id="contact" placeholder="Contact Number"><font color="red">*</font><br>
+			<label>Branch Location : </label><br><input type="text" name="descr" id="descru" placeholder="Branch Description"><font color="red">*</font><br>
+			<label>Branch Address : </label><br><input type="text" name="add" id="add" placeholder="Address"><font color="red"></font><br>
+			<label>Branch Contact Number: </label><br><input type="text" name="contact" id="contact" placeholder="Contact Number"><font color="red"></font><br>
 		
 			<button type="submit" name="submitbtn" value="submitbtn" id="submitbtn" class="submit">Submit</button>
 			<button type="button" name="cancel" id="cncl">Reset</button>		
@@ -206,9 +234,9 @@
 			<option>select</option>
 		</select>
 		<br>
-		<label>Branch Name : </label><input type="text" name="descr" id="descru" placeholder="Branch Description"><font color="red">*</font><br>
-		<label>Branch Address : </label><input type="text" name="add" id="add" placeholder="Address"><font color="red">*</font><br>
-		<label>Branch Contact Number: </label><input type="text" name="contact" id="contact" placeholder="Contact Number"><font color="red">*</font><br>
+		<label>Branch Name : </label><br><input type="text" name="descr" id="descru" placeholder="Branch Description"><font color="red">*</font><br>
+		<label>Branch Address : </label><br><input type="text" name="add" id="add" placeholder="Address"><font color="red">*</font><br>
+		<label>Branch Contact Number: </label><br><input type="text" name="contact" id="contact" placeholder="Contact Number"><font color="red">*</font><br>
 		<button type="submit" name="submitbtnu" value="submitbtnu" id="submitbtnu" class ="submit">Update</button>
 		<button type="button" name="cancel" value="Cancel" id="cncl">Reset</button>
 		<button type ="submit" class ="submit" id ="view">View</button>

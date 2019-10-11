@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <%@include file="header.jsp" %> 
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%> 
 <html>
 	<head>
 		<title>Home Page</title>
@@ -28,6 +29,9 @@
 		</style>
 	</head>
 <body style="width: 80%; height: 70%; margin-left: 0.5%;">
+	<p style="color: white; background-color: green;float:inherit;font-size:large;font-size: 20px; border-left-width: 5%; border-right-width: 20% ; margin-left: 10%; margin-right: 10%;height: 15%">
+ 		<c:out value="${param.message}"/>
+ 	</p>
 
 	<div id="main" style="width: 70%; height: 70%; margin-left: 10%">
 		<div>
@@ -35,8 +39,8 @@
 		</div>
 		<div id="db" style="float: left">
 			<a href="customer-registration.jsp" class="link">Customer Registration</a><br>
-			<a href="cbnew.jsp" class="link">Cash Book</a><br>
-			<a href="lending_shedule.jsp" class="link">Lending Schedule</a><br>
+			<a href="cshbook.jsp" class="link">Cash Book</a><br>
+			<!--  <a href="lending_shedule.jsp" class="link">Lending Schedule</a><br>-->
 			<a href="lend-details-view.jsp" class="link">View</a>
 		</div>
 		

@@ -75,7 +75,8 @@
 					
 					var e = document.getElementById("branch");
 					var branch = e.options[e.selectedIndex].value;
-					
+					var e = document.getElementById("cusT");
+					var cusT = e.options[e.selectedIndex].value;
 					var shtel = document.getElementById("shtel").value;
 					var hmtel = document.getElementById("hmtel").value;
 					var mob = document.getElementById("mob").value;
@@ -101,6 +102,7 @@
 							data : {
 								method : "createCus",
 								branch : branch,
+								cusT : cusT,
 								fname : document.getElementById("fname").value,
 								cus_initials : cus_initials,
 								cus_othername : document.getElementById("cus_othername").value,
@@ -339,7 +341,16 @@
 		<div id="createDiv">
 			Branch : <select id="branch" name="branch" >
 				<option>select</option>
+			</select><font style="color: red;">*</font>
+			<br><br>
+			<label>Customer Category :</label>
+			<select id="cusT" name="cusT">
+				<option>select</option>
+				<option value="1">Small</option>
+				<option value="2">Medium</option>
+				<option value="3">Large</option>
 			</select>
+			<font style="color: red;">*</font>
 			<br><br>
 			Initials :<br><input type="text" class="minitext" id="inithc"><br>
 			Name Denoted by Initials :<br> <input type="text" class="middletext" id="cus_othername"><br>

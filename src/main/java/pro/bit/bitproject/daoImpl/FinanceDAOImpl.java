@@ -1,11 +1,13 @@
 package pro.bit.bitproject.daoImpl;
 
+import java.io.InputStream;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -43,9 +45,9 @@ public class FinanceDAOImpl implements FinanceDAO {
 		}
 	}
 
-	public void createDailyIncome(DailyIncome dic) {
+	public void createDailyIncome(DailyIncome dic, InputStream inputStream) {
 		String insertQuery = "INSERT INTO dailyincome(amount,submitted_user,entered_user,income_type,bill_code,bill_date,entered_date,"
-				+ "submitted_date,branch_id) VALUES (?,?,?,?,?,?,?,?,?)";
+				+ "submitted_date,branch_id,bill_img) VALUES (?,?,?,?,?,?,?,?,?,?)";
 		
 		try {
 			
@@ -59,6 +61,7 @@ public class FinanceDAOImpl implements FinanceDAO {
 			ps.setTimestamp(7, Timestamp.valueOf(dic.getEntered_time()));
 			ps.setObject(8, dic.getSubmitted_date());
 			ps.setInt(9, dic.getBranchId());
+			ps.setBlob(10, inputStream);
 			ps.executeUpdate();
 			
 		} catch (SQLException es) {
@@ -160,13 +163,14 @@ public class FinanceDAOImpl implements FinanceDAO {
 		return jsonArray;
 	}
 
-	public Double getTotalIncome(int branchId, LocalDateTime today) throws SQLException, Exception {
+	public Double getTotalIncome(int branchId, Date today) throws SQLException, Exception {
+		System.out.print(today + "---");
 		ResultSet rs = null;
 		Double totIncome = 0.00;
 		String qry = "select sum(amount) as income from dailyincome where branch_id = ? and bill_date = ?";
 		PreparedStatement ps = ConnectionUtil.openConnection().prepareStatement(qry);
 		ps.setInt(1, branchId);
-		ps.setTimestamp(2, Timestamp.valueOf(today));
+		ps.setDate(2, (java.sql.Date) today);
 		rs = ps.executeQuery();
 		while (rs.next()) {
 			totIncome = rs.getDouble(1);
@@ -174,13 +178,13 @@ public class FinanceDAOImpl implements FinanceDAO {
 		return totIncome;
 	}
 
-	public Double getTotalExpences(int branchId, LocalDateTime today) throws SQLException, Exception{
+	public Double getTotalExpences(int branchId, Date today) throws SQLException, Exception{
 		ResultSet rs = null;
 		Double totExpense = 0.00;
 		String qry = "select sum(amount) as expenses from daily_expences where branch_id = ? and billDate = ?";
 		PreparedStatement ps = ConnectionUtil.openConnection().prepareStatement(qry);
 		ps.setInt(1, branchId);
-		ps.setTimestamp(2, Timestamp.valueOf(today));
+		ps.setDate(2, (java.sql.Date) today);
 		rs = ps.executeQuery();
 		while (rs.next()) {
 			totExpense = rs.getDouble(1);

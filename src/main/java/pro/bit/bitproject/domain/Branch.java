@@ -15,7 +15,9 @@ public class Branch {
 	private String branchCode;
 	private String branchDescr;
 	private LocalDateTime createdTime;
-	private LocalDateTime updatedDate;		
+	private LocalDateTime updatedDate;
+	private String address;
+	private String contact;
 	
 	
 	public Branch() {
@@ -57,7 +59,19 @@ public class Branch {
 	public void setUpdatedDate(LocalDateTime updatedDate) {
 		this.updatedDate = updatedDate;
 	}
-	
-	
-	
+
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getContact() {
+		return contact;
+	}
+
+	public void setContact(String contact) {
+		this.contact = contact;
+	}
 }

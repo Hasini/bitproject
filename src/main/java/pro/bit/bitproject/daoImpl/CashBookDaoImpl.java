@@ -13,9 +13,7 @@ public class CashBookDaoImpl implements CashBookDao {
 
 	public CashBook createCasahbook(CashBook cb) {
 		String cbcreatequery = "INSERT INTO cash_book (branch_id,customer_id,bill_amount,paid_amount,paid_date,entered_user,custcashbookid,pay_type,extra_pay,shedule_type) VALUES (?,?,?,?,?,?,?,?,?,?)";
-
 		try {
-
 			PreparedStatement ps = ConnectionUtil.openConnection().prepareStatement(cbcreatequery);
 			ps.setInt(1, cb.getBranchId());
 			ps.setInt(2, cb.getCustomerId());
@@ -28,7 +26,10 @@ public class CashBookDaoImpl implements CashBookDao {
 			ps.setDouble(9, cb.getExtrapayment());
 			ps.setString(10, cb.getShedule_status());
 			ps.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
 		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -50,7 +51,6 @@ public class CashBookDaoImpl implements CashBookDao {
 			e.printStackTrace();
 		}
 		return nic;
-
 	}
 
 	public double getmodepayment(String custcashbookid) {
@@ -65,7 +65,6 @@ public class CashBookDaoImpl implements CashBookDao {
 				mp = rs.getDouble("mode_payment");
 			}
 		} catch (Exception e) {
-
 			e.printStackTrace();
 		}
 		return mp;
@@ -126,7 +125,6 @@ public class CashBookDaoImpl implements CashBookDao {
 	
 	public void saveArrearsAmt(String custcashbookid, LocalDateTime paiddate, double currentarr) {
 		String createarrquery = "INSERT INTO cash_arrears (custcashbookid,arrsamt,createddate) VALUES (?,?,?)";
-
 		try {
 			PreparedStatement ps = ConnectionUtil.openConnection().prepareStatement(createarrquery);
 			ps.setString(1, custcashbookid);
@@ -170,7 +168,6 @@ public class CashBookDaoImpl implements CashBookDao {
 				}
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return sts;
@@ -180,18 +177,16 @@ public class CashBookDaoImpl implements CashBookDao {
 	public void updateArrearsAmttogetTot(String custcashbookid, LocalDateTime paiddate,
 			double availabletotarrearsforthecus, double extrayment, double todayarr) throws Exception {
 		PreparedStatement ps;
-
 		try {
 			ps = ConnectionUtil.openConnection().prepareStatement(
 					"update tot_arrears set tot_arrears=?,last_updated_date=? where cust_cash_booid=?");
-			ps.setDouble(1, ((todayarr + availabletotarrearsforthecus) - extrayment));
+			ps.setDouble(1, (todayarr + availabletotarrearsforthecus));
 			ps.setTimestamp(2, Timestamp.valueOf(paiddate));
 			ps.setString(3, custcashbookid);
 			ps.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return;
 	}
 
 	public double getcurrenttotarr(String custcashbookid) {
@@ -227,5 +222,69 @@ public class CashBookDaoImpl implements CashBookDao {
 		}
 		return ca;
 	}
+	
+	public int getCusType(int customerId) throws SQLException {
+		int customerType = 0;
+		try {
+			PreparedStatement ps = ConnectionUtil.openConnection()
+					.prepareStatement("select customer_type from customer_details where customer_id = ?");
+			ps.setInt(1, customerId);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				customerType = rs.getInt(1);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return customerType;
+	}
+	
+	public int getCreditLimit(int customerType) throws SQLException{
+		int creditLimit = 0;
+		try {
+			PreparedStatement ps = ConnectionUtil.openConnection()
+					.prepareStatement("select credit_limit from credit_limit_definition where cus_type = ?");
+			ps.setInt(1, customerType);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				creditLimit = rs.getInt(1);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return creditLimit;
+	}
 
+	public double deductTotalArr(String custcashbookid,  double extraPay) throws SQLException{
+		double curretTotalArr = 0.00;
+		double deductedArr = 0.00;
+		try {
+			PreparedStatement ps = ConnectionUtil.openConnection()
+					.prepareStatement("select tot_arrears from tot_arrears where cust_cash_booid = ?");
+			ps.setString(1, custcashbookid);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				curretTotalArr = rs.getDouble(1);
+			}
+			deductedArr = curretTotalArr - extraPay;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return deductedArr;
+	}
+	
+	public void updateExtraPayInWallet(String custcashbookid, double extraPay) throws Exception {
+		PreparedStatement ps;
+		LocalDateTime updatedtime = LocalDateTime.now();
+		try {
+			ps = ConnectionUtil.openConnection().prepareStatement(
+					"update lend_shedule set updated_time=?, wallet_amount=? where custcashbookid=?");
+
+			ps.setTimestamp(1, Timestamp.valueOf(updatedtime));
+			ps.setDouble(2, extraPay);
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 }

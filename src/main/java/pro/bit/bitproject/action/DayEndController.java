@@ -3,6 +3,8 @@ package pro.bit.bitproject.action;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -39,12 +41,38 @@ public class DayEndController extends HttpServlet {
 		JSONObject json = new JSONObject();
 		
 		switch (method) {
-		case "getBranchIncome":
+		case "getBranchProfit":
 			double branchProfit = 0.00;
 			try {
+				
 				branchProfit = calculateBranchwiseDailyProfit(branchId);
 				json.put("profit", branchProfit);
 				json.put("success", "Profit calculated..!");
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			break;
+		case "getBranchIncome":
+			double branchInome = 0.00;
+			try {
+				
+				branchInome = calculateBranchwiseDailyIncome(branchId);
+				json.put("branchInome", branchInome);
+				json.put("success", "branchInome calculated..!");
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			break;
+			
+		case "getBranchExpense":
+			double branchExpense = 0.00;
+			try {
+				
+				branchExpense = calculateBranchwiseDailyExpense(branchId);
+				json.put("branchExpense", branchExpense);
+				json.put("success", "branchExpense calculated..!");
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -59,7 +87,7 @@ public class DayEndController extends HttpServlet {
 	}
 	
 	private double calculateBranchwiseDailyProfit(int branchId) {
-		LocalDateTime today = LocalDateTime.now();
+		Date today = Calendar.getInstance().getTime();
 		FinanceDAOImpl financeDAO = new FinanceDAOImpl();
 		Double profit = 0.00;
 		try {
@@ -74,16 +102,37 @@ public class DayEndController extends HttpServlet {
 		return profit;
 	}
 	
-	/*private double calculateTotalDailyProfit(double dailyIncome,double dailyExpences,Date today){
-		double totIncome = getTotalIncome ();
-		double totExpences = getTotExpences();
-		double profit = totIncome - totExpences;
-		return profit;
+	private double calculateBranchwiseDailyIncome(int branchId) {
+		//LocalDateTime today = LocalDateTime.now();
+		Date today = Calendar.getInstance().getTime();
+		FinanceDAOImpl financeDAO = new FinanceDAOImpl();
+		Double totIncome = 0.00;
+		try {
+			totIncome = financeDAO.getTotalIncome(branchId,today);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return totIncome;
 	}
 	
-	private double calculateBranchwiseDailyProfit() {
-		return 0;
-	}*/
+	private double calculateBranchwiseDailyExpense(int branchId) {
+		//LocalDateTime today = LocalDateTime.now();
+		Date today = Calendar.getInstance().getTime();
+		FinanceDAOImpl financeDAO = new FinanceDAOImpl();
+		Double totExpense = 0.00;
+		try {
+			totExpense = financeDAO.getTotalExpences(branchId,today);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return totExpense;
+	}
+	
+	private void calulateWalletAmount () {
+		
+	}
+	
+	
 	
 	
 	

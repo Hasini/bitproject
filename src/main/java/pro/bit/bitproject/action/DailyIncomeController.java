@@ -1,15 +1,15 @@
 package pro.bit.bitproject.action;
 
 import java.io.IOException;
-import java.time.LocalDate;
+import java.io.InputStream;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -80,13 +80,13 @@ public class DailyIncomeController extends HttpServlet {
 	private void createIncomes(HttpServletRequest request, HttpServletResponse response) {
 		DailyIncome dinc = new DailyIncome();
 		FinanceDAOImpl finDao = new FinanceDAOImpl();
+		InputStream inputStream = null;
 		try {
 			double amount = 0.00;
 			amount = Double.parseDouble(request.getParameter("amount"));
-			//DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 			String billDate = request.getParameter("billdate");
 			String subdate = request.getParameter("subdate");
-			
+			Part filePart = request.getPart("billimg");
 			dinc.setAmount(amount);
 			dinc.setBillCode(request.getParameter("billcode"));
 			dinc.setSubmittedUserid(Integer.parseInt(request.getParameter("submitteduser")));
@@ -96,12 +96,11 @@ public class DailyIncomeController extends HttpServlet {
 			dinc.setBranchId(Integer.parseInt(request.getParameter("branch")));
 			dinc.setEnteredUserid(1);
 			dinc.setEntered_time(LocalDateTime.now());
+			inputStream = filePart.getInputStream();
 		
-			finDao.createDailyIncome(dinc);
+			finDao.createDailyIncome(dinc, inputStream);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 	}
-
 }

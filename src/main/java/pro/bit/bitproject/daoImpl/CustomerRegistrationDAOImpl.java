@@ -26,9 +26,8 @@ public class CustomerRegistrationDAOImpl implements CustomerRegistrationDAO {
 
 		ResultSet rs = null;
 		JSONArray jsonArray=new JSONArray();
-		String branchliststr = "select * from branch_det";
+		String branchliststr = "select branch_id, branch_descr from branch_det";
 		PreparedStatement ps;
-		
 		ps = ConnectionUtil.openConnection().prepareStatement(branchliststr);
 		ps.executeQuery();
 		
@@ -37,7 +36,7 @@ public class CustomerRegistrationDAOImpl implements CustomerRegistrationDAO {
 		while (rs.next()){			
 			 JSONObject jsonObject=new JSONObject();
 			 jsonObject.put("id", rs.getString(1));
-			 jsonObject.put("branch_descr", rs.getString(3));
+			 jsonObject.put("branch_descr", rs.getString(2));
 			 jsonArray.put(jsonObject);
 		}
 		rs.close();
@@ -68,7 +67,7 @@ public class CustomerRegistrationDAOImpl implements CustomerRegistrationDAO {
 	public CustomerRegistration createCus(CustomerRegistration customer) {
 		String saveCusQuery = "INSERT INTO customer_details (branch_id,cus_fullname,cus_initials,cus_denotednames,cusshop_add1,"
 				+ "cusshop_add2,cusshop_add3,cushome_add1,cushome_add2,cusshop_tel,cus_home_tel,cus_mobile,cushome_add3,cus_nic,"
-						+ "cus_email,sp_fn,sp_initials,sp_initials_denotions,sp_add1,sp_add2,sp_add3,sp_home_tel,sp_mobile,sp_nic,sp_email,created_time,status) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)" ;
+						+ "cus_email,sp_fn,sp_initials,sp_initials_denotions,sp_add1,sp_add2,sp_add3,sp_home_tel,sp_mobile,sp_nic,sp_email,created_time,status,customer_type) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)" ;
 		PreparedStatement ps;
 		try {
 			ps = ConnectionUtil.openConnection().prepareStatement(saveCusQuery);
@@ -100,6 +99,7 @@ public class CustomerRegistrationDAOImpl implements CustomerRegistrationDAO {
 			ps.setString(25,customer.getCusspemail());
 			ps.setTimestamp(26,Timestamp.valueOf(customer.getCreatedtime()));
 			ps.setString(27,Character.toString(customer.getStatus()));
+			ps.setInt(28, customer.getCustomerType());
 			
 			ps.executeUpdate();
 			
@@ -274,7 +274,6 @@ public class CustomerRegistrationDAOImpl implements CustomerRegistrationDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 	}
 	
 	public void deleteCustomer(String NIC, String sts,String reason) throws SQLException, Exception {

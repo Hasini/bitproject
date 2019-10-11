@@ -87,6 +87,9 @@
 			var br = document.getElementById("branch");
 			var branch = br.options[br.selectedIndex].value;
 			
+			var billimg = document.getElementById("billimg").serialize();
+			alert(it + usrid + "branch" +branch + billimg);
+			
 			$.ajax({
 				type : 'post',
 				url : 'DailyIncomeController',
@@ -98,7 +101,8 @@
 					billdate : document.getElementById("bdte").value,
 					subdate : document.getElementById("sdte").value,
 					incometypeId : it,
-					branch : branch
+					branch : branch,
+					billimg : billimg
 				},
 				success: function (responseText) {
 					

@@ -33,6 +33,7 @@ public class CustomerRegistration {
 	private String cusspemail;
 	private LocalDateTime createdtime;
 	private Character status;
+	private int customerType;
 	
 	
 	public Character getStatus() {
@@ -229,4 +230,12 @@ public class CustomerRegistration {
 	public void setCreatedtime(LocalDateTime createdtime) {
 		this.createdtime = createdtime;
 	}
+	public int getCustomerType() {
+		return customerType;
+	}
+	public void setCustomerType(int customerType) {
+		this.customerType = customerType;
+	}
+	
+	
 }

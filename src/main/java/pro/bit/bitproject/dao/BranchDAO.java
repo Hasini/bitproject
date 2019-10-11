@@ -11,5 +11,6 @@ import pro.bit.bitproject.domain.Branch;
 		public JSONArray viewBranchDetails() throws SQLException, Exception;
 		public Branch updateBranch (Branch branch) throws SQLException, Exception;
 		public Branch deleteBranch (int id) throws SQLException, Exception;
+		JSONArray viewBranchDetailsWithCode(int branchId) throws SQLException, Exception;
 		
 	}

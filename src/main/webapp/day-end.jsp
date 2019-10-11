@@ -46,6 +46,7 @@
 							branch : branch
 						},
 						success: function (responseText) {
+							alert(responseText.branchInome);
 							if (responseText.success){
 								alert(responseText.success);
 								alert(responseText.branchProfit);
@@ -75,7 +76,26 @@
 	<label><b>Branch :</b> </label> <select id="branch" name="branch" class="dropdownfields">
 				<option>select</option>
 			</select>
-	<br><br><br><br><br><br>
+	<br><br><br>
+	<div id = "branchWiseSum">
+		<label style="color: gray;"><b>Branch wise Income:</b> <br></label><input type="text" name="remainpy" id="remainpy" >
+			<br>
+		<nobr><label style="color: gray;"><b>Branch wise expense:</b> <br></label><input type="text" name="inst" id="inst" >
+		</nobr><br>
+		<nobr><label style="color: gray;"><b>Branch wise profit:</b> <br></label><input type="text" name="nd" id="nd">
+		</nobr><br>
+	</div>
+	<hr>
+	<div id = "Sum">
+		<label style="color: gray;"><b>Today Income:</b> <br></label><input type="text" name="remainpy" id="remainpy" >
+			<br>
+		<nobr><label style="color: gray;"><b>Today expense:</b> <br></label><input type="text" name="inst" id="inst" >
+		</nobr><br>
+		<nobr><label style="color: gray;"><b>Today profit:</b> <br></label><input type="text" name="nd" id="nd">
+		</nobr><br>
+	</div>
+	
+	
 	<div id="calBranchWiseIncome">
   		<div id="progress">10%</div>
 	</div>

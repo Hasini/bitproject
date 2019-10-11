@@ -18,28 +18,50 @@
 					$('input[type="text"]').val('');
 				}					
 			});
+			/* $(window).load(function(){
+				$.ajax({
+					type : 'post',
+					url : 'userservlet',
+					data : {
+						method : "view"
+					},
+					success : function(responseText) {
+						
+						for(var i=0;i<responseText.usertypeobj.length;i++){
+							var idvalue = responseText.usertypeobj[i]["id"];
+							var usertypedescr = "<option value="+idvalue+">"+responseText.usertypeobj[i]["descr"]+"</option>";
+							$("#cusT").append (usertypedescr);
+						 }
+					}   
+				});
+			}); */
 			$("#submitbtn").click(function() {
-				var codeut = document.getElementById("codeut").value;
-				var descrut = document.getElementById("descrut").value;
-				if(codeut=="" || codeut == null || descrut == ""|| descrut == null){
+				var e = document.getElementById("cusT");
+	        	var cusTypeID = e.options[e.selectedIndex].value;
+	        	alert( "cusTypeID" +cusTypeID);
+	        	
+				var creditLimit = document.getElementById("cl").value;
+				if(creditLimit=="" || creditLimit == null){
 					alert("Values are Empty");
-					document.getElementById("codeut").focus();
+					document.getElementById("cl").focus();
 				}else {
 					$.ajax ({
 						type : "GET",
-						url : "usertype?codeut="+codeut+"&descrut="+descrut,
-						
+						url : 'CreditLimitController',
+						data :{
+							cusTypeID : cusTypeID ,
+							creditLimit : creditLimit
+						},
 						success : function(responseText) {
-							if(responseText.success){
+							if (responseText.success) {
 								alert(responseText.success +" Successfully Created..!");
 								$('input[type="text"]').val('');
 								window.location.assign('/bitproject/admin.jsp');
-							}else{
+							} else {
 								alert(responseText.error +" Error Occured..!");
-								window.location.assign('/bitproject/user-type.jsp');
+								window.location.assign('/bitproject/credit-limitation.jsp');
 								$('input[type="text"]').val('');
-							}
-							
+							}	
 						}
 					});
 				}
@@ -50,13 +72,20 @@
 <body >
 	<div id="main">
 			<h2>Credit Limitation</h2>
-			Customer Type : <br><select id="cusT" name="cusT" >
-			<option>select</option>
-		</select> <font color="red">*</font><br>
+			<label><b>Customer Category </b> </label>
+			<nobr>	
+			<select id="cusT" name="cusT">
+				<option value="0">Select</option>
+				<option value="1">Small</option>
+				<option value="2">Medium</option>
+				<option value="3">Large</option>
+			</select>
+			<font style="color: red;">*</font>
+			</nobr><br>
 			Credit Limit (LKR) : <br><input type="text" name="cl" id="cl"><font color="red">*</font><br>
 			<br>
 			<button type="submit" name="submit" value="Submit" id="submitbtn" class="submit">Submit</button>
-			<button type="button" name="clear" value="clear" id="cncl" onclick="clearinputs();">Reset</button>
+			<button type="button" name="clear" value="clear" id="cncl"">Reset</button>
 	</div>
 </body>
 
