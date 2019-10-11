@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@include file="header.jsp" %> 
 <html>
 <head>
@@ -115,7 +116,7 @@ input[type=text], input[type=password] {
 					
 				}); 
 		    });
-		 $("#submit").click(function(){
+		 /* $("#submit").click(function(){
 				
 				var username=document.getElementById("uname").value;
 				var password=document.getElementById("psw").value;
@@ -135,7 +136,7 @@ input[type=text], input[type=password] {
 						success: function (responseText) {
 							if (responseText.success){
 								alert(responseText.success);
-								if(responseText.userType ==1){
+								 if(responseText.userType ==1){ 
 									window.location.assign('/bitproject/admin.jsp');
 								}
 								if(responseText.userType ==2){
@@ -146,7 +147,7 @@ input[type=text], input[type=password] {
 								}
 								if(responseText.userType ==4){
 									window.location.assign('/bitproject/authorization.jsp');
-								}
+								} 
 							}
 							else {
 								alert(responseText.error);
@@ -157,13 +158,17 @@ input[type=text], input[type=password] {
 				}
 				
 				
-			});
+			}); */
 	});
 
 </script>
 </head>
 
 <body>
+ <form action = "userservlet" method = "POST">
+ <p style="color: white; background-color: red;float:inherit;font-size:large;font-size: 20px; border-left-width: 5%; border-right-width: 20% ; margin-left: 10%; margin-right: 10%;height: 15%">
+ 	<c:out value="${param.message}"/>
+ </p>
 	<div class="main">
 		<div>
 			<div class="imgcontainer">
@@ -171,9 +176,12 @@ input[type=text], input[type=password] {
 				</div>
 				<div class="container">
 					<label><b>Username</b></label> 
-					<input type="text" placeholder="Enter Username" name="uname" id="uname" required="required"> 
+					<input type="text" placeholder="Enter Username" name="username" id="username" required="required"> 
 					<label><b>Password</b></label>
-					<input type="password" placeholder="Enter Password" name="psw" id="psw" required="required"> 
+					<input type="password" placeholder="Enter Password" name="password" id="password" required="required"> 
+					
+					<!-- DIL -->			
+					<input type="hidden"  name="method" id="method" value="login"> 
 					
 					<button type="submit" id="submit" class="submit">Login</button>
 					<!-- <label> <input type="checkbox" checked="checked">
@@ -182,7 +190,7 @@ input[type=text], input[type=password] {
 				</div>
 				<br><br>
 				<div>
-					<p style="font-size: 16px;"><strong>Register New System User</strong></p>
+					<p style="font-size: 20px;"><strong>Register New System User</strong></p>
 						<button type="submit" id="signup" value="signup" class="submit" onclick="window.location.href='sign-up.jsp'">Register</button>
 				</div>
 		</div>
@@ -190,6 +198,7 @@ input[type=text], input[type=password] {
 	
 	
 </div>
+</form>
 </body>
 </html>
 <%@include file="footer.jsp" %>

@@ -26,7 +26,6 @@ public class LendingSheduleDAOImpl implements LendingDAO{
 			ResultSet rs= ps.executeQuery();
 			while (rs.next()) {
 				totarr = rs.getDouble("arrsamt");
-				System.out.println(totarr+"totamount");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -145,9 +144,6 @@ public class LendingSheduleDAOImpl implements LendingDAO{
 		}
 		rs.close();
 		return cusjsonArray; 
-		
-		
-		
 	}
 	
 	@Override
@@ -180,7 +176,6 @@ public class LendingSheduleDAOImpl implements LendingDAO{
 			ps.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			
 		}
 	}
 
@@ -277,6 +272,22 @@ public class LendingSheduleDAOImpl implements LendingDAO{
 	public void saveArrearsAmt(String custcashbookid, LocalDateTime paiddate, double currentarr) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	@Override
+	public double getWalletAmout(String custcashbookid) throws SQLException{
+		double walletAmout = 0 ;
+		try {
+			PreparedStatement ps = ConnectionUtil.openConnection().prepareStatement("select wallet_amout from lend_shedule where custcashbookid = ?");
+			ps.setString(1, custcashbookid);
+			ResultSet rs= ps.executeQuery();
+			while (rs.next()) {
+				walletAmout = rs.getDouble(1);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return walletAmout;
 	}
 
 	

@@ -1,47 +1,66 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Home Page</title>
-		<link rel="stylesheet" type="text/css" href="css/common.css">
-		<link rel="icon" href="images/favicon-facebook_400x400.png">
-		
-		<style type="text/css">
-			span {
-				border-radius: 25px;
-    			background-color:aqua;
-    			background-position: left top;
-    			background-repeat: repeat;
-    			padding: 20px; 
-    			width: 200px;
-    			height: 150px; 
-			}
+<article
+	style="width: 80%; height: 15%; border-right: 20%; background-image: url(images/background.jpg);float:center; 
+	background-repeat: no-repeat; background-size: cover; border-left-width: 5%; border-right-width: 20% ; margin-left: 10%">
+	<header>
+		<p style="float: right; color: #FFFFE0;">
+			<span id="datetime"></span>
+		</p>
+		<h1 style="font-family: Helvetica; font-size: 30px; color: #FFFFE0;"
+			align="left">
+			<b>Kasun Grinding Mills - Hambantota </b>
+		</h1>
+		<H2 style="float: left; font-size: 10px; font-family: serif;">
 			
-		</style>
-	</head>
-<body>
+		<script>
+			var dt = new Date();
+			document.getElementById("datetime").innerHTML = dt.toLocaleString();
+		</script>
+	</header>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/jquery-1.11.1.min.js"></script>
+	<script src="js/commonFunctions.js"></script>
+</article>
+<head>
 
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<link rel="stylesheet" href="/resources/demos/style.css">
+	<link rel="stylesheet" type="text/css" href="css/common.css">
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script>
+	$(function() {
+		var icons = {
+			header : "ui-icon-circle-arrow-e",
+			activeHeader : "ui-icon-circle-arrow-s"
+		};
+		$("#accordion").accordion({
+			icons : icons
+		});
+		$("#toggle").button().on("click", function() {
+			if ($("#accordion").accordion("option", "icons")) {
+				$("#accordion").accordion("option", "icons", null);
+			} else {
+				$("#accordion").accordion("option", "icons", icons);
+			}
+		});
+	});
+</script> 
+</head>
 
-<div id="main">
-	<div>
-	<h2>Welcome to JSL</h2>
-	</div>
-	<div id="left" style="float: left">
+<body style="width: 80%; height: 70%; margin-left: 0.5%;">
+	<div id="accordion" style="width: 30%; height: 80%; margin-left: 10%">
 		
+		<h3>Already a member</h3>
+		<div>
+			<span id="login"><a href="login.jsp">Login</a></span>
+		</div>
+		<h3>Sign Up</h3>
+		<div>
+			<span id="signup"><a href="sign-up.jsp">Sign-Up</a></span>
+		</div>
 	</div>
-	
-	<div id="right" style="float: right">
-		<span id="login"><a href="log-in.jsp">Login</a></span>
-		<span id="signup"><a href="sign-up.jsp">Sign-Up</a></span>
-	</div>
-</div>
-
-
-
-
-
-
-
-
-
 </body>
+<footer style="width: 80%; height: 15%; border-right: 20%; background-image: url(images/background.jpg); color:white; margin-left: 10%">KGM</footer>
 </html>

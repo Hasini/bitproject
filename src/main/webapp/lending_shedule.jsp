@@ -23,7 +23,7 @@
 				$('input[type="text"]').val('');
 			});
 			$('#back').click(function(){
-				window.location.assign('/bitproject/cbnew.jsp');
+				window.location.assign('/bitproject/cshbook.jsp');
 				
 			});
 			$.ajax({

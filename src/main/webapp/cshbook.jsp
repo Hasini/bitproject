@@ -21,7 +21,7 @@
 				$('input[type="text"]').val('');
 			});
 			$('#back').click(function(){
-				window.location.assign('/bitproject/cbnew.jsp');
+				window.location.assign('/bitproject/cshbook.jsp');
 			});
 			
 			$("#submain").show();
@@ -32,7 +32,7 @@
 		    $(".alert").hide();
 		    
 		    $(window).load(function() {
-				$.ajax({
+		    	$.ajax({
 					type : 'GET',
 					url : 'CustomerRegistrationController',
 					data : {
@@ -49,8 +49,7 @@
 			});
 		    
 		    $(window).load(function(){
-				
-			 	$.ajax({
+				$.ajax({
 					type : 'GET',
 					url : 'CustomerRegistrationController',
 					data : {
@@ -63,8 +62,8 @@
 							$("#branch").append (branch);
 						 }
 					}   
-			}); 
-		});
+				}); 
+			});
 		    
 		    $('#customer').change(function() {
 				var method;
@@ -74,7 +73,7 @@
 				var branch = br.options[br.selectedIndex].value;
 				$.ajax({
 					type : 'GET',
-					url : 'CashBkController',
+					url : 'CshbookCotroller',
 					data :{
 						method : "viewMP",
 						customer : cusid
@@ -120,7 +119,7 @@
 					}else{
 						$.ajax({
 							type : 'GET',
-							url : 'CashBkController',
+							url : 'CshbookCotroller',
 							data :{
 								method : "createCB",
 								inspay :inspay,
@@ -160,6 +159,7 @@
 		        $("#partiallypayDiv").show();
 		        $("#reshedulingDiv").hide();
 		       	$("#ppbtn").click(function() {
+		       		alert("daiy transasas");
 					var method;
 					
 					var br = document.getElementById("branch");
@@ -170,9 +170,12 @@
 					var payamt = document.getElementById("tp").value;
 					var totarr = document.getElementById("ar").value;
 					var paytype;
+					var creditLimit = getCreditLimit(cusid);
 					
-					if (branch == 'select')
+					if (branch == 'select'){
 						alert ("Please select customer's branch..!");
+					}
+						
 					if (cusid == 0)
 						alert ("Please select a customer..!");
 					if (!bamt.length)
@@ -180,14 +183,15 @@
 					if (!payamt.length)
 						alert ("Please enter today pay amount..!");
 					
-					if (!payamt.length || !bamt.length || cusid == 0 || branch == 'select'){
+					if (!payamt.length && !bamt.length && cusid == 0 && branch == 'select'){
 						alert ("Please fill all mandotory fields to do transactions..!");
-					}if (totarr > 100000){
-						alert("Arrears amount is exceeded Rs.100000. Please shedule a payment plan to proceed..!");
+					}if (totarr > creditLimit){
+						alert("Arrears amount is exceeded creditLImit. Please shedule a payment plan to proceed..!");
 					}else{
+						alert("asas");
 						$.ajax({
 							type : 'GET',
-							url : 'CashBkController',
+							url : 'CshbookCotroller',
 							data :{
 								method : "createCB",
 								billAmt : bamt,
@@ -392,7 +396,7 @@ a.button {
   			<a href="dp.jsp" class="button" style="background-color: red;color: white;">No</a>
 		</div>
 		<div id = "inq">
-			<label style="color: gray;"><b>Next Due Date:</b> </label><br><input type="text" name="ndt" id="ndt" disabled="disabled">
+			<label style="color: gray;"><b>Next Delivery Date:</b> </label><br><input type="text" name="ndt" id="ndt" disabled="disabled">
 			<br>
 			<label style="color: gray;"><b>Today Arrears Amount:</b> </label><br><input type="text" name="arr" id="arr" disabled="disabled">
 			<br>

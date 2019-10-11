@@ -22,7 +22,7 @@ public interface LendingDAO {
 	public String getSheduledSts(String custcashbookid);
 	public void updateInsPay(String custcashbookid, int noofins,String sts) throws Exception;
 	public int getpaidscount(String custcashbookid);
-	
+	double getWalletAmout(String custcashbookid) throws SQLException;
 	
 	/**reshedule**/
 	public void createLendReschdule(String custCashBookId, int noOfIns, double newInstallment,LocalDateTime created_date, 
@@ -30,4 +30,5 @@ public interface LendingDAO {
 	public String getReSheduledSts(String custcashbookid);
 	public double getReschPaymentInstallment(String custcashbookid) throws SQLException;
 	public void updateCashBook(String custCashBookId) throws SQLException;
+	
 }
